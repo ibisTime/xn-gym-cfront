@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <link rel="import" href="../head.html?__inline">
+    <title>余额</title>
+    <!--SCRIPT_PLACEHOLDER-->
+</head>
+
+<body>
+    <div class="user-top-wrap account-wrap am-flexbox am-flexbox-dir-column">
+        <div class="top-infos">
+            <p class="amount-tip">可用余额(元)</p>
+            <p class="remain-amount">100.00</p>
+            <div class="am-flexbox am-flexbox-justify-between">
+                <a href="./recharge.html" class="am-button">充值</a>
+                <a href="./withdraw.html" class="am-button">提现</a>
+            </div>
+        </div>
+    </div>
+    <div class="am-whitespace-sm"></div>
+    <div class="account-flow-list">
+        <div class="flow-item">
+            <div class="am-flexbox">
+                <div class="flow-datetime">
+                    <p class="f-date">15日</p>
+                    <p class="f-time">21:46</p>
+                </div>
+                <div class="flow-icon">
+                    <img src="../../images/receive.png" alt="">
+                </div>
+                <div class="flow-content am-flexbox-item">
+                    <p class="f-transAmount f-trans-red">+2.00</p>
+                    <p class="flow-remark">消费消费极大发</p>
+                </div>
+            </div>
+        </div>
+        <div class="flow-item">
+            <div class="am-flexbox">
+                <div class="flow-datetime">
+                    <p class="f-date">15日</p>
+                    <p class="f-time">21:46</p>
+                </div>
+                <div class="flow-icon">
+                    <img src="../../images/pay.png" alt="">
+                </div>
+                <div class="flow-content am-flexbox-item">
+                    <p class="f-transAmount f-trans-blue">-2.00</p>
+                    <p class="flow-remark">消费消费极大发</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <link rel="import" href="../footer.html?__inline">
+    <script>
+        require(['app/controller/user/RMBAccount']);
+    </script>
+</body>
+
+</html>

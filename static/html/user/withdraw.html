@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <link rel="import" href="../head.html?__inline">
+    <title>提现</title>
+    <!--SCRIPT_PLACEHOLDER-->
+</head>
+
+<body>
+    <div class="recharge-wrapper withdraw-wrapper">
+        <div class="withdraw-list">
+            <div class="withdraw-item am-flexbox am-flexbox-justify-between">
+                <div class="am-flexbox am-flexbox-item">
+                    <span>银行卡</span>
+                    <select class="bank-select am-flexbox-item" name="" id="">
+                        <option value="1">招商银行储蓄卡</option>
+                    </select>
+                </div>
+                <i class="right-arrow"></i>
+            </div>
+        </div>
+        <div class="am-whitespace-sm"></div>
+        <div class="recharge-top">
+            <div class="title">提现金额</div>
+            <div class="amount">
+                <div class="am-flexbox">
+                    <span>¥</span>
+                    <input type="password" placeholder="请输入提现金额">
+                </div>
+            </div>
+            <div class="remain">可提现金额<span>200.00</span>元</div>
+            <div class="fee">
+                本次提现手续费<span>10元</span>
+            </div>
+        </div>
+        <div class="am-whitespace-sm"></div>
+        <div class="withdraw-list">
+            <div class="withdraw-item am-flexbox am-flexbox-justify-between">
+                <div class="am-flexbox am-flexbox-item">
+                    <span>支付密码</span>
+                    <input placeholder="请输入密码" type="password" class="withdraw-input am-flexbox-item"/>
+                </div>
+            </div>
+        </div>
+        <div class="recharge-btn">
+            <button class="am-button am-button-primary">提现</button>
+        </div>
+        <div class="withdraw-rules">
+            <p>提现规则：</p>
+            <p>1、每月最大提现次数100次</p>
+            <p>2、提现金额必须是5的倍数，单笔最高50000元</p>
+            <p>3、T+1到账</p>
+        </div>
+    </div>
+    <link rel="import" href="../footer.html?__inline">
+    <script>
+        require(['app/controller/user/Withdraw']);
+    </script>
+</body>
+
+</html>

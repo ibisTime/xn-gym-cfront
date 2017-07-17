@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <link rel="import" href="../head.html?__inline">
+    <title>订单详情</title>
+    <!--SCRIPT_PLACEHOLDER-->
+</head>
+
+<body>
+    <div class="confirm-order-wrapper">
+        <div class="confirm-list">
+            <div class="confirm-item">
+                <div class="am-flexbox">
+                    <span class="title">订单编号</span>
+                    <div class="text">6789098873737373</div>
+                </div>
+            </div>
+            <div class="confirm-item">
+                <div class="am-flexbox">
+                    <span class="title">下单时间</span>
+                    <div class="text">2017-07-09 15:00</div>
+                </div>
+            </div>
+            <div class="confirm-item">
+                <div class="am-flexbox">
+                    <span class="title">订单状态</span>
+                    <div class="text am-flexbox-item">
+                        <span>待评价</span>
+                        <button class="am-button am-button-inline am-button-ghost am-button-small">去评价</button>
+                    </div>
+                </div>
+            </div>
+            <div class="confirm-item">
+                <div class="am-flexbox">
+                    <span class="title">上课地点</span>
+                    <div class="addr-icon text">梦想孝正天使村梦想孝正天使村梦想孝正天使村</div>
+                </div>
+            </div>
+            <div class="confirm-item">
+                <div class="am-flexbox">
+                    <span class="title">订单金额</span>
+                    <div class="text">200元</div>
+                </div>
+            </div>
+            <div class="confirm-item">
+                <div class="am-flexbox">
+                    <span class="title">违约金额</span>
+                    <div class="text amount">200元</div>
+                </div>
+            </div>
+            <div class="confirm-item">
+                <div class="am-flexbox am-flexbox-align-top">
+                    <span class="title">特别嘱咐</span>
+                    <div class="text">无</div>
+                </div>
+            </div>
+        </div>
+        <div class="confirm-btn">
+            <button type="button" class="am-button am-button-primary">确认支付</button>
+            <button type="button" class="am-button am-button-cancel">取消订单</button>
+        </div>
+    </div>
+    <link rel="import" href="../footer.html?__inline">
+    <script>
+        require(['app/controller/user/CoachOrder']);
+    </script>
+</body>
+
+</html>
