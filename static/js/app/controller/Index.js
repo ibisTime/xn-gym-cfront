@@ -4,8 +4,10 @@ define([
     'app/module/weixin',
     'app/interface/GeneralCtr',
     'app/interface/CoachCtr',
-    'swiper'
-], function(base, Foot, weixin, GeneralCtr, CoachCtr, Swiper) {
+    'app/interface/ActivityCtr',
+    'swiper',
+    'app/util/handlebarsHelpers'
+], function(base, Foot, weixin, GeneralCtr, CoachCtr, ActivityCtr, Swiper, Handlebars) {
     init();
     function init(){
         Foot.addFoot(0);
@@ -13,7 +15,8 @@ define([
     	$.when(
     		getBanner(),
     		getNotice(),
-            getPageCoach()
+            getPageCoach(),
+            getPageActivities()
     	).then(base.hideLoading);
     	addListener();
         // weixin.initShare({
@@ -54,10 +57,25 @@ define([
         return CoachCtr.getPageCoach({
             start: 1,
             limit: 10
-        }).then((data) => {
+        }, refresh).then((data) => {
             console.log(data);
         })
     }
+    // 分页查询活动
+    function getPageActivities(refresh) {
+        var _tmpl = __inline('../ui/index_activity.handlebars');
+        return ActivityCtr.getPageActivities({
+            start: 1,
+            limit: 10
+        }, refresh).then((data) => {
+            if(data.list.length) {
+                $("#actContent").html(_tmpl({items: data.list}));
+            } else {
+                $("#actContent").html('<div class="no-data">暂无活动</div>')
+            }
+        });
+    }
+
     //banner图
     function getBanner(){
         return GeneralCtr.getBanner()

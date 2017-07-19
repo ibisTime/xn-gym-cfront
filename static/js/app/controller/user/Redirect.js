@@ -8,10 +8,6 @@ define([
 
     var mobile = base.getUrlParam("m") || "";
     var smsCaptcha = base.getUrlParam("s") || "";
-    var userReferee = sessionStorage.getItem("userReferee") || "";
-    if (userReferee == "") {
-        userReferee = SYSTEM_USERID
-    }
 
     init();
 
@@ -28,11 +24,10 @@ define([
                 code,
                 mobile,
                 smsCaptcha,
-                userReferee,
                 companyCode: SYSTEM_CODE
             });
         } else { // 已登陆
-            location.href = "/index.htm";
+            location.href = "../index.html";
         }
     }
     // 获取appId并跳转到微信登录页面
@@ -42,7 +37,7 @@ define([
                 base.hideLoading();
                 if (data.length) {
                     var appid = data[0].password;
-                    var redirect_uri = encodeURIComponent(base.getDomain() + "/user/redirect.htm?m=" + mobile + "&s=" + smsCaptcha);
+                    var redirect_uri = encodeURIComponent(base.getDomain() + "/user/redirect.html?m=" + mobile + "&s=" + smsCaptcha);
                     location.replace("https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appid + "&redirect_uri=" + redirect_uri + "&response_type=code&scope=snsapi_userinfo#wechat_redirect");
                 } else {
                     base.showMsg("非常抱歉，appId获取失败");
@@ -68,7 +63,7 @@ define([
                     sessionStorage.removeItem("l-return");
                     location.href = returnFistUrl;
                 } else {
-                    location.href = "../index.htm"
+                    location.href = "../index.html"
                 }
             }
         }, function() {

@@ -1,28 +1,45 @@
-define([
-    'Handlebars'
-], function(Handlebars) {
-    Handlebars.registerHelper('formatNumber', function(num, places, times, pre, options){
-        if (typeof num == 'undefined') {
-            num = '--';
+define(['Handlebars'], function(Handlebars) {
+    Handlebars.registerHelper('formatMoney', function(num, options) {
+        if (!num && num !== 0)
+            return "--";
+        num = +num / 1000;
+        num = (num + "").replace(/^(\d+\.\d\d)\d*/i, "$1");
+        return (+ num).toFixed(2);
+    });
+    Handlebars.registerHelper('formatImage', function(pic, isAvatar, options) {
+        if (!pic)
+            return "";
+        pic = pic.split(/\|\|/)[0];
+        if (/^http/.test(pic)) {
+            return pic;
         }
-        if (typeof num != 'number') {
-            return num;
-        }
-        num = +(num || 0) * times;
-        return (pre && num > 0 ? '+' : '') + num.toFixed(places);
+        return PIC_PREFIX + pic;
+    });
+    Handlebars.registerHelper('formatDateTime', function(date, options) {
+        if (!date)
+            return "--";
+        return new Date(date).format("yyyy-MM-dd hh:mm:ss");
+    });
+    Handlebars.registerHelper('formatDateTime1', function(date, options) {
+        if (!date)
+            return "--";
+        return new Date(date).format("yyyy-MM-dd hh:mm");
+    });
+    Handlebars.registerHelper('formatDate', function(date, options) {
+        if (!date)
+            return "--";
+        return new Date(date).format("yyyy-MM-dd");
+    });
+    Handlebars.registerHelper('formateTime', function(date, options) {
+        if (!date)
+            return "--";
+        return new Date(date).format("hh:mm");
+    });
+    Handlebars.registerHelper('clearTag', function(des, options) {
+        return des && des.replace(/(\<[^\>]+\>)|(\<\/[^\>]+\>)|(\<[^\/\>]+\/\>)/ig, "") || "";
     });
 
-    Handlebars.registerHelper('compare', function(v1, v2, res1, res2, res3, options){
-        if (v1 > v2) {
-            return res1;
-        } else if (v1 = v2) {
-            return res2;
-        } else {
-            return res3;
-        }
-    });
-
-    Handlebars.registerHelper('safeString', function(text, options){
+    Handlebars.registerHelper('safeString', function(text, options) {
         return new Handlebars.SafeString(text);
     });
 
