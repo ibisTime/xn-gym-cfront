@@ -20,26 +20,17 @@
     </header>
     <div class="course-content">
         <div class="course-name-info coach-name-info am-flexbox">
-            <h1>陈某某</h1>
-            <div class="hot-stars">
-                <i class="hot-star active"></i>
-                <i class="hot-star active"></i>
-                <i class="hot-star active"></i>
-                <i class="hot-star active"></i>
+            <h1 id="realName"></h1>
+            <div class="hot-stars" id="hotStars">
                 <i class="hot-star"></i>
-                <span>四星私教</span>
+                <i class="hot-star"></i>
+                <i class="hot-star"></i>
+                <i class="hot-star"></i>
+                <i class="hot-star"></i>
+                <span id="gender"></span>
             </div>
         </div>
-        <div class="course-time coach-time">
-            <span>15:00-16:00</span>
-            <span>巨石</span>
-        </div>
-        <div class="hot-tips">
-            <span class="hot-tip hot-tip0">帅哥</span>
-            <span class="hot-tip hot-tip1">拳击</span>
-            <span class="hot-tip hot-tip2">猛男</span>
-            <span class="hot-tip hot-tip0">有型</span>
-        </div>
+        <div class="hot-tips" id="hotTips"></div>
     </div>
     <div class="am-whitespace-sm"></div>
     <div class="detail-header">
@@ -47,7 +38,7 @@
             <span>图文详情</span>
         </div>
     </div>
-    <div class="detail-description"></div>
+    <div class="detail-description" id="description"></div>
     <div class="am-whitespace-sm"></div>
     <a class="detail-header comment-header">
         <div class="am-flexbox am-flexbox-justify-between">
@@ -126,15 +117,12 @@
     <div class="am-whitespace-xl"></div>
     <div class="am-whitespace-sm"></div>
     <footer class="normal-footer">
-        <span class="foot-label">金额：</span>
-        <span class="foot-unit">¥</span>
-        <span class="foot-price">2340</span>
-        <a href="" class="am-button am-button-primary fr">预约</a>
+        <button class="am-button am-button-primary wp100" id="buy">预约</button>
     </footer>
 
     <link rel="import" href="../footer.html?__inline">
     <script>
-        require(['app/controller/course/CourseDetail']);
+        require(['app/controller/course/CoachDetail']);
     </script>
 </body>
 

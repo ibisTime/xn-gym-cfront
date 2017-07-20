@@ -8,20 +8,12 @@
 </head>
 
 <body>
-    <ul class="notice-wrapper">
-        <li class="notice-item">
-            <div class="am-flexbox am-flexbox-align-top">
-                <div class="img"><img src="../../images/notice1.png"/></div>
-                <div class="notice-content am-flexbox-item">
-                    <div class="title">公告标题</div>
-                    <div class="publish-date">2016-01-22 12:33</div>
-                    <div class="desc">
-                        公告内容公告内容公告内容公告内容公告内容公告内容公告内容公告内容公告内容公告内容公告内容公告内容
-                    </div>
-                </div>
-            </div>
-        </li>
-    </ul>
+    <ul class="notice-wrapper" id="content"></ul>
+    <div id="loadingWrap" class="loading-item hidden"><i class="global-loading-icon1"></i><span>加载中...</span></div>
+    <div id="loadAll" class="load-all hidden">
+        <img src="../../images/end.png">
+        <span>已经全部加载完毕</span>
+    </div>
     <link rel="import" href="../footer.html?__inline">
     <script>
         require(['app/controller/notice/Notice']);

@@ -180,7 +180,7 @@ define([
             if (!/^http/i.test(pic)) {
                 var suffix = no_suffix
                     ? ""
-                    : '?imageMogr2/auto-orient/thumbnail/!100x100r';
+                    : '?imageMogr2/auto-orient';
                 pic = PIC_PREFIX + pic + suffix;
             }
             return pic

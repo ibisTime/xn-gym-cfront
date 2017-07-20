@@ -99,6 +99,10 @@ ul {
     outline: none;
 }
 
+select {
+    background: transparent;
+}
+
 body {
     font-size: 0.28rem;
     position: relative;
@@ -421,6 +425,26 @@ textarea {
     background-size: 20px;
     vertical-align: middle;
     margin-right: 4px;
+}
+.loading-item {
+    height: 0.8rem;
+    line-height: 0.8rem;
+    text-align: center;
+
+    span {
+        display: inline-block;
+        margin-left: 0.1rem;
+        vertical-align: middle;
+    }
+}
+.global-loading-icon1 {
+    background: url('../images/loading.png') no-repeat;
+    animation: loadingCircle 1.2s infinite linear;
+    display: inline-block;
+    width: 0.4rem;
+    height: 0.4rem;
+    background-size: 0.4rem;
+    vertical-align: middle;
 }
 // flex样式
 

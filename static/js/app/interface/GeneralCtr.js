@@ -30,20 +30,22 @@ define([
                 toCurrency
             });
         },
-        // 分页查询系统公告
-        getPageSysNotice(start, limit, refresh) {
+        /**
+         * 分页查询系统公告
+         * @param config {start, limit}
+         */
+        getPageSysNotice(config, refresh) {
             return Ajax.get("804040", {
-                start,
-                limit,
                 "pushType": 41,
                 "toKind": 1,
                 "channelType": 4,
                 "status": 1,
-                "fromSystemCode": SYSTEM_CODE
+                "fromSystemCode": SYSTEM_CODE,
+                ...config
             }, refresh);
         },
         // 查询数据字典列表
-        getDictList(parentKey, code = "808907"){
+        getDictList(parentKey, code = "807706"){
             return Ajax.get(code, {parentKey});
         },
         // 查询系统参数

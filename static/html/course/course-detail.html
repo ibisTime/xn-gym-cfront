@@ -10,35 +10,26 @@
 <body>
     <header class="course-swiper-wrap">
         <div id="swiper-container" class="swiper-container hp100">
-            <div id="top-swiper" class="swiper-wrapper">
-                <div class="swiper-slide">
-                    <img class="wp100 hp100" src="../images/banner首页@2x.png">
-                </div>
-            </div>
+            <div id="top-swiper" class="swiper-wrapper"></div>
             <div class="swiper-pagination"></div>
         </div>
     </header>
     <div class="course-content">
         <div class="course-name-info am-flexbox am-flexbox-justify-between">
-            <h1>动感单车</h1>
-            <div class="remain-number">还剩7人</div>
+            <h1 id="name"></h1>
+            <div class="remain-number">还剩<span id="remainNum"></span>人</div>
         </div>
         <div class="course-time">
-            <span>15:00-16:00</span>
-            <span>巨石</span>
+            <span id="datetime"></span>
+            <span id="realName"></span>
         </div>
         <div class="am-flexbox course-item">
             <div class="course-addr am-flexbox-item">
-                <span>杭州市下城区体育场路333号1层(近武林广场)</span>
+                <span id="address"></span>
             </div>
             <i class="right-arrow"></i>
         </div>
-        <div class="am-flexbox course-item none-border">
-            <a class="course-tel am-flexbox-item">
-                <span>0571-88888888</span>
-            </a>
-            <i class="right-arrow"></i>
-        </div>
+        <div class="am-flexbox course-item none-border" id="contact"></div>
     </div>
     <div class="am-whitespace-sm"></div>
     <div class="detail-header">
@@ -46,7 +37,7 @@
             <span>图文详情</span>
         </div>
     </div>
-    <div class="detail-description"></div>
+    <div class="detail-description" id="description"></div>
     <div class="am-whitespace-sm"></div>
     <a class="detail-header comment-header">
         <div class="am-flexbox am-flexbox-justify-between">
@@ -83,55 +74,18 @@
             </div>
             <div class="comment-cont">来这里看一场演唱会，预见济州岛的就，山的红，偶来</div>
         </div>
-        <div class="comment-item">
-            <div class="commer-info am-flexbox">
-                <div class="commer-avatar">
-                    <img src="../../images/avatar.png"/>
-                </div>
-                <div class="commer-ext">
-                    <h1>小小</h1>
-                    <div class="hot-stars">
-                        <i class="hot-star active"></i>
-                        <i class="hot-star active"></i>
-                        <i class="hot-star active"></i>
-                        <i class="hot-star active"></i>
-                        <i class="hot-star"></i>
-                        <span>2017-01-01</span>
-                    </div>
-                </div>
-            </div>
-            <div class="comment-cont">来这里看一场演唱会，预见济州岛的就，山的红，偶来</div>
-        </div>
-        <div class="comment-item">
-            <div class="commer-info am-flexbox">
-                <div class="commer-avatar">
-                    <img src="../../images/avatar.png"/>
-                </div>
-                <div class="commer-ext">
-                    <h1>小小</h1>
-                    <div class="hot-stars">
-                        <i class="hot-star active"></i>
-                        <i class="hot-star active"></i>
-                        <i class="hot-star active"></i>
-                        <i class="hot-star active"></i>
-                        <i class="hot-star"></i>
-                        <span>2017-01-01</span>
-                    </div>
-                </div>
-            </div>
-            <div class="comment-cont">来这里看一场演唱会，预见济州岛的就，山的红，偶来</div>
-        </div>
     </div>
     <div class="am-whitespace-xl"></div>
     <div class="am-whitespace-sm"></div>
     <footer class="normal-footer">
         <span class="foot-label">金额：</span>
         <span class="foot-unit">¥</span>
-        <span class="foot-price">2340</span>
-        <a href="" class="am-button am-button-primary fr">购买</a>
+        <span class="foot-price" id="price"></span>
+        <button class="am-button am-button-primary fr" id="buy">购买</button>
     </footer>
 
     <link rel="import" href="../footer.html?__inline">
+    <script src="//api.map.baidu.com/api?v=2.0&ak=GtNrG008U04GONzKSDHiW70GxurUUhlU&s=1"></script>
     <script>
         require(['app/controller/course/CourseDetail']);
     </script>

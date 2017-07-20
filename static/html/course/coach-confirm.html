@@ -18,19 +18,15 @@
             <div class="confirm-item">
                 <div class="am-flexbox">
                     <span class="title">上课时间</span>
-                    <div class="text" id="skStartDatetime"></div>
+                    <select class="text" id="perCourseCode" name="perCourseCode"></select>
                 </div>
             </div>
             <div class="confirm-item">
                 <div class="am-flexbox">
                     <span class="title">上课地点</span>
-                    <div class="addr-icon text" id="address"></div>
-                </div>
-            </div>
-            <div class="confirm-item">
-                <div class="am-flexbox">
-                    <span class="title">剩余人数</span>
-                    <div class="text" id="remainNum"></div>
+                    <div class="text over-addr" id="addrWrap">请输入上课地点</div>
+                    <input type="text" id="address" name="address" class="text v-hide"/>
+                    <i class="right-arrow"></i>
                 </div>
             </div>
             <div class="confirm-item">
@@ -71,7 +67,7 @@
     <link rel="import" href="../footer.html?__inline">
     <script src="//api.map.baidu.com/api?v=2.0&ak=GtNrG008U04GONzKSDHiW70GxurUUhlU&s=1"></script>
     <script>
-        require(['app/controller/course/CourseConfirm']);
+        require(['app/controller/course/CoachConfirm']);
     </script>
 </body>
 

@@ -1,5 +1,13 @@
+@import "./mixin";
+label.error {
+    position: absolute;
+    right: 0.3rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.28rem;
+    color: #ff0200;
+}
 // Swiper
-
 .swiper-pagination-bullet.swiper-pagination-bullet-active {
     background: #ffa11b;
 }
@@ -174,17 +182,21 @@
 
             .hot-item-cont {
                 h1 {
-                    font-size: 0.3rem;
                     padding-top: 0.2rem;
-                    padding-bottom: 0.1rem;
+                    font-size: 0.3rem;
                 }
 
                 .hot-item-time {
-                    font-size: 0.24rem;
+                    padding-top: 0.2rem;
                     padding-bottom: 0.1rem;
+                    font-size: 0.28rem;
+
+                    .hot-time {
+                        font-size: 0.3rem;
+                    }
 
                     .hot-course-title {
-                        padding-left: 0.48rem;
+                        float: right;
                     }
                 }
 
@@ -707,6 +719,10 @@
     border-top: 1px solid #eee;
     padding: 0.3rem;
     background: #fff;
+
+    img {
+        max-width: 100%;
+    }
 }
 
 .comment-header {
@@ -1047,10 +1063,10 @@
         }
 
         .pay-type-list {
-            padding-left: 0.3rem;
 
             .pay-item {
-                padding: 0.25rem 0.3rem 0.25rem 0;
+                padding: 0.25rem 0.3rem;
+                border-bottom: 1px solid #eee;
                 font-size: 0;
 
                 span {
@@ -1060,18 +1076,34 @@
                     vertical-align: middle;
                 }
 
-                .wx-icon {
-                    width: 0.5rem;
-                    height: 0.5rem;
-                    vertical-align: middle;
-                }
-
                 .chose-icon {
                     width: 0.4rem;
                     height: 0.4rem;
                     margin-top: 0.05rem;
-                    vertical-align: middle;
                     float: right;
+                    background-repeat: no-repeat;
+                    background-size: 0.4rem 0.4rem;
+                    @include bg-image('un-select');
+                }
+
+                &.active .chose-icon {
+                    @include bg-image('selected');
+                }
+
+                .icon-title {
+                    display: inline-block;
+                    vertical-align: middle;
+                    width: 0.5rem;
+                    height: 0.5rem;
+                    background-repeat: no-repeat;
+                    background-size: 0.5rem 0.5rem;
+
+                    &.icon-re {
+                        @include bg-image('re-amount');
+                    }
+                    &.icon-wx {
+                        @include bg-image('weixin');
+                    }
                 }
             }
         }
@@ -1180,6 +1212,7 @@
         .confirm-item {
             padding: 0.3rem;
             border-bottom: 1px solid #eee;
+            position: relative;
 
             &:last-child {
                 border-bottom: none;
@@ -1194,6 +1227,11 @@
             .text {
                 font-size: 0.3rem;
                 color: #333;
+                flex: 1;
+
+                &.v-hide {
+                    visibility: hidden;
+                }
 
                 &.amount {
                     color: #ff0200;
@@ -1220,6 +1258,18 @@
                         margin-left: 1.35rem;
                     }
                 }
+            }
+
+            .right-arrow {
+                height: 1em;
+            }
+
+            .over-addr {
+                position: absolute;
+                left: 0;
+                padding-left: 2.06rem;
+                padding-right: 0.6rem;
+                width: 100%;
             }
         }
     }
