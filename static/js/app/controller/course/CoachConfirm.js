@@ -1,16 +1,26 @@
 define([
     'app/controller/base',
-    'app/module/weixin',
     'app/interface/CoachCtr',
+    'app/interface/GeneralCtr',
     'app/module/validate',
     'app/module/searchMap'
-], function(base, weixin, CoachCtr, Validate, searchMap) {
+], function(base, CoachCtr, GeneralCtr, Validate, searchMap) {
     var code = base.getUrlParam("code");
 
     init();
     function init(){
         base.showLoading();
-        getCoach().then(base.hideLoading);
+        $.when(
+            getCoach(),
+            getRate()
+        ).then(base.hideLoading);
+    }
+    // 获取违约金比率
+    function getRate() {
+        return GeneralCtr.getBizSysConfig("WY")
+            .then((data) => {
+                $("#rate").text(+data.cvalue * 100 + "%");
+            });
     }
     // 获取私教详情
     function getCoach() {

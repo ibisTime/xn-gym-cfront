@@ -2,9 +2,10 @@ define([
     'app/controller/base',
     'app/interface/CourseCtr',
     'app/interface/CoachCtr',
+    'app/interface/ActivityCtr',
     'app/module/weixin'
-], function(base, CourseCtr, CoachCtr, weixin) {
-    const COURSE_ORDER = "course", COACH_ORDER = "coach";
+], function(base, CourseCtr, CoachCtr, ActivityCtr, weixin) {
+    const COURSE_ORDER = "course", COACH_ORDER = "coach", ACTIVITY_ORDER = "activity";
     const BALANCE_PAY = 0, WX_PAY = 1;
     var code = base.getUrlParam("code"),
         type = base.getUrlParam("type"),
@@ -22,6 +23,8 @@ define([
                 getCourseOrder();
             } else if(type == COACH_ORDER) {
                 getCoachOrder();
+            } else if(type == ACTIVITY_ORDER) {
+                getActivityOrder();
             }
             addListener();
         }
@@ -34,7 +37,7 @@ define([
                 $("#price").text(base.formatMoney(data.amount));
             });
     }
-    //
+    // 详情查询私教订单
     function getCoachOrder() {
         CoachCtr.getOrder(code)
             .then((data) => {
@@ -42,9 +45,16 @@ define([
                 $("#price").text(base.formatMoney(data.amount));
             });
     }
-
+    // 详情查询活动订单
+    function getActivityOrder() {
+        ActivityCtr.getOrder(code)
+            .then((data) => {
+                base.hideLoading();
+                $("#price").text(base.formatMoney(data.amount));
+            });
+    }
     function addListener() {
-        $("#payType").on(".pay-item", "click", function() {
+        $("#payType").on("click", ".pay-item", function() {
             var _me = $(this);
             if(!_me.hasClass("active")) {
                 _me.addClass("active").siblings(".active").removeClass("active");
@@ -53,8 +63,7 @@ define([
         });
         $("#payBtn").on("click", function(){
             base.showLoading("支付中...");
-            // 余额支付
-            if(pay_type == BALANCE_PAY) {
+            if(pay_type == BALANCE_PAY) {   // 余额支付
                 payByBalance();
             } else if(pay_type == WX_PAY) {   //微信支付
                 payByWx();
@@ -62,20 +71,22 @@ define([
         });
     }
     function payByBalance() {
-        // 课程订单
-        if(type == COURSE_ORDER) {
+        if(type == COURSE_ORDER) {  // 课程订单
             payCourseOrder(code, 1);
-        } else if(type == COACH_ORDER) {   //私教订单
+        } else if(type == COACH_ORDER) {   // 私教订单
             payCoachOrder(code, 1);
+        } else if(type == ACTIVITY_ORDER) { // 活动订单
+            payActivityOrder(code, 1);
         }
 
     }
     function payByWx() {
-        // 课程订单
-        if(type == COURSE_ORDER) {
+        if(type == COURSE_ORDER) {  // 课程订单
             payCourseOrder(code, 5);
         } else if(type == COACH_ORDER){    //私教订单
             payCoachOrder(code, 5);
+        } else if(type == ACTIVITY_ORDER) { // 活动订单
+            payActivityOrder(code, 5);
         }
     }
     // 支付课程订单
@@ -96,6 +107,21 @@ define([
     // 支付私教订单
     function payCoachOrder(code, payType) {
         CoachCtr.payOrder(code, payType)
+            .then((data) => {
+                if(pay_type == WX_PAY) {
+                    wxPay(data);
+                } else {
+                    base.hideLoading();
+                    base.showMsg("支付成功");
+                    setTimeout(() => {
+                        location.href = "../user/user.html";
+                    }, 500);
+                }
+            });
+    }
+    // 支付活动订单
+    function payActivityOrder(code, payType) {
+        ActivityCtr.payOrder(code, payType)
             .then((data) => {
                 if(pay_type == WX_PAY) {
                     wxPay(data);

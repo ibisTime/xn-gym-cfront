@@ -8,32 +8,10 @@
 </head>
 
 <body>
-    <div class="member-list">
-        <div class="member-item">
-            <div class="am-flexbox">
-                <div class="member-avatar">
-                    <img src="../../images/avatar.png"/>
-                </div>
-                <div class="member-info">
-                    <div class="member-phone">19999998888</div>
-                    <div class="member-time">加入时间：2016-11-09-14:30</div>
-                </div>
-            </div>
-        </div>
-        <div class="member-item">
-            <div class="am-flexbox">
-                <div class="member-avatar">
-                    <img src="../../images/avatar.png"/>
-                </div>
-                <div class="member-info">
-                    <div class="member-phone">19999998888</div>
-                    <div class="member-time">加入时间：2016-11-09-14:30</div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="load-all">
-        <img src="../../images/end.png"/>
+    <div class="member-list" id="content"></div>
+    <div id="loadingWrap" class="loading-item hidden"><i class="global-loading-icon1"></i><span>加载中...</span></div>
+    <div id="loadAll" class="load-all hidden">
+        <img src="../../images/end.png">
         <span>已经全部加载完毕</span>
     </div>
     <link rel="import" href="../footer.html?__inline">

@@ -33,20 +33,20 @@
             </div>
             <div class="confirm-item">
                 <div class="am-flexbox">
-                    <span class="title">上课地点</span>
-                    <div class="addr-icon text" id="address"></div>
+                    <span class="title">开始时间</span>
+                    <div class="text" id="activityBeginDatetime"></div>
                 </div>
             </div>
             <div class="confirm-item">
                 <div class="am-flexbox">
-                    <span class="title">上课时间</span>
-                    <div class="text" id="datetime"></div>
+                    <span class="title">结束时间</span>
+                    <div class="text" id="activityEndDatetime"></div>
                 </div>
             </div>
             <div class="confirm-item">
                 <div class="am-flexbox">
-                    <span class="title">教练姓名</span>
-                    <div class="text" id="coachRealName"></div>
+                    <span class="title">报名人数</span>
+                    <div class="text" id="quantity"></div>
                 </div>
             </div>
             <div class="confirm-item">
@@ -74,9 +74,8 @@
         </div>
     </div>
     <link rel="import" href="../footer.html?__inline">
-    <script src="//api.map.baidu.com/api?v=2.0&ak=GtNrG008U04GONzKSDHiW70GxurUUhlU&s=1"></script>
     <script>
-        require(['app/controller/user/CoachOrder']);
+        require(['app/controller/user/ActivityOrder']);
     </script>
 </body>
 

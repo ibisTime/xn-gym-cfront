@@ -10,17 +10,16 @@
 <body>
     <header class="course-swiper-wrap">
         <div id="swiper-container" class="swiper-container hp100">
-            <div id="top-swiper" class="swiper-wrapper">
-                <div class="swiper-slide">
-                    <img class="wp100 hp100" src="../images/banner首页@2x.png">
-                </div>
-            </div>
+            <div id="top-swiper" class="swiper-wrapper"></div>
             <div class="swiper-pagination"></div>
         </div>
     </header>
     <div class="course-content">
         <div class="course-name-info">
-            <h1>动感单车</h1>
+            <h1 id="title"></h1>
+        </div>
+        <div class="course-time pb">
+            <span id="datetime"></span>
         </div>
     </div>
     <div class="am-whitespace-sm"></div>
@@ -29,17 +28,17 @@
             <span>活动详情</span>
         </div>
     </div>
-    <div class="detail-description"></div>
+    <div class="detail-description" id="description"></div>
     <footer class="normal-footer">
         <span class="foot-label">金额：</span>
         <span class="foot-unit">¥</span>
-        <span class="foot-price">2340</span>
-        <a href="" class="am-button am-button-primary fr">购买</a>
+        <span class="foot-price" id="amount"></span>
+        <button id="buyBtn" class="am-button am-button-primary fr">购买</button>
     </footer>
 
     <link rel="import" href="../footer.html?__inline">
     <script>
-        require(['app/controller/course/CourseDetail']);
+        require(['app/controller/notice/Activity']);
     </script>
 </body>
 

@@ -41,6 +41,23 @@ define([
                 ...config
             });
         },
+        // 取消订单
+        cancelOrder(orderCode) {
+            return Ajax.post("622125", {
+                orderCode,
+                updater: base.getUserId()
+            });
+        },
+        /**
+         * 分页查询私教订单
+         * @param config {start, limit, status}
+         */
+        getPageOrders(config, refresh) {
+            return Ajax.get("622130", {
+                applyUser:  base.getUserId(),
+                ...config
+            }, refresh);
+        },
         // 详情查询私课订单
         getOrder(code, refresh) {
             return Ajax.get("622131", {code}, refresh);

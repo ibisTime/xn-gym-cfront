@@ -3,10 +3,9 @@ define([
     'app/util/ajax'
 ], function(base, Ajax) {
     return {
-        // 微信登录
-        /*
+        /**
          * 微信登录
-         * config: {code,mobile?,smsCaptcha?,userReferee}
+         * @param config: {code,mobile?,smsCaptcha?,userReferee}
          */
         wxLogin(config) {
             return Ajax.post("805151", config);
@@ -15,6 +14,16 @@ define([
         getUser(refresh) {
             return Ajax.get("805056", {
                 "userId": base.getUserId()
+            }, refresh);
+        },
+        /**
+         * 分页查询货客
+         * @param config: {code,mobile?,smsCaptcha?,userReferee}
+         */
+        getPageChildren(config, refresh) {
+            return Ajax.get("805054", {
+                userReferee: base.getUserId(),
+                ...config
             }, refresh);
         },
         // 绑定手机号
@@ -41,46 +50,6 @@ define([
                 smsCaptcha,
                 userId: base.getUserId()
             });
-        },
-        // 详情查询地址
-        getAddress(code, refresh) {
-            return Ajax.get("805166", {code}, refresh);
-        },
-        // 查询地址列表
-        getAddressList() {
-            return Ajax.post("805165", {
-                userId: base.getUserId(),
-                isDefault: ""
-            });
-        },
-        // 新增或修改地址
-        addOrEditAddr(config) {
-            return config.code ? this.editAddress(config) : this.addAddress(config);
-        },
-        // 修改地址
-        editAddress(config) {
-            return Ajax.post("805162", {
-                userId: base.getUserId(),
-                ...config
-            });
-        },
-        // 新增地址
-        addAddress(config) {
-            return Ajax.post("805160", {
-                userId: base.getUserId(),
-                ...config
-            });
-        },
-        // 设置为默认地址
-        setDefaultAddr(code) {
-            return Ajax.post("805163", {
-                code,
-                userId: base.getUserId()
-            });
-        },
-        // 删除地址
-        deleteAddress(code) {
-            return Ajax.post("805161", {code});
         },
         // 详情查询银行卡
         getBankCard(code) {

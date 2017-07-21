@@ -474,9 +474,21 @@ label.error {
         .flow-icon {
             margin: 0 0.38rem;
 
-            img {
+            i {
+                display: inline-block;
                 width: 0.72rem;
                 height: 0.72rem;
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: 0.72rem 0.72rem;
+
+                &.receive-icon {
+                    @include bg-image('receive');
+                }
+
+                &.pay-icon {
+                    @include bg-image('pay');
+                }
             }
         }
 
@@ -528,6 +540,7 @@ label.error {
             }
 
             .order-item-cont {
+                position: relative;
                 border-top: 1px solid #eee;
                 padding: 0.2rem 0.3rem;
                 width: 100%;
@@ -576,13 +589,16 @@ label.error {
                     }
                 }
 
-                .order-addr {
+                .order-addr, .order-desc {
                     font-size: 0.22rem;
                     color: #999;
+                    line-height: 1.2;
+                }
+
+                .order-addr {
                     background: url("../images/addr.png") no-repeat left center;
                     background-size: 0.18rem;
                     padding-left: 0.28rem;
-                    line-height: 1.2;
                     width: 100%;
 
                     span {
@@ -592,6 +608,9 @@ label.error {
                 }
 
                 .order-status {
+                    position: absolute;
+                    top: 0.2rem;
+                    right: 0.3rem;
                     font-size: 0.24rem;
                     color: #ff0200;
                 }
@@ -611,6 +630,10 @@ label.error {
                     line-height: 0.6rem;
                     float: right;
                     margin-top: 0.12rem;
+
+                    &+.am-button {
+                        margin-right: 0.2rem;
+                    }
                 }
             }
         }
@@ -663,6 +686,10 @@ label.error {
 
     .course-time {
         font-size: 0.28rem;
+
+        &.pb {
+            padding-bottom: 0.2rem;
+        }
 
         &.coach-time {
             padding-bottom: 0.1rem;
@@ -840,9 +867,11 @@ label.error {
         }
 
         .member-avatar {
+            margin-right: 0.2rem;
+            border-radius: 50%;
+            overflow: hidden;
             width: 0.9rem;
             height: 0.9rem;
-            margin-right: 0.2rem;
 
             img {
                 width: 100%;
@@ -984,6 +1013,11 @@ label.error {
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
+
+        img {
+            width: 100%;
+            height: 100%;
+        }
     }
 
     .invite-title {
@@ -1027,6 +1061,7 @@ label.error {
 
 .recharge-wrapper {
     .recharge-top {
+        position: relative;
         padding: 0 0.3rem 0.08rem;
         background: #fff;
 
@@ -1358,4 +1393,8 @@ label.error {
 .no-data {
     line-height: 1rem;
     text-align: center;
+}
+
+.detail-description1 {
+    padding: 0.3rem;
 }

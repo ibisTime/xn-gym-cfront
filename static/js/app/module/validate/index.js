@@ -145,4 +145,7 @@
         }
         return true;
     }
+    $.validator.addMethod("amount", function(value, element) {
+        return /^\d+(\.\d{1,2})?$/.test(value);
+    }, '金额最多有两位小数');
 });

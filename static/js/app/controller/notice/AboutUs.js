@@ -6,10 +6,9 @@ define([
 
 	function init(){
         base.showLoading();
-		GeneralCtr.getSysConfig("aboutus")
+		GeneralCtr.getUserSysConfig("aboutus")
 			.then(function(data){
-			 	$("#title").html(data.cvalue);
-			 	$("#content").html(data.note);
+			 	$("#description").html(data.note);
 			 	base.hideLoading();
 			});
 	}

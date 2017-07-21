@@ -1,12 +1,104 @@
 define([
     'app/controller/base',
-    'app/interface/GeneralCtr'
-], function(base, GeneralCtr) {
+    'app/interface/CourseCtr'
+], function(base, CourseCtr) {
+    var config = {
+        start: 1,
+        limit: 10
+    }, isEnd = false, canScrolling = false;
+    var currentType = 0,
+        //status: 0 待付款，1 付款成功，2 用户取消订单，3 平台取消订单，4 退款申请，5 退款成功，6 退款失败，7待评价，8已完成
+        type2Status = {
+            "0": "0",
+            "1": "1",
+            "2": "7",
+            "3": "8"
+        };
+
     init();
     function init(){
         addListener();
+        base.showLoading();
+        getPageOrders();
     }
-
+    // 分页查询课程
+    function getPageOrders(refresh) {
+        return CourseCtr.getPageOrders({
+            status: type2Status[currentType],
+            ...config
+        }, refresh)
+            .then((data) => {
+                base.hideLoading();
+                hideLoading(currentType);
+                var lists = data.list;
+                var totalCount = +data.totalCount;
+                if (totalCount <= config.limit || lists.length < config.limit) {
+                    isEnd = true;
+                } else {
+                    isEnd = false;
+                }
+                if(data.list.length) {
+                    config.start++;
+                    var html = "";
+                    lists.forEach((item) => {
+                        html += buildHtml(item);
+                    });
+                    $("#content" + currentType).html(html);
+                    isEnd && $("#loadAll" + currentType).removeClass("hidden");
+                } else if(config.start == 1) {
+                    $("#content" + currentType).html('<div class="no-data">暂无订单</div>');
+                    $("#loadAll" + currentType).addClass("hidden");
+                } else {
+                    $("#loadAll" + currentType).removeClass("hidden");
+                }
+                !isEnd && $("#loadAll" + currentType).addClass("hidden");
+                canScrolling = true;
+            }, () => hideLoading(currentType));
+    }
+    function buildHtml(item) {
+        return `<div class="order-item">
+                    <div class="order-item-header">
+                        <span>${item.code}</span>
+                        <span class="fr">${base.formatDate(item.applyDatetime, "yyyy-MM-dd")}</span>
+                    </div>
+                    <a href="./course-order.html?code=${item.code}" class="order-item-cont">
+                        <div class="am-flexbox am-flexbox-align-top">
+                            <div class="order-img">
+                                <img src="${base.getImg(item.orgCourse.pic)}"/>
+                            </div>
+                            <div class="order-name-infos am-flexbox-item">
+                                <div class="am-flexbox am-flexbox-dir-column am-flexbox-justify-between am-flexbox-align-top">
+                                    <div>
+                                        <h1>${item.orgCourseName}</h1>
+                                        <div class="order-infos">
+                                            <span class="pdr">${base.formatDate(item.orgCourse.skStartDatetime, "hh:mm")}-${base.formatDate(item.orgCourse.skEndDatetime, "mm:hh")}</span>
+                                            <span class="pdl pdr">${item.coachRealName}</span>
+                                            <span class="pdl">剩${item.orgCourse.remainNum}人</span>
+                                        </div>
+                                    </div>
+                                    <div class="order-addr">
+                                        <span class="t-3dot">${item.orgCourse.address}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="order-status">¥${base.formatMoney(item.amount)}</div>
+                        </div>
+                    </a>
+                    ${
+                        item.status == "0" || item.status == "7"
+                            ? `<div class="order-item-footer">
+                                    ${
+                                        item.status == "0"
+                                            ? `<a class="am-button am-button-small" href="../pay/pay.html?code=${item.code}&type=course">立即支付</a>
+                                                <button class="am-button am-button-small cancel-order" data-code="${item.code}">取消订单</button>`
+                                            : `<a class="am-button am-button-small rating-order" href="./assessment.html?code=${item.code}">去评价</a>`
+                                    }
+                                </div>`
+                            : ''
+                    }
+                </div>`;
+        //status: 0 待付款，1 付款成功，2 用户取消订单，3 平台取消订单，4 退款申请，5 退款成功，6 退款失败，7待评价，8已完成
+    }
     function addListener(){
         // tabs切换事件
         var _tabsInkBar = $("#am-tabs-bar").find(".am-tabs-ink-bar"),
@@ -23,7 +115,42 @@ define([
                 });
                 _tabpanes.eq(index).removeClass("am-tabs-tabpane-inactive")
                     .siblings().addClass("am-tabs-tabpane-inactive");
+                // 当前选择查看的订单tab的index
+                currentType = index;
+                config.start = 1;
+                base.showLoading();
+                getPageOrders();
             }
         });
+
+        $("#orderWrapper").on("click", ".cancel-order", function() {
+            var orderCode = $(this).attr("data-code");
+            base.confirm("确定取消订单吗？", "取消", "确认")
+                .then(() => {
+                    CourseCtr.cancelOrder(orderCode)
+                        .then(() => {
+                            base.showMsg("取消成功");
+                            base.showLoading();
+                            config.start = 1;
+                            getPageOrders(true);
+                        });
+                }, () => {});
+        });
+
+        $(window).off("scroll").on("scroll", function() {
+            if (canScrolling && !isEnd && ($(document).height() - $(window).height() - 10 <= $(document).scrollTop())) {
+                canScrolling = false;
+                var choseIndex = $(".am-tabs-tab-active").index() - 1;
+                showLoading();
+                getPageOrders();
+            }
+        });
+    }
+    function showLoading() {
+        $("#loadingWrap" + currentType).removeClass("hidden");
+    }
+
+    function hideLoading() {
+        $("#loadingWrap" + currentType).addClass("hidden");
     }
 });

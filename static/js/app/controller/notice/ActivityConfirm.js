@@ -1,45 +1,32 @@
 define([
     'app/controller/base',
-    'app/interface/CourseCtr',
-    'app/interface/GeneralCtr',
-    'app/module/validate',
-    'app/module/showInMap'
-], function(base, CourseCtr, GeneralCtr, Validate, showInMap) {
+    'app/interface/ActivityCtr',
+    'app/module/validate'
+], function(base, ActivityCtr, Validate) {
     var code = base.getUrlParam("code"),
-        price, remainNum, address;
+        price, remainNum;
 
     init();
     function init(){
         base.showLoading();
-        $.when(
-            getCourse(),
-            getRate()
-        ).then(base.hideLoading);
+        getActivity().then(base.hideLoading);
     }
-    // 获取违约金比率
-    function getRate() {
-        return GeneralCtr.getBizSysConfig("WY")
+    // 获取活动详情
+    function getActivity() {
+        return ActivityCtr.getActivity(code)
             .then((data) => {
-                $("#rate").text(+data.cvalue * 100 + "%");
-            });
-    }
-    // 获取课程详情
-    function getCourse() {
-        return CourseCtr.getCourse(code)
-            .then((data) => {
-                price = data.price;
+                price = data.amount;
                 remainNum = data.remainNum;
-                address = data.address;
-                $("#price").html(base.formatMoney(data.price) + "元");
-                $("#skStartDatetime").html(base.formatDate(data.skStartDatetime, 'yyyy-MM-dd hh:mm'));
+                $("#title").html(data.title);
                 $("#remainNum").html(data.remainNum);
-                $("#address").html(data.address);
+                $("#price").html(base.formatMoney(data.amount) + "元");
+                $("#startDatetime").html(base.formatDate(data.startDatetime, 'yyyy-MM-dd hh:mm'));
+                $("#endDatetime").html(base.formatDate(data.endDatetime, "yyyy-MM-dd hh:mm"));
                 addListener();
             });
     }
 
     function addListener() {
-        showInMap.addMap();
         var _formWrapper = $("#formWrapper");
         _formWrapper.validate({
             'rules': {
@@ -60,14 +47,14 @@ define([
             },
             onkeyup: false
         });
-        var _price = $("#price");
+        var _amount = $("#amount");
         $("#quantity").on("keyup", function() {
             var value = this.value, amount = 0;
             if(/^\d+$/.test(value)) {
                 amount = value * price;
-                $("#amount").text(base.formatMoney(amount) + "元");
+                _amount.text(base.formatMoney(amount) + "元");
             } else {
-                $("#amount").text("--元");
+                _amount.text("--元");
             }
         });
         // 提交订单
@@ -76,10 +63,6 @@ define([
                 base.showLoading();
                 applyOrder(_formWrapper.serializeObject());
             }
-        });
-        // 点击在地图上显示地址
-        $("#address").on("click", function() {
-            showInMap.showMapByName(address);
         });
         $.validator.addMethod("ltR", function(value, element) {
             value = +value;
@@ -92,10 +75,10 @@ define([
 
     // 提交订单
     function applyOrder(param) {
-        param.orgCourseCode = code;
-        CourseCtr.applyOrder(param)
+        param.activityCode = code;
+        ActivityCtr.applyOrder(param)
             .then((data) => {
-                location.replace('../pay/pay.html?type=course&code=' + data.code);
+                location.replace('../pay/pay.html?type=activity&code=' + data.code);
             });
     }
 });

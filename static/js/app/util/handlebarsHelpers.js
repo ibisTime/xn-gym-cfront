@@ -15,6 +15,16 @@ define(['Handlebars'], function(Handlebars) {
         }
         return PIC_PREFIX + pic;
     });
+    Handlebars.registerHelper('formatAvatar', function(pic, isAvatar, options) {
+        if (!pic) {
+            return '/static/images/avatar.png';
+        }
+        pic = pic.split(/\|\|/)[0];
+        if (/^http/.test(pic)) {
+            return pic;
+        }
+        return PIC_PREFIX + pic;
+    });
     Handlebars.registerHelper('formatDateTime', function(date, options) {
         if (!date)
             return "--";

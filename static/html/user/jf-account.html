@@ -11,41 +11,15 @@
     <div class="user-top-wrap account-wrap jf-account-wrap am-flexbox am-flexbox-dir-column">
         <div class="top-infos">
             <p class="amount-tip">可用积分</p>
-            <p class="remain-amount">100.00</p>
+            <p class="remain-amount" id="amount">0.00</p>
         </div>
     </div>
     <div class="am-whitespace-sm"></div>
-    <div class="account-flow-list">
-        <div class="flow-item">
-            <div class="am-flexbox">
-                <div class="flow-datetime">
-                    <p class="f-date">15日</p>
-                    <p class="f-time">21:46</p>
-                </div>
-                <div class="flow-icon">
-                    <img src="../../images/receive.png" alt="">
-                </div>
-                <div class="flow-content am-flexbox-item">
-                    <p class="f-transAmount f-trans-red">+2.00</p>
-                    <p class="flow-remark">消费消费极大发</p>
-                </div>
-            </div>
-        </div>
-        <div class="flow-item">
-            <div class="am-flexbox">
-                <div class="flow-datetime">
-                    <p class="f-date">15日</p>
-                    <p class="f-time">21:46</p>
-                </div>
-                <div class="flow-icon">
-                    <img src="../../images/pay.png" alt="">
-                </div>
-                <div class="flow-content am-flexbox-item">
-                    <p class="f-transAmount f-trans-blue">-2.00</p>
-                    <p class="flow-remark">消费消费极大发</p>
-                </div>
-            </div>
-        </div>
+    <div class="account-flow-list" id="content"></div>
+    <div id="loadingWrap" class="loading-item hidden"><i class="global-loading-icon1"></i><span>加载中...</span></div>
+    <div id="loadAll" class="load-all hidden">
+        <img src="../../images/end.png">
+        <span>已经全部加载完毕</span>
     </div>
     <link rel="import" href="../footer.html?__inline">
     <script>

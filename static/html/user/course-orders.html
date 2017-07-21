@@ -8,7 +8,7 @@
 </head>
 
 <body>
-    <div class="course-orders-wrap am-tabs am-tabs-top">
+    <div id="orderWrapper" class="course-orders-wrap am-tabs am-tabs-top">
         <div id="am-tabs-bar" class="am-tabs-bar">
             <div class="am-tabs-ink-bar am-tabs-ink-bar-animated" style="transform: translate3d(0px, 0px, 0px); width: 1.875rem;"></div>
             <div class="am-tabs-tab-active am-tabs-tab">待付款</div>
@@ -18,147 +18,35 @@
         </div>
         <div id="am-tabs-content" class="am-tabs-content am-tabs-content-animated" style="transform: translateX(0%) translateZ(0px); touch-action: pan-y; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
             <div class="am-tabs-tabpane">
-                <div class="orders-list">
-                    <div class="order-item">
-                        <div class="order-item-header">
-                            <span>D3232223232232322222</span>
-                            <span class="fr">2017-01-01</span>
-                        </div>
-                        <a href="./course-order.html" class="order-item-cont">
-                            <div class="am-flexbox am-flexbox-align-top">
-                                <div class="order-img">
-                                    <img src="../../images/3@2x.png"/>
-                                </div>
-                                <div class="order-name-infos am-flexbox-item">
-                                    <div class="am-flexbox am-flexbox-dir-column am-flexbox-justify-between am-flexbox-align-top">
-                                        <div>
-                                            <h1>动感单车</h1>
-                                            <div class="order-infos">
-                                                <span class="pdr">15:00-16:00</span>
-                                                <span class="pdl pdr">巨石</span>
-                                                <span class="pdl">剩8人</span>
-                                            </div>
-                                        </div>
-                                        <div class="order-addr">
-                                            <span class="t-3dot">梦想小镇天使村8号楼1楼橙袋科技</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="order-status">待评价</div>
-                            </div>
-                        </a>
-                        <div class="order-item-footer">
-                            <a class="am-button am-button-small">去评价</a>
-                        </div>
-                    </div>
+                <div class="orders-list" id="content0"></div>
+                <div id="loadingWrap0" class="loading-item hidden"><i class="global-loading-icon1"></i><span>加载中...</span></div>
+                <div id="loadAll0" class="load-all hidden">
+                    <img src="../../images/end.png">
+                    <span>已经全部加载完毕</span>
                 </div>
             </div>
             <div class="am-tabs-tabpane am-tabs-tabpane-inactive">
-                <div class="orders-list">
-                    <div class="order-item">
-                        <div class="order-item-header">
-                            <span>D3232223232232322222</span>
-                            <span class="fr">2017-01-01</span>
-                        </div>
-                        <a class="order-item-cont">
-                            <div class="am-flexbox am-flexbox-align-top">
-                                <div class="order-img">
-                                    <img src="../../images/3@2x.png"/>
-                                </div>
-                                <div class="order-name-infos am-flexbox-item">
-                                    <div class="am-flexbox am-flexbox-dir-column am-flexbox-justify-between am-flexbox-align-top">
-                                        <div>
-                                            <h1>动感单车</h1>
-                                            <div class="order-infos">
-                                                <span class="pdr">15:00-16:00</span>
-                                                <span class="pdl pdr">巨石</span>
-                                                <span class="pdl">剩8人</span>
-                                            </div>
-                                        </div>
-                                        <div class="order-addr">
-                                            <span class="t-3dot">梦想小镇天使村8号楼1楼橙袋科技</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="order-status">待评价</div>
-                            </div>
-                        </a>
-                        <div class="order-item-footer">
-                            <a class="am-button am-button-small">去评价</a>
-                        </div>
-                    </div>
+                <div class="orders-list" id="content1"></div>
+                <div id="loadingWrap1" class="loading-item hidden"><i class="global-loading-icon1"></i><span>加载中...</span></div>
+                <div id="loadAll1" class="load-all hidden">
+                    <img src="../../images/end.png">
+                    <span>已经全部加载完毕</span>
                 </div>
             </div>
             <div class="am-tabs-tabpane am-tabs-tabpane-inactive">
-                <div class="orders-list">
-                    <div class="order-item">
-                        <div class="order-item-header">
-                            <span>D3232223232232322222</span>
-                            <span class="fr">2017-01-01</span>
-                        </div>
-                        <a class="order-item-cont">
-                            <div class="am-flexbox am-flexbox-align-top">
-                                <div class="order-img">
-                                    <img src="../../images/3@2x.png"/>
-                                </div>
-                                <div class="order-name-infos am-flexbox-item">
-                                    <div class="am-flexbox am-flexbox-dir-column am-flexbox-justify-between am-flexbox-align-top">
-                                        <div>
-                                            <h1>动感单车</h1>
-                                            <div class="order-infos">
-                                                <span class="pdr">15:00-16:00</span>
-                                                <span class="pdl pdr">巨石</span>
-                                                <span class="pdl">剩8人</span>
-                                            </div>
-                                        </div>
-                                        <div class="order-addr">
-                                            <span class="t-3dot">梦想小镇天使村8号楼1楼橙袋科技</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="order-status">待评价</div>
-                            </div>
-                        </a>
-                        <div class="order-item-footer">
-                            <a class="am-button am-button-small">去评价</a>
-                        </div>
-                    </div>
+                <div class="orders-list" id="content2"></div>
+                <div id="loadingWrap2" class="loading-item hidden"><i class="global-loading-icon1"></i><span>加载中...</span></div>
+                <div id="loadAll2" class="load-all hidden">
+                    <img src="../../images/end.png">
+                    <span>已经全部加载完毕</span>
                 </div>
             </div>
             <div class="am-tabs-tabpane am-tabs-tabpane-inactive">
-                <div class="orders-list">
-                    <div class="order-item">
-                        <div class="order-item-header">
-                            <span>D3232223232232322222</span>
-                            <span class="fr">2017-01-01</span>
-                        </div>
-                        <a class="order-item-cont">
-                            <div class="am-flexbox am-flexbox-align-top">
-                                <div class="order-img">
-                                    <img src="../../images/3@2x.png"/>
-                                </div>
-                                <div class="order-name-infos am-flexbox-item">
-                                    <div class="am-flexbox am-flexbox-dir-column am-flexbox-justify-between am-flexbox-align-top">
-                                        <div>
-                                            <h1>动感单车</h1>
-                                            <div class="order-infos">
-                                                <span class="pdr">15:00-16:00</span>
-                                                <span class="pdl pdr">巨石</span>
-                                                <span class="pdl">剩8人</span>
-                                            </div>
-                                        </div>
-                                        <div class="order-addr">
-                                            <span class="t-3dot">梦想小镇天使村8号楼1楼橙袋科技</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="order-status">待评价</div>
-                            </div>
-                        </a>
-                        <div class="order-item-footer">
-                            <a class="am-button am-button-small">去评价</a>
-                        </div>
-                    </div>
+                <div class="orders-list" id="content3"></div>
+                <div id="loadingWrap3" class="loading-item hidden"><i class="global-loading-icon1"></i><span>加载中...</span></div>
+                <div id="loadAll3" class="load-all hidden">
+                    <img src="../../images/end.png">
+                    <span>已经全部加载完毕</span>
                 </div>
             </div>
         </div>

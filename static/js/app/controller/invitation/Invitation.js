@@ -8,7 +8,20 @@ define([
     init();
     function init(){
         Foot.addFoot(2);
+        getRate();
         calculate();
+        createQRCode();
+    }
+    function createQRCode() {
+        var qrCode = new QRCode('qrCode');
+        qrCode.makeCode(location.origin + '/user/redirect.html?userReferee=' + base.getUserId());
+    }
+    // 获取违约金比率
+    function getRate() {
+        return GeneralCtr.getBizSysConfig("HKFC")
+            .then((data) => {
+                $("#rate").text(+data.cvalue * 100 + "%");
+            });
     }
     function calculate() {
         var winHeight = window.innerHeight - $(".global-footer").outerHeight(),

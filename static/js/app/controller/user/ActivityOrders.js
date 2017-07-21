@@ -1,21 +1,19 @@
 define([
     'app/controller/base',
-    'app/interface/CoachCtr'
-], function(base, CoachCtr) {
+    'app/interface/ActivityCtr'
+], function(base, ActivityCtr) {
     var config = {
         start: 1,
         limit: 10
     }, isEnd = false, canScrolling = false;
     var currentType = 0,
-        // status: 0 待付款，1 付款成功，2 已接单，3 已上课，4 已下课，5 用户取消，6 平台取消，7 已完成
+        // "0": "待付款", "1": "付款成功", "2": "用户取消订单", "3": "平台取消订单",
+        // "4": "退款申请", "5": "退款成功", "6": "退款失败", "7": "待评价", "8": "已完成"
         type2Status = {
             "0": "0",
             "1": "1",
-            "2": "4",
-            "3": "7"
-        }, genderList = {
-            "0": "女",
-            "1": "男"
+            "2": "7",
+            "3": "8"
         };
 
     init();
@@ -26,7 +24,7 @@ define([
     }
     // 分页查询课程
     function getPageOrders(refresh) {
-        return CoachCtr.getPageOrders({
+        return ActivityCtr.getPageOrders({
             status: type2Status[currentType],
             ...config
         }, refresh)
@@ -64,23 +62,21 @@ define([
                         <span>${item.code}</span>
                         <span class="fr">${base.formatDate(item.applyDatetime, "yyyy-MM-dd")}</span>
                     </div>
-                    <a href="./coach-order.html?code=${item.code}" class="order-item-cont">
+                    <a href="./activity-order.html?code=${item.code}" class="order-item-cont">
                         <div class="am-flexbox am-flexbox-align-top">
                             <div class="order-img">
-                                <img src="${base.getImg(item.coach.pic)}"/>
+                                <img src="${base.getImg(item.pic)}"/>
                             </div>
                             <div class="order-name-infos am-flexbox-item">
                                 <div class="am-flexbox am-flexbox-dir-column am-flexbox-justify-between am-flexbox-align-top">
                                     <div>
-                                        <h1>${item.coach.realName}</h1>
+                                        <h1>${item.activityTitle}</h1>
                                         <div class="order-infos">
-                                            <span class="pdr">${item.skDatetime.substr(0, 5)}-${item.xkDatetime.substr(0, 5)}</span>
-                                            <span class="pdl pdr">${genderList[item.coach.gender]}</span>
-                                            <span class="pdl">${item.coach.star}分</span>
+                                            <span class="pdr">${base.formatDate(item.activityBeginDatetime, "MM-dd hh:mm")} ~ ${base.formatDate(item.activityEndDatetime, "MM-dd hh:mm")}</span>
                                         </div>
                                     </div>
-                                    <div class="order-addr">
-                                        <span class="t-3dot">${item.address}</span>
+                                    <div class="order-desc">
+                                        <span class="t-3dot">${item.quantity}人</span>
                                     </div>
                                 </div>
                             </div>
@@ -88,11 +84,11 @@ define([
                         </div>
                     </a>
                     ${
-                        item.status == "0" || item.status == "4"
+                        item.status == "0" || item.status == "7"
                             ? `<div class="order-item-footer">
                                     ${
                                         item.status == "0"
-                                            ? `<a class="am-button am-button-small" href="../pay/pay.html?code=${item.code}&type=coach">立即支付</a>
+                                            ? `<a class="am-button am-button-small" href="../pay/pay.html?code=${item.code}&type=activity">立即支付</a>
                                                 <button class="am-button am-button-small cancel-order" data-code="${item.code}">取消订单</button>`
                                             : `<a class="am-button am-button-small rating-order" href="./assessment.html?code=${item.code}">去评价</a>`
                                     }
@@ -100,7 +96,8 @@ define([
                             : ''
                     }
                 </div>`;
-        // status: 0 待付款，1 付款成功，2 已接单，3 已上课，4 已下课，5 用户取消，6 平台取消，7 已完成
+        // "0": "待付款", "1": "付款成功", "2": "用户取消订单", "3": "平台取消订单",
+        // "4": "退款申请", "5": "退款成功", "6": "退款失败", "7": "待评价", "8": "已完成"
     }
 
     function addListener(){
@@ -131,7 +128,7 @@ define([
             base.confirm("确定取消订单吗？", "取消", "确认")
                 .then(() => {
                     base.showLoading("取消中...");
-                    CoachCtr.cancelOrder(orderCode)
+                    ActivityCtr.cancelOrder(orderCode)
                         .then(() => {
                             base.showMsg("取消成功");
                             base.showLoading();

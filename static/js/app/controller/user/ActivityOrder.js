@@ -1,12 +1,10 @@
 define([
     'app/controller/base',
-    'app/interface/coachCtr',
-    'app/module/showInMap',
+    'app/interface/ActivityCtr',
     'app/util/dict'
-], function(base, coachCtr, showInMap, Dict) {
+], function(base, ActivityCtr, Dict) {
     var code = base.getUrlParam("code"),
-        orderStatus = Dict.get("coachOrderStatus");
-    var address;
+        orderStatus = Dict.get("activityOrderStatus");
 
     init();
     function init(){
@@ -15,20 +13,20 @@ define([
         getOrder();
     }
     function getOrder(refresh) {
-        coachCtr.getOrder(code, refresh)
+        ActivityCtr.getOrder(code, refresh)
             .then((data) => {
                 base.hideLoading();
                 $("#code").text(data.code);
                 $("#applyDatetime").text(base.formatDate(data.applyDatetime, "yyyy-MM-dd hh:mm"));
-                // // status: 0 待付款，1 付款成功，2 已接单，3 已上课，4 已下课，5 用户取消，6 平台取消，7 已完成
+                // "0": "待付款", "1": "付款成功", "2": "用户取消订单", "3": "平台取消订单",
+                // "4": "退款申请", "5": "退款成功", "6": "退款失败", "7": "待评价", "8": "已完成"
                 $("#status").text(orderStatus[data.status]);
-                if(data.status == "4") {
+                if(data.status == "7") {
                     $("#goRating").removeClass("hidden");
                 }
-                address = data.address;
-                $("#address").text(address);
-                $("#datetime").text(base.formatDate(data.appointDatetime, "yyyy-MM-dd") + " " + data.skDatetime.substr(0, 5) + "~" + data.xkDatetime.substr(0, 5));
-                $("#coachRealName").text(data.coach.realName);
+                $("#activityBeginDatetime").text(base.formatDate(data.activityBeginDatetime, "yyyy-MM-dd hh:mm"));
+                $("#activityEndDatetime").text(base.formatDate(data.activityEndDatetime, "yyyy-MM-dd hh:mm"));
+                $("#quantity").text(data.quantity);
                 $("#amount").text(base.formatMoney(data.amount) + "元");
                 if(data.penalty) {
                     $("#penalty").text(base.formatMoney(data.penalty) + "元")
@@ -41,11 +39,10 @@ define([
             });
     }
     function addListener(){
-        showInMap.addMap();
         $("#cancelBtn").on("click", function() {
             base.confirm("确定取消订单吗？", "取消", "确认")
                 .then(() => {
-                    coachCtr.cancelOrder(code)
+                    ActivityCtr.cancelOrder(code)
                         .then(() => {
                             base.showMsg("取消成功");
                             base.showLoading();
@@ -54,13 +51,10 @@ define([
                 }, () => {});
         });
         $("#payBtn").on("click", function() {
-            location.href = "../pay/pay.html?type=coach&code=" + code;
+            location.href = "../pay/pay.html?type=activity&code=" + code;
         });
         $("#goRating").on("click", function() {
             location.href = "./assessment.html?code=" + code;
-        });
-        $("#address").on("click", function() {
-            showInMap.showMapByName(address);
         });
     }
 });

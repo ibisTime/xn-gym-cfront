@@ -39,6 +39,23 @@ define([
                 ...config
             });
         },
+        // 取消订单
+        cancelOrder(orderCode) {
+            return Ajax.post("622072", {
+                orderCode,
+                applyUser: base.getUserId()
+            });
+        },
+        /**
+         * 分页查询团课订单
+         * @param config {start, limit, status}
+         */
+        getPageOrders(config, refresh) {
+            return Ajax.get("622080", {
+                applyUser:  base.getUserId(),
+                ...config
+            }, refresh);
+        },
         // 详情查询团课订单
         getOrder(code, refresh) {
             return Ajax.get("622081", {code}, refresh);

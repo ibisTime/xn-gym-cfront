@@ -9,22 +9,29 @@
 
 <body>
     <div class="confirm-order-wrapper">
-        <div class="confirm-head">
-            <img src="../../images/warning.png"/>
-            <span>上课前两小时取消扣<label id="rate"></label>预约金，两小时内不可取消</span>
-        </div>
-        <div class="am-whitespace-sm"></div>
         <form class="confirm-list" id="formWrapper">
             <div class="confirm-item">
                 <div class="am-flexbox">
-                    <span class="title">上课时间</span>
-                    <div class="text" id="skStartDatetime"></div>
+                    <span class="title">活动名称</span>
+                    <div class="text" id="title"></div>
                 </div>
             </div>
             <div class="confirm-item">
                 <div class="am-flexbox">
-                    <span class="title">上课地点</span>
-                    <div class="addr-icon text" id="address"></div>
+                    <span class="title">活动单价</span>
+                    <div class="text" id="price"></div>
+                </div>
+            </div>
+            <div class="confirm-item">
+                <div class="am-flexbox">
+                    <span class="title">开始时间</span>
+                    <div class="text" id="startDatetime"></div>
+                </div>
+            </div>
+            <div class="confirm-item">
+                <div class="am-flexbox">
+                    <span class="title">结束时间</span>
+                    <div class="text" id="endDatetime"></div>
                 </div>
             </div>
             <div class="confirm-item">
@@ -35,13 +42,7 @@
             </div>
             <div class="confirm-item">
                 <div class="am-flexbox">
-                    <span class="title">课程单价</span>
-                    <div class="text amount" id="price"></div>
-                </div>
-            </div>
-            <div class="confirm-item">
-                <div class="am-flexbox">
-                    <span class="title">上课人数</span>
+                    <span class="title">报名人数</span>
                     <input class="text" id="quantity" name="quantity" placeholder="请输入上课人数" type="tel"/>
                 </div>
             </div>
@@ -69,9 +70,8 @@
         </div>
     </div>
     <link rel="import" href="../footer.html?__inline">
-    <script src="//api.map.baidu.com/api?v=2.0&ak=GtNrG008U04GONzKSDHiW70GxurUUhlU&s=1"></script>
     <script>
-        require(['app/controller/course/CourseConfirm']);
+        require(['app/controller/notice/ActivityConfirm']);
     </script>
 </body>
 
