@@ -29,6 +29,12 @@ define([
                 ...config
             });
         },
+        // 查询课程的评分
+        getCourseRating(productCode) {
+            return Ajax.get("622147", {
+                productCode
+            });
+        },
         /**
          * 提交课程订单
          * @param config {orgCourseCode, mobile, quantity, applyNote}

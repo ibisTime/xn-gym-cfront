@@ -5,7 +5,7 @@ define([
     return {
         /**
          * 微信登录
-         * @param config: {code,mobile?,smsCaptcha?,userReferee}
+         * @param config: {code,mobile?,smsCaptcha?,userReferee?}
          */
         wxLogin(config) {
             return Ajax.post("805151", config);

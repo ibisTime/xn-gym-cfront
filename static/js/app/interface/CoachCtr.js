@@ -31,6 +31,12 @@ define([
                 ...config
             });
         },
+        // 查询私教的评分
+        getCoachRating(coachCode) {
+            return Ajax.get("622147", {
+                coachCode
+            });
+        },
         /**
          * 提交私课订单
          * @param config {address, mobile, perCourseCode, quantity}

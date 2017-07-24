@@ -21,6 +21,22 @@ define([
             getLabelList(),
             getPageComment()
         ).then(base.hideLoading);
+        getCoachRating();
+    }
+    // 查询私教的评分
+    function getCoachRating() {
+        CoachCtr.getCoachRating(code)
+            .then((data) => {
+                data = +data;
+                var _stars = $("#stars"),
+                    _star = _stars.find(".hot-star"),
+                    _span = _stars.find("span");
+                _span.text(data + "分");
+                data = Math.floor(data);
+                while(data--) {
+                    _star.eq(data).addClass("active");
+                }
+            })
     }
     // 获取标签数据字典
     function getLabelList() {
@@ -82,20 +98,55 @@ define([
         });
     }
 
-    // 分页查询课程的评价
+    // 分页查询私教的评价
     function getPageComment() {
         return CoachCtr.getPageComment({
             coachCode: code,
             start: 1,
             limit: 10
         }).then((data) => {
-
+            $("#sumCom").text(data.totalCount);
+            var html = "";
+            data.list.forEach((item) => {
+                html += buildComment(item);
+            });
+            $("#ratings").html(html);
         });
+    }
+
+    // 生成评论的html
+    function buildComment(item) {
+        var star = Math.floor(+item.score), remainStar = 5 - star,
+            starHtml = "";
+        while(star--) {
+            starHtml += '<i class="hot-star active"></i>';
+        }
+        while(remainStar--) {
+            starHtml += '<i class="hot-star"></i>';
+        }
+        return `<div class="comment-item">
+                    <div class="commer-info am-flexbox">
+                        <div class="commer-avatar">
+                            <img src="${base.getAvatar(item.photo)}"/>
+                        </div>
+                        <div class="commer-ext">
+                            <h1>${item.commerRealName}</h1>
+                            <div class="hot-stars">
+                                ${starHtml}
+                                <span>${base.formatDate(item.commentDatetime, "yyyy-MM-dd")}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="comment-cont">${item.content}</div>
+                </div>`;
     }
 
     function addListener() {
         $("#buy").click(function() {
             location.href = "./coach-confirm.html?code=" + code;
+        });
+        $("#goComment").click(function() {
+            location.href = "../notice/comments.html?type=coach&code=" + code;
         });
     }
 });

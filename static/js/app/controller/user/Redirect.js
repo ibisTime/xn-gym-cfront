@@ -6,8 +6,15 @@ define([
     'app/interface/UserCtr'
 ], function(base, JudgeBindMobile, BindMobileSms, GeneralCtr, UserCtr) {
 
-    var mobile = base.getUrlParam("m") || "";
-    var smsCaptcha = base.getUrlParam("s") || "";
+    var mobile = base.getUrlParam("m");
+    var smsCaptcha = base.getUrlParam("s");
+    var userReferee = base.getUrlParam("userReferee");
+
+    if(!userReferee) {
+        userReferee = sessionStorage.getItem("userReferee") || "";
+    } else {
+        sessionStorage.setItem("userReferee", userReferee);
+    }
 
     init();
 
@@ -24,6 +31,7 @@ define([
                 code,
                 mobile,
                 smsCaptcha,
+                userReferee,
                 companyCode: SYSTEM_CODE
             });
         } else { // 已登陆

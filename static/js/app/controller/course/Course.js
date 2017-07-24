@@ -102,7 +102,7 @@ define([
     function addLabelData(list) {
         var html = "";
         coachList.forEach((coach) => {
-            var star = +coach.star, remainStar = 5 - star,
+            var star = Math.floor(+coach.star), remainStar = 5 - star,
                 starHtml = "";
             while(star--) {
                 starHtml += '<i class="hot-star active"></i>';

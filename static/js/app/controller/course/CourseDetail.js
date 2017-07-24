@@ -15,6 +15,22 @@ define([
             getCourse(),
             getPageComment()
         ).then(base.hideLoading);
+        getCourseRating();
+    }
+    // 查询私教的评分
+    function getCourseRating() {
+        CourseCtr.getCourseRating(code)
+            .then((data) => {
+                data = +data;
+                var _stars = $("#stars"),
+                    _star = _stars.find(".hot-star"),
+                    _span = _stars.find("span");
+                _span.text(data + "分");
+                data = Math.floor(data);
+                while(data--) {
+                    _star.eq(data).addClass("active");
+                }
+            })
     }
     // 获取课程详情
     function getCourse() {
@@ -64,8 +80,39 @@ define([
             start: 1,
             limit: 10
         }).then((data) => {
-
+            $("#sumCom").text(data.totalCount);
+            var html = "";
+            data.list.forEach((item) => {
+                html += buildComment(item);
+            });
+            $("#ratings").html(html);
         });
+    }
+    // 生成评论的html
+    function buildComment(item) {
+        var star = Math.floor(+item.score), remainStar = 5 - star,
+            starHtml = "";
+        while(star--) {
+            starHtml += '<i class="hot-star active"></i>';
+        }
+        while(remainStar--) {
+            starHtml += '<i class="hot-star"></i>';
+        }
+        return `<div class="comment-item">
+                    <div class="commer-info am-flexbox">
+                        <div class="commer-avatar">
+                            <img src="${base.getAvatar(item.photo)}"/>
+                        </div>
+                        <div class="commer-ext">
+                            <h1>${item.commerRealName}</h1>
+                            <div class="hot-stars">
+                                ${starHtml}
+                                <span>${base.formatDate(item.commentDatetime, "yyyy-MM-dd")}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="comment-cont">${item.content}</div>
+                </div>`;
     }
 
     function addListener() {
@@ -75,6 +122,9 @@ define([
         });
         $("#buy").click(function() {
             location.href = "./course-confirm.html?code=" + code;
+        });
+        $("#goComment").click(function() {
+            location.href = "../notice/comments.html?type=course&code=" + code;
         });
     }
 });

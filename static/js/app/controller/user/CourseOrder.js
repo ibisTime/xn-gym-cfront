@@ -36,7 +36,7 @@ define([
                         .closest(".confirm-item").removeClass("hidden");
                 }
                 $("#applyNote").text(data.applyNote || "无");
-                if(status == "0") {
+                if(data.status == "0") {
                     $("#payBtn, #cancelBtn").removeClass("hidden");
                 }
             });

@@ -29,6 +29,7 @@ define([
     			if(data.list.length) {
                     $("#content").append(_tmpl({items: data.list}));
                     isEnd && $("#loadAll").removeClass("hidden");
+                    config.start++;
     			} else if(config.start == 1) {
                     $("#content").html('<li class="no-data">暂无公告</li>')
                 } else {

@@ -77,20 +77,12 @@ define([
             onkeyup: false
         });
         var _price = $("#price"),
+            _amount = $("#amount"),
             _perCourseCode = $("#perCourseCode");
-        $("#quantity").on("keyup", function() {
-            var value = this.value, amount = 0;
-            var price = +_perCourseCode.find("option:selected").attr("data-price");
-            if(/^\d+$/.test(value)) {
-                amount = value * price;
-                $("#amount").text(base.formatMoney(amount) + "元");
-            } else {
-                $("#amount").text("--元");
-            }
-        });
 
         _perCourseCode.on("change", function() {
             _price.text(base.formatMoney($(this).find("option:selected").attr("data-price")) + "元");
+            _amount.text(base.formatMoney($(this).find("option:selected").attr("data-price")) + "元");
         });
         // 提交订单
         $("#buy").click(function() {
@@ -103,7 +95,7 @@ define([
         $("#addrWrap").on("click", function() {
             searchMap.showMap({
                 success: function(point, address) {
-                    $("#address").val(address);
+                    $("#address").val(address).valid();
                     $("#addrWrap").text(address);
                 }
             });

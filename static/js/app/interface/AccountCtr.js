@@ -9,25 +9,6 @@ define([
                 userId: base.getUserId()
             }, refresh);
         },
-        // 账户的橙券购买
-        payCQ(amount, payType, toUserId = SYSTEM_USERID) {
-            return Ajax.post("802420", {
-    			toUserId,
-                amount,
-                payType,
-                fromUserId : base.getUserId(),
-                currency: "CB"
-            })
-        },
-        // 账户余额微信充值
-        recharge(amount, openId) {
-            return Ajax.post("802710", {
-                amount,
-                openId,
-                applyUser: base.getUserId(),
-                channelType: 35
-            });
-        },
         /**
          * 分页查询流水
          * @param config: {start, limit, accountNumber}

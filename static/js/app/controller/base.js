@@ -171,8 +171,7 @@ define([
         // 获取图片
         getImg: function(pic, no_suffix) {
             if (!pic) {
-                pic = "/static/images/person.png?_inline";
-                return pic;
+                return "";
             }
             if (pic) {
                 pic = pic.split(/\|\|/)[0];
@@ -184,6 +183,12 @@ define([
                 pic = PIC_PREFIX + pic + suffix;
             }
             return pic
+        },
+        getAvatar: function(pic) {
+            if(!pic) {
+                return "/static/images/avatar.png";
+            }
+            return Base.getImg(pic);
         },
         // 获取分享的图片
         getShareImg: function(pic) {
