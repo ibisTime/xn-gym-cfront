@@ -28,6 +28,12 @@ define([
             getPageActivities()
     	).then(base.hideLoading);
     	addListener();
+        weixin.initShare({
+            title: document.title,
+            desc: "自玩自健",
+            link: location.href,
+            imgUrl: base.getShareImg()
+        });
     }
     // 获取标签数据字典
     function getLabelList() {
@@ -114,7 +120,8 @@ define([
         var _tmpl = __inline('../ui/index_activity.handlebars');
         return ActivityCtr.getPageActivities({
             start: 1,
-            limit: 10
+            limit: 10,
+            location: 1
         }, refresh).then((data) => {
             if(data.list.length) {
                 $("#actContent").html(_tmpl({items: data.list}));
@@ -139,7 +146,7 @@ define([
                     $("#top-swiper").html(html);
                     new Swiper('#swiper-container', {
                         'direction': 'horizontal',
-                        'loop': true,
+                        'loop': data.length > 1,
                         'autoplay': 4000,
     		            'autoplayDisableOnInteraction': false,
                         // 如果需要分页器

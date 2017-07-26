@@ -29,11 +29,14 @@ define([
             .then((data) => {
                 price = data.price;
                 remainNum = data.remainNum;
-                address = data.address;
+                if(data.city == data.province) {
+                    data.city = "";
+                }
+                address = (data.province || "") + (data.city || "") + (data.area || "") + data.address;
                 $("#price").html(base.formatMoney(data.price) + "元");
-                $("#skStartDatetime").html(base.formatDate(data.skStartDatetime, 'yyyy-MM-dd hh:mm'));
+                $("#skStartDatetime").html(base.formatDate(data.skStartDatetime, 'yyyy-MM-dd hh:mm') + " ~ " + base.formatDate(data.skEndDatetime, 'hh:mm'));
                 $("#remainNum").html(data.remainNum);
-                $("#address").html(data.address);
+                $("#address").html(address);
                 addListener();
             });
     }

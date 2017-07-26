@@ -1,17 +1,15 @@
 define([
     'app/controller/base',
-    'app/module/foot',
     'app/interface/AccountCtr'
-], function(base, Foot, AccountCtr) {
+], function(base, AccountCtr) {
     var config = {
         start: 1,
-        limit: 10
+        limit: 20
     }, isEnd = false, canScrolling = false;
 
     init();
 
     function init() {
-        Foot.addFoot(3);
         base.showLoading();
         getAccount();
         addListener();
@@ -22,7 +20,7 @@ define([
             .then(function(data) {
                 data.forEach(function(account) {
                     if (account.currency == "JF") {
-                        $("#amount").html(base.formatMoneyD(account.amount));
+                        $("#amount").html(base.formatMoney(account.amount));
                         config.accountNumber = account.accountNumber;
                     }
                 });
@@ -58,7 +56,7 @@ define([
                 positive = transAmount > 0;
             transAmount = base.formatMoney(transAmount);
             var createDatetime = item.createDatetime,
-                day = base.formatDate(createDatetime, "MM日"),
+                day = base.formatDate(createDatetime, "dd日"),
                 time = base.formatDate(createDatetime, "hh:mm");
 
             html += `<div class="flow-item border-bottom-1px">
@@ -71,7 +69,11 @@ define([
                         <i class="${positive ? 'receive-icon' : 'pay-icon'}"></i>
                     </div>
                     <div class="flow-content am-flexbox-item">
-                        <p class="f-transAmount f-trans-red">${positive ? `+${transAmount}` : transAmount}</p>
+                        ${
+                            positive
+                                ? `<p class="f-transAmount f-trans-red">+${transAmount}</p>`
+                                : `<p class="f-transAmount f-trans-blue">${transAmount}</p>`
+                        }
                         <p class="flow-remark">${item.bizNote}</p>
                     </div>
                 </div>

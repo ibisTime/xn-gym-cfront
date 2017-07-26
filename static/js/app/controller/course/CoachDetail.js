@@ -62,6 +62,12 @@ define([
     function getCoach() {
         return CoachCtr.getCoach(code)
             .then((data) => {
+                weixin.initShare({
+                    title: document.title,
+                    desc: base.clearTag(data.description),
+                    link: location.href,
+                    imgUrl: base.getShareImg(data.advPic)
+                });
                 addBanner(data);
                 $("#gender").text(genderList[data.gender]);
                 var star = +data.star,

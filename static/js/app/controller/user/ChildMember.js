@@ -30,7 +30,7 @@ define([
                     $("#content").append(_tmpl({items: data.list}));
                     isEnd && $("#loadAll").removeClass("hidden");
     			} else if(config.start == 1) {
-                    $("#content").html('<div class="no-data">暂无货客</div>')
+                    $("#content").html('<div class="no-data">暂无获客</div>')
                 } else {
                     $("#loadAll").removeClass("hidden");
                 }

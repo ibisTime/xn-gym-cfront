@@ -35,8 +35,14 @@ define([
                         .closest(".confirm-item").removeClass("hidden");
                 }
                 $("#applyNote").text(data.applyNote || "无");
+                if(data.remark) {
+                    $("#remark").text(data.remark)
+                        .closest(".confirm-item").removeClass("hidden");
+                }
                 if(data.status == "0") {
                     $("#payBtn, #cancelBtn").removeClass("hidden");
+                } else if(data.status == "1" || data.status == "2") {
+                    $("#cancelBtn").removeClass("hidden");
                 }
             });
     }
@@ -45,9 +51,10 @@ define([
         $("#cancelBtn").on("click", function() {
             base.confirm("确定取消订单吗？", "取消", "确认")
                 .then(() => {
+                    base.showLoading("取消中...");
                     coachCtr.cancelOrder(code)
                         .then(() => {
-                            base.showMsg("取消成功");
+                            base.showMsg("操作成功");
                             base.showLoading();
                             getOrder(true);
                         });

@@ -18,12 +18,9 @@ define([
                 base.hideLoading();
                 $("#code").text(data.code);
                 $("#applyDatetime").text(base.formatDate(data.applyDatetime, "yyyy-MM-dd hh:mm"));
-                // "0": "待付款", "1": "付款成功", "2": "用户取消订单", "3": "平台取消订单",
-                // "4": "退款申请", "5": "退款成功", "6": "退款失败", "7": "待评价", "8": "已完成"
+                // "0": 待付款, "1": "付款成功", "2": "用户取消订单", "3": "平台取消订单",
+                // "4": "退款申请", "5": "退款成功", "6": "退款失败", "7": "活动开始", "8": "已完成"
                 $("#status").text(orderStatus[data.status]);
-                if(data.status == "7") {
-                    $("#goRating").removeClass("hidden");
-                }
                 $("#activityBeginDatetime").text(base.formatDate(data.activityBeginDatetime, "yyyy-MM-dd hh:mm"));
                 $("#activityEndDatetime").text(base.formatDate(data.activityEndDatetime, "yyyy-MM-dd hh:mm"));
                 $("#quantity").text(data.quantity);
@@ -33,8 +30,14 @@ define([
                         .closest(".confirm-item").removeClass("hidden");
                 }
                 $("#applyNote").text(data.applyNote || "无");
+                if(data.remark) {
+                    $("#remark").text(data.remark)
+                        .closest(".confirm-item").removeClass("hidden");
+                }
                 if(status == "0") {
                     $("#payBtn, #cancelBtn").removeClass("hidden");
+                } else if(status == "1") {
+                    $("#cancelBtn").removeClass("hidden");
                 }
             });
     }
@@ -42,6 +45,7 @@ define([
         $("#cancelBtn").on("click", function() {
             base.confirm("确定取消订单吗？", "取消", "确认")
                 .then(() => {
+                    base.showLoading("取消中...");
                     ActivityCtr.cancelOrder(code)
                         .then(() => {
                             base.showMsg("取消成功");
@@ -52,9 +56,6 @@ define([
         });
         $("#payBtn").on("click", function() {
             location.href = "../pay/pay.html?type=activity&code=" + code;
-        });
-        $("#goRating").on("click", function() {
-            location.href = "./assessment.html?code=" + code;
         });
     }
 });

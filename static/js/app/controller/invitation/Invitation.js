@@ -11,6 +11,12 @@ define([
         getRate();
         calculate();
         createQRCode();
+        weixin.initShare({
+            title: document.title,
+            desc: "自玩自健",
+            link: location.href,
+            imgUrl: base.getShareImg()
+        });
     }
     function createQRCode() {
         var qrCode = new QRCode('qrCode');

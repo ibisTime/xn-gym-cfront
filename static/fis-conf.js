@@ -97,9 +97,6 @@ fis.media("prod")
         packTo: '/config/config.js',
         useHash: false
     })
-    .match("/css/*.*", {
-        packTo: '/pkg/common.css'
-    })
     .match('**.png', {
         optimizer: fis.plugin('png-compressor')
     });

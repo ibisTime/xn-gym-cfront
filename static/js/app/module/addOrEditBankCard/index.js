@@ -7,7 +7,7 @@ define([
 ], function ($, Validate, loading, AccountCtr, UsertCtr) {
     var tmpl = __inline("index.html");
     var defaultOpt = {};
-    var firstAdd = true, firstLoadData = true;
+    var firstAdd = true;
 
     function initData(){
         loading.createLoading();
@@ -18,31 +18,6 @@ define([
         }
         // 修改银行卡
         return getEditInitData();
-    }
-    // 添加银行卡
-    function addBankCard(){
-        loading.createLoading("保存中...");
-        var param = $("#addOrEditBankCardForm").serializeObject();
-        AccountCtr.addBankCard(param)
-            .then(function(){
-                loading.hideLoading();
-                ModuleObj.hideCont(defaultOpt.success);
-            }, function(msg){
-                defaultOpt.error && defaultOpt.error(msg || "添加银行卡失败");
-            });
-    }
-    // 修改银行卡
-    function editBankCard() {
-        loading.createLoading("保存中...");
-        var param = $("#addOrEditBankCardForm").serializeObject();
-        param.code = defaultOpt.code;
-        AccountCtr.editBankCard(param)
-            .then(function(){
-                loading.hideLoading();
-                ModuleObj.hideCont(defaultOpt.success);
-            }, function(msg){
-                defaultOpt.error && defaultOpt.error(msg || "添加银行卡失败");
-            });
     }
     // 获取添加银行卡初始化数据
     function getAddInitData() {
@@ -69,9 +44,35 @@ define([
             $("#subbranch").val(data.subbranch);
         })
     }
+    // 添加银行卡
+    function addBankCard(){
+        loading.createLoading("保存中...");
+        var param = $("#addOrEditBankCardForm").serializeObject();
+        AccountCtr.addBankCard(param)
+            .then(function(){
+                loading.hideLoading();
+                ModuleObj.hideCont(defaultOpt.success);
+            }, function(msg){
+                defaultOpt.error && defaultOpt.error(msg || "添加银行卡失败");
+            });
+    }
+    // 修改银行卡
+    function editBankCard() {
+        loading.createLoading("保存中...");
+        var param = $("#addOrEditBankCardForm").serializeObject();
+        param.code = defaultOpt.code;
+        AccountCtr.editBankCard(param)
+            .then(function(){
+                loading.hideLoading();
+                ModuleObj.hideCont(defaultOpt.success);
+            }, function(msg){
+                defaultOpt.error && defaultOpt.error(msg || "添加银行卡失败");
+            });
+    }
+
     // 根据code获取银行卡详情
     function getBankCard(){
-        AccountCtr.getBankCard(defaultOpt.code);
+        return AccountCtr.getBankCard(defaultOpt.code);
     }
 
     // 获取银行select列表
@@ -97,12 +98,9 @@ define([
             var that = this;
             if(firstAdd){
                 var _form = $("#addOrEditBankCardForm");
-                if(defaultOpt.code){
-                    $("#realName").prop("readonly", 1);
-                }
                 wrap.on("click", ".right-left-cont-back", function(){
-                        ModuleObj.hideCont(defaultOpt.hideFn);
-                    });
+                    ModuleObj.hideCont(defaultOpt.hideFn);
+                });
                 wrap.find(".right-left-cont-title")
                     .on("touchmove", function(e){
                         e.preventDefault();
@@ -153,20 +151,22 @@ define([
             return this;
         },
         hasCont: function(){
-            if(!$("#addOrEditBankCardContainer").length)
-                return false
-            return true;
+            return !!$("#addOrEditBankCardContainer").length;
         },
-        showCont: function (){
+        showCont: function (option = {}){
             if(this.hasCont()){
-                if(firstLoadData){
-                    firstLoadData = false;
-                    initData().then(function(){
-                        ModuleObj._showCont();
-                    });
-                }else{
-                    ModuleObj._showCont();
+                if(option.code) {
+                    defaultOpt.code = option.code;
+                    $("#realName").prop("readonly", 1);
+                    $("#addOrEditBankCardContainer").find(".right-left-cont-title-name").html("修改银行卡");
+                } else {
+                    defaultOpt.code = "";
+                    $("#realName").prop("readonly", 0);
+                    $("#addOrEditBankCardContainer").find(".right-left-cont-title-name").html("绑定银行卡");
                 }
+                initData().then(function(){
+                    ModuleObj._showCont();
+                });
             }
             return this;
         },
@@ -185,6 +185,9 @@ define([
                 wrap.animate({
                     left: "100%"
                 }, 200, function () {
+                    $("#realName").val("");
+                    $("#subbranch").val("");
+                    $("#bankcardNumber").val("");
                     wrap.hide();
                     func && func($("#bankcardNumber").val(), $("#bankName").find("option:selected").text());
                     wrap.find("label.error").remove();

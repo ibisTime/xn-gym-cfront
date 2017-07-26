@@ -195,23 +195,14 @@ define([
             if (!pic) {
                 return location.origin + '/static/images/logo.png';
             }
-            pic = pic.split("||")[0];
-            if (!/^http/i.test(pic)) {
-                pic = PIC_PREFIX + pic;
-            }
-            return pic;
+            return Base.getImg(pic);
         },
-        formatMoney: function(s, t) {
+        formatMoney: function(s) {
             if (!$.isNumeric(s))
                 return "--";
-            var num = +s / 1000;
-            num = Math.ceil(num * Math.pow(10, t || 2)) / 100;
-            return num.toFixed(t || 2);
-        },
-        formatMoneyD: function(s, t) {
-            s = (s / 1000).toString();
+            s = (+s / 1000).toString();
             s = s.replace(/(\.\d\d)\d+/ig, "$1");
-            return parseFloat(s).toFixed(t || 2);
+            return parseFloat(s).toFixed(2);
         },
         // 模糊银行卡
         getBankCard: function(card) {
@@ -280,8 +271,8 @@ define([
                         reject();
                         return true;
                     },
-                    cancelValue: cancelValue,
-                    okValue: okValue
+                    cancelValue: cancelValue || "取消",
+                    okValue: okValue || "确认"
                 });
                 d.showModal();
             }));
@@ -294,6 +285,10 @@ define([
         // 隐藏loading
         hideLoading: function() {
             loading.hideLoading();
+        },
+        // 清除内容里的标签
+        clearTag: function(content) {
+            return content.replace(/<[^>]+>|<\/[^>]+>|<[^>]+\/>|&nbsp;/ig, "");
         }
     };
 

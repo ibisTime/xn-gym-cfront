@@ -3,8 +3,9 @@ define([
     'app/interface/CourseCtr',
     'app/interface/CoachCtr',
     'app/interface/ActivityCtr',
+    'app/interface/AccountCtr',
     'app/module/weixin'
-], function(base, CourseCtr, CoachCtr, ActivityCtr, weixin) {
+], function(base, CourseCtr, CoachCtr, ActivityCtr, AccountCtr, weixin) {
     const COURSE_ORDER = "course", COACH_ORDER = "coach", ACTIVITY_ORDER = "activity";
     const BALANCE_PAY = 0, WX_PAY = 1;
     var code = base.getUrlParam("code"),
@@ -19,6 +20,7 @@ define([
             base.showMsg("未传入订单编号");
         } else {
             base.showLoading();
+            getAccount();
             if(type == COURSE_ORDER) {
                 getCourseOrder();
             } else if(type == COACH_ORDER) {
@@ -28,6 +30,17 @@ define([
             }
             addListener();
         }
+    }
+    // 获取账户详情
+    function getAccount() {
+        AccountCtr.getAccount()
+            .then((data) => {
+                data.forEach((account) => {
+                    if (account.currency == "CNY") {
+                        $("#remainAmount").html(base.formatMoney(account.amount));
+                    }
+                });
+            });
     }
     // 详情查询课程订单
     function getCourseOrder() {

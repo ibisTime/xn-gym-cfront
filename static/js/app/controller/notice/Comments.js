@@ -8,7 +8,7 @@ define([
         code = base.getUrlParam("code");
     var config = {
         start: 1,
-        limit: 10
+        limit: 20
     }, isEnd = false, canScrolling = false;
 
     init();
@@ -89,7 +89,7 @@ define([
                 </div>`;
     }
     function addListener() {
-        $(window).off("scroll").on("scroll", function() {
+        $(window).on("scroll", function() {
             if (canScrolling && !isEnd && ($(document).height() - $(window).height() - 10 <= $(document).scrollTop())) {
                 canScrolling = false;
                 showLoading();

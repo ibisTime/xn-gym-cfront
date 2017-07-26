@@ -3,12 +3,22 @@ define([
     'app/util/ajax'
 ], function(base, Ajax) {
     return {
-        /*
+        /**
          * 分页查询私教
-         * config: {start, limit, ...}
+         * @param config: {start, limit, ...}
          */
         getPageCoach(config, refresh) {
             return Ajax.get("622095", {
+                status: 1,
+                ...config
+            }, refresh);
+        },
+        /**
+         * 分页查询私教(带有筛选)
+         * @param config: {start, limit, skCycle, ...}
+         */
+        getPageFilterCoach(config, refresh) {
+            return Ajax.get("622093", {
                 status: 1,
                 ...config
             }, refresh);
@@ -61,6 +71,8 @@ define([
         getPageOrders(config, refresh) {
             return Ajax.get("622130", {
                 applyUser:  base.getUserId(),
+                orderColumn: "apply_datetime",
+                orderDir: "desc",
                 ...config
             }, refresh);
         },

@@ -36,13 +36,22 @@ define([
     function getCourse() {
         return CourseCtr.getCourse(code)
             .then((data) => {
+                weixin.initShare({
+                    title: document.title,
+                    desc: base.clearTag(data.description),
+                    link: location.href,
+                    imgUrl: base.getShareImg(data.advPic)
+                });
                 addBanner(data);
-                address = data.address;
+                if(data.city == data.province) {
+                    data.city = "";
+                }
+                address = (data.province || "") + (data.city || "") + (data.area || "") + data.address;
                 $("#name").html(data.name);
                 $("#remainNum").html(data.remainNum);
-                $("#datetime").html(base.formatDate(data.skStartDatetime, 'yyyy-MM-dd hh:mm') + " ~ " + base.formatDate(data.skEndDatetime, 'yyyy-MM-dd hh:mm'));
+                $("#datetime").html(base.formatDate(data.skStartDatetime, 'yyyy-MM-dd hh:mm') + " ~ " + base.formatDate(data.skEndDatetime, 'hh:mm'));
                 $("#realName").html(data.realName);
-                $("#address").html(data.address);
+                $("#address").find("span").html(address);
                 $("#contact")
                     .html(`<a href="tel://${data.contact}" class="course-tel am-flexbox-item">
                                 <span>${data.contact}</span>
@@ -68,7 +77,6 @@ define([
             'loop': advPic.length > 1,
             'autoplay': 4000,
             'autoplayDisableOnInteraction': false,
-            // 如果需要分页器
             'pagination': '.swiper-pagination'
         });
     }

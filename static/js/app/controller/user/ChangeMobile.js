@@ -2,17 +2,16 @@ define([
     'app/controller/base',
     'app/module/validate',
     'app/module/smsCaptcha',
-    'app/interface/GeneralCtr',
     'app/interface/UserCtr'
-], function(base, Validate, smsCaptcha, GeneralCtr, UserCtr) {
+], function(base, Validate, smsCaptcha, UserCtr) {
     init();
     function init() {
         addListeners();
     }
 
     function addListeners() {
-        var _cmForm = $("#cmForm");
-        _cmForm.validate({
+        var _formWrapper = $("#formWrapper");
+        _formWrapper.validate({
             'rules': {
                 "smsCaptcha": {
                     sms: true,
@@ -34,8 +33,8 @@ define([
             mobile: "newMobile"
         });
         // 设置
-        $("#sbtn").on("click", function(e) {
-            if(_cmForm.valid()){
+        $("#changeMobile").on("click", function(e) {
+            if(_formWrapper.valid()){
                 changeMobile();
             }
         });
@@ -49,7 +48,7 @@ define([
                 base.showMsg("手机号修改成功！");
                 setTimeout(function() {
                     history.back();
-                }, 1000);
+                }, 500);
             });
     }
 });

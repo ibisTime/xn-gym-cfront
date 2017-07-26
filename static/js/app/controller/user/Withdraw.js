@@ -6,7 +6,6 @@ define([
     'app/module/validate'
 ], function(base, GeneralCtr, AccountCtr, addOrEditBankCard, Validate) {
     var remainAmount = 0, rate;
-
     init();
     function init() {
         base.showLoading();
@@ -133,7 +132,6 @@ define([
     }
     // 提现
     function doWithDraw(param) {
-        // param.remainAmount = "";
         param.payCardInfo = $("#payCardNo").find("option:selected").attr("data-name");
         param.amount = param.amount * 1000;
         param.applyNote = base.getUserId() + "用户取现";

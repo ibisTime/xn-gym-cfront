@@ -37,6 +37,10 @@ define([
                     "7": "周六"
                 }
                 var perCourseList = data.perCourseList, html = "";
+                if(!perCourseList.length) {
+                    base.showMsg("该私教还未添加上课时间");
+                    return;
+                }
                 perCourseList.forEach((course) => {
                     var skCycle = weekList[course.skCycle],
                         skEndDatetime = course.skEndDatetime.substr(0, 5),

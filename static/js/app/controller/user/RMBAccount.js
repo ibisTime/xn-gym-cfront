@@ -1,19 +1,23 @@
 define([
     'app/controller/base',
-    'app/module/foot',
-    'app/interface/AccountCtr'
-], function(base, Foot, AccountCtr) {
+    'app/interface/AccountCtr',
+    'app/interface/UserCtr',
+    'app/module/setTradePwd'
+], function(base, AccountCtr, UserCtr, setTradePwd) {
     var config = {
         start: 1,
-        limit: 10
+        limit: 20
     }, isEnd = false, canScrolling = false;
+    var tradepwdFlag = false;
 
     init();
 
     function init() {
-        Foot.addFoot(3);
         base.showLoading();
-        getAccount();
+        $.when(
+            getAccount(),
+            getUser()
+        ).then(base.hideLoading);
         addListener();
     }
     // 获取账户信息
@@ -22,11 +26,26 @@ define([
             .then(function(data) {
                 data.forEach(function(account) {
                     if (account.currency == "CNY") {
-                        $("#amount").html(base.formatMoneyD(account.amount));
+                        $("#amount").html(base.formatMoney(account.amount));
                         config.accountNumber = account.accountNumber;
                     }
                 });
-                getPageFlow().then(base.hideLoading);
+                getPageFlow();
+            });
+    }
+    function getUser() {
+        return UserCtr.getUser()
+            .then((data) => {
+                if(data.tradepwdFlag != "0"){
+                    tradepwdFlag = true;
+                } else {
+                    setTradePwd.addCont({
+                        mobile: data.mobile,
+                        success: function() {
+                            tradepwdFlag = true;
+                        }
+                    });
+                }
             });
     }
     // 分页查询流水
@@ -58,7 +77,7 @@ define([
                 positive = transAmount > 0;
             transAmount = base.formatMoney(transAmount);
             var createDatetime = item.createDatetime,
-                day = base.formatDate(createDatetime, "MM日"),
+                day = base.formatDate(createDatetime, "dd日"),
                 time = base.formatDate(createDatetime, "hh:mm");
 
             html += `<div class="flow-item border-bottom-1px">
@@ -71,7 +90,11 @@ define([
                         <i class="${positive ? 'receive-icon' : 'pay-icon'}"></i>
                     </div>
                     <div class="flow-content am-flexbox-item">
-                        <p class="f-transAmount f-trans-red">${positive ? `+${transAmount}` : transAmount}</p>
+                        ${
+                            positive
+                                ? `<p class="f-transAmount f-trans-red">+${transAmount}</p>`
+                                : `<p class="f-transAmount f-trans-blue">${transAmount}</p>`
+                        }
                         <p class="flow-remark">${item.bizNote}</p>
                     </div>
                 </div>
@@ -94,7 +117,14 @@ define([
         });
         // 提现
         $("#withdrawBtn").click(() => {
-            location.replace("./withdraw.html");
+            if(tradepwdFlag) {
+                location.replace("./withdraw.html");
+            } else {
+                base.confirm("您还未设置交易密码，无法提现。<br/>点击确认前往设置")
+                    .then(() => {
+                        setTradePwd.showCont();
+                    }, () => {});
+            }
         });
     }
     function showLoading() {

@@ -1,4 +1,6 @@
 @import "./mixin";
+@import "./global";
+
 label.error {
     position: absolute;
     right: 0.3rem;
@@ -9,7 +11,7 @@ label.error {
 }
 // Swiper
 .swiper-pagination-bullet.swiper-pagination-bullet-active {
-    background: #ffa11b;
+    background: $primary-color;
 }
 
 .index-swiper-wrap {
@@ -66,7 +68,7 @@ label.error {
         color: #999;
 
         &.active {
-            color: #ff0200;
+            color: $primary-color;
         }
     }
 
@@ -128,8 +130,8 @@ label.error {
     }
 
     .hot-tip0 {
-        color: #ff0200;
-        border: 1px solid #ff0200;
+        color: $primary-color;
+        border: 1px solid $primary-color;
     }
 
     .hot-tip1 {
@@ -169,11 +171,13 @@ label.error {
     }
 
     .hot-content {
+        font-size: 0;
+
         .hot-item {
-            width: 3.6rem;
-            float: left;
+            vertical-align: top;
             padding-left: 0.15rem;
             padding-right: 0.15rem;
+            width: 3.6rem;
 
             .hot-adv {
                 height: 3.3rem;
@@ -236,8 +240,9 @@ label.error {
                 line-height: 1.2;
 
                 span {
-                    width: 100%;
                     display: inline-block;
+                    vertical-align: middle;
+                    width: 100%;
                 }
             }
         }
@@ -298,7 +303,7 @@ label.error {
         padding: 0.1rem 0.3rem;
 
         &.active {
-            color: #ff0200;
+            color: $primary-color;
         }
     }
 
@@ -367,31 +372,35 @@ label.error {
     .user-amount {
         .unit-span {
             font-size: 0.28rem;
-            color: #ff0200;
+            color: $primary-color;
         }
 
         .amount-span {
             font-size: 0.34rem;
-            color: #ff0200;
+            color: $primary-color;
         }
     }
 
     .border-e {
         width: 1px;
-        background: #eee;
+        background: $border-color;
         height: 0.7rem;
     }
 }
 
 .user-list-wrap {
-    background: #fff;
     font-size: 0.3rem;
 
     .user-list-item {
         height: 1.12rem;
         padding-left: 0.36rem;
         padding-right: 0.36rem;
-        border-bottom: 1px solid #eee;
+        @include border-bottom-1px($border-color);
+        background: #fff;
+
+        &:last-child {
+            @include border-none();
+        }
 
         > a {
             overflow: visible;
@@ -453,7 +462,7 @@ label.error {
     background: #fff;
 
     .flow-item {
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid $border-color;
         padding: 0.27rem 0.3rem;
 
         &:last-child {
@@ -497,7 +506,7 @@ label.error {
                 font-size: 0.36rem;
 
                 &.f-trans-red {
-                    color: #ff0200;
+                    color: $primary-color;
                 }
 
                 &.f-trans-blue {
@@ -541,7 +550,7 @@ label.error {
 
             .order-item-cont {
                 position: relative;
-                border-top: 1px solid #eee;
+                border-top: 1px solid $border-color;
                 padding: 0.2rem 0.3rem;
                 width: 100%;
 
@@ -572,7 +581,7 @@ label.error {
                         padding-top: 0.04rem;
 
                         span {
-                            border-right: 1px solid #eee;
+                            border-right: 1px solid $border-color;
 
                             &:last-child {
                                 border-right: none;
@@ -604,6 +613,7 @@ label.error {
                     span {
                         width: 100%;
                         display: inline-block;
+                        vertical-align: middle;
                     }
                 }
 
@@ -612,19 +622,19 @@ label.error {
                     top: 0.2rem;
                     right: 0.3rem;
                     font-size: 0.24rem;
-                    color: #ff0200;
+                    color: $primary-color;
                 }
             }
 
             .order-item-footer {
-                border-top: 1px solid #eee;
+                border-top: 1px solid $border-color;
                 height: 0.88rem;
                 padding: 0 0.3rem;
 
                 .am-button {
                     background-color: transparent;
-                    color: #ff0200;
-                    border: 0.02rem solid #ff0200;
+                    color: $primary-color;
+                    border: 0.02rem solid $primary-color;
                     font-size: 0.28rem;
                     height: 0.64rem;
                     line-height: 0.6rem;
@@ -701,7 +711,7 @@ label.error {
     }
 
     .course-item {
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid $border-color;
         padding: 0.3rem 0.3rem 0.3rem 0;
         font-size: 0.26rem;
         position: relative;
@@ -743,7 +753,7 @@ label.error {
 }
 
 .detail-description {
-    border-top: 1px solid #eee;
+    border-top: 1px solid $border-color;
     padding: 0.3rem;
     background: #fff;
 
@@ -781,7 +791,7 @@ label.error {
     background: #fff;
 
     .comment-item {
-        border-top: 1px solid #eee;
+        border-top: 1px solid $border-color;
         padding: 0.22rem 0.3rem;
 
         .commer-info {
@@ -832,7 +842,7 @@ label.error {
     left: 0;
     width: 100%;
     background: #fff;
-    border-top: 1px solid #eee;
+    border-top: 1px solid $border-color;
 
     .foot-label {
         font-size: 0.24rem;
@@ -840,12 +850,12 @@ label.error {
     }
 
     .foot-unit {
-        color: #ff0200;
+        color: $primary-color;
     }
 
     .foot-price {
         font-size: 0.32rem;
-        color: #ff0200;
+        color: $primary-color;
     }
 
     .am-button {
@@ -861,11 +871,11 @@ label.error {
     background: #fff;
 
     .member-item {
-        border-bottom: 1px solid #eee;
         padding: 0.3rem;
+        @include border-bottom-1px($border-color);
 
         &:last-child {
-            border-bottom: none;
+            @include border-none();
         }
 
         .member-avatar {
@@ -1096,16 +1106,19 @@ label.error {
             line-height: 0.6rem;
             font-size: 0.24rem;
             color: #999;
-            border-bottom: 1px solid #eee;
+            @include border-bottom-1px($border-color);
         }
 
         .pay-type-list {
 
             .pay-item {
                 padding: 0.25rem 0.3rem;
-                border-bottom: 1px solid #eee;
                 font-size: 0;
+                @include border-bottom-1px($border-color);
 
+                &:last-child {
+                    @include border-none();
+                }
                 span {
                     font-size: 0.3rem;
                     padding-left: 0.2rem;
@@ -1205,7 +1218,7 @@ label.error {
 
         span {
             padding-left: 0.9rem;
-            color: #ff0200;
+            color: $primary-color;
         }
     }
 
@@ -1248,11 +1261,10 @@ label.error {
 
         .confirm-item {
             padding: 0.3rem;
-            border-bottom: 1px solid #eee;
-            position: relative;
+            @include border-bottom-1px($border-color);
 
             &:last-child {
-                border-bottom: none;
+                @include border-none();
             }
 
             .title {
@@ -1271,7 +1283,7 @@ label.error {
                 }
 
                 &.amount {
-                    color: #ff0200;
+                    color: $primary-color;
                 }
 
                 &.addr-icon {
@@ -1313,7 +1325,7 @@ label.error {
 
     .confirm-btn {
         padding: 0 0.3rem;
-        margin-top: 1rem;
+        margin-top: 0.7rem;
 
         .am-button {
             width: 100%;
@@ -1328,13 +1340,13 @@ label.error {
 
         .am-button-primary {
             color: #fff;
-            background: #ff0200;
+            background: $primary-color;
         }
 
         .am-button-cancel {
-            color: #ff0200;
+            color: $primary-color;
             background: transparent;
-            border: 1px solid #ff0200;
+            border: 1px solid $primary-color;
         }
     }
 }
@@ -1345,10 +1357,10 @@ label.error {
 
     .notice-item {
         padding: 0.5rem 0.3rem 0.5rem 0;
-        border-bottom: 1px solid #eee;
+        @include border-bottom-1px($border-color);
 
         &:last-child {
-            border-bottom: none;
+            @include border-none();
         }
 
         .img {
@@ -1395,8 +1407,49 @@ label.error {
 .no-data {
     line-height: 1rem;
     text-align: center;
+    font-size: 0.28rem;
 }
 
 .detail-description1 {
     padding: 0.3rem;
+}
+
+.bank-wrapper {
+    padding: 0.2rem 0.3rem;
+    li {
+        padding: 0.6rem 0.4rem;
+        margin-bottom: 0.2rem;
+        border-radius: 0.2rem;
+        color: #fff;
+        background: #e63e33;
+        background: -moz-linear-gradient(left, #e63e33, #e56561);
+        background: -webkit-linear-gradient(left, #e63e33, #e56561);
+        background: -o-linear-gradient(left, #e63e33, #e56561);
+
+        .bank-icon {
+            display: inline-block;
+            width: 0.74rem;
+            height: 0.74rem;
+            background-repeat: no-repeat;
+            background-size: 0.74rem 0.74rem;
+            background-image: url(../images/bank@2x.png);
+        }
+
+        .am-flexbox-item {
+            margin-left: 0.3rem;
+
+            h2 {
+                font-size: 0.32rem;
+            }
+
+            .type {
+                font-size: 0.28rem;
+            }
+
+            .bank-code {
+                margin-top: 0.3rem;
+                font-size: 0.4rem;
+            }
+        }
+    }
 }

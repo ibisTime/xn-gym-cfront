@@ -14,6 +14,31 @@ define([
             getUserInfo(),
             getAccount()
         ).then(base.hideLoading);
+        getUnfinishedOrders();
+    }
+    // 获取未完成的订单数量
+    function getUnfinishedOrders() {
+        UserCtr.getUnfinishedOrders()
+            .then((data) => {
+                if(data.activityCount) {
+                    $("#activityWrap")
+                        .append(`<span class="am-badge am-badge-not-a-wrapper">
+                            <sup class="am-badge-text">${data.activityCount}</sup>
+                        </span>`);
+                }
+                if(data.orgCourseCount) {
+                    $("#courseWrap")
+                        .append(`<span class="am-badge am-badge-not-a-wrapper">
+                            <sup class="am-badge-text">${data.orgCourseCount}</sup>
+                        </span>`);
+                }
+                if(data.perCourseCount) {
+                    $("#coachWrap")
+                        .append(`<span class="am-badge am-badge-not-a-wrapper">
+                            <sup class="am-badge-text">${data.perCourseCount}</sup>
+                        </span>`);
+                }
+            });
     }
     // 获取账户信息
     function getAccount() {
@@ -21,9 +46,9 @@ define([
             .then(function(data) {
                 data.forEach(function(d, i) {
                     if (d.currency == "CNY") {
-                        $("#cnyAmount").html(base.formatMoneyD(d.amount));
+                        $("#cnyAmount").html(base.formatMoney(d.amount));
                     } else if (d.currency == "JF") {
-                        $("#jfAmount").html(base.formatMoneyD(d.amount));
+                        $("#jfAmount").html(base.formatMoney(d.amount));
                     }
                 })
             });

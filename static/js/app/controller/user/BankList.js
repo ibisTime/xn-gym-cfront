@@ -1,10 +1,10 @@
 define([
     'app/controller/base',
-    'app/module/weixin',
-    'app/interface/GeneralCtr',
+    'app/interface/UserCtr',
+    'app/module/addOrEditBankCard',
     'app/util/handlebarsHelpers'
-], function(base, weixin, GeneralCtr, Handlebars) {
-    var _tmpl = __inline('../../ui/notice-item.handlebars');
+], function(base, UserCtr, addOrEditBankCard, Handlebars) {
+    var _tmpl = __inline('../../ui/bank-item.handlebars');
     var config = {
         start: 1,
         limit: 10
@@ -12,19 +12,13 @@ define([
 
     init();
     function init() {
-		getPageNotice();
+		getPageBankCard();
         addListener();
-        weixin.initShare({
-            title: document.title,
-            desc: "自玩自健",
-            link: location.href,
-            imgUrl: base.getShareImg()
-        });
     }
     //公告
-    function getPageNotice(refresh) {
+    function getPageBankCard(refresh) {
         base.showLoading();
-    	GeneralCtr.getPageSysNotice(config, refresh)
+    	UserCtr.getPageBankCard(config, refresh)
             .then(function(data) {
                 base.hideLoading();
                 hideLoading();
@@ -34,11 +28,11 @@ define([
                     isEnd = true;
                 }
     			if(data.list.length) {
-                    $("#content").append(_tmpl({items: data.list}));
+                    $("#content")[refresh ? "html" : "append"](_tmpl({items: data.list}));
                     isEnd && $("#loadAll").removeClass("hidden");
                     config.start++;
     			} else if(config.start == 1) {
-                    $("#content").html('<li class="no-data">暂无公告</li>')
+                    $("#content").html('<li class="no-data">暂无银行卡</li>')
                 } else {
                     $("#loadAll").removeClass("hidden");
                 }
@@ -46,12 +40,24 @@ define([
         	}, hideLoading);
     }
     function addListener() {
+        addOrEditBankCard.addCont({
+            userId: base.getUserId(),
+            success: function() {
+                config.start = 1;
+                getPageBankCard(true);
+            }
+        });
         $(window).off("scroll").on("scroll", function() {
             if (canScrolling && !isEnd && ($(document).height() - $(window).height() - 10 <= $(document).scrollTop())) {
                 canScrolling = false;
                 showLoading();
-                getPageNotice();
+                getPageBankCard();
             }
+        });
+        $("#content").on("click", "li", function() {
+            addOrEditBankCard.showCont({
+                code: $(this).attr("data-code")
+            });
         });
     }
     function showLoading() {

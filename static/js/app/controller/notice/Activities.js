@@ -1,18 +1,25 @@
 define([
     'app/controller/base',
+    'app/module/weixin',
     'app/interface/ActivityCtr',
     'app/util/handlebarsHelpers'
-], function(base, ActivityCtr, Handlebars) {
+], function(base, weixin, ActivityCtr, Handlebars) {
     var _tmpl = __inline('../../ui/notice_activity.handlebars');
     var config = {
         start: 1,
-        limit: 10
+        limit: 15
     }, isEnd = false, canScrolling = false;
 
     init();
     function init() {
 		getPageActivities();
         addListener();
+        weixin.initShare({
+            title: document.title,
+            desc: "自玩自健",
+            link: location.href,
+            imgUrl: base.getShareImg()
+        });
     }
     function getPageActivities(refresh) {
         base.showLoading();
@@ -37,7 +44,7 @@ define([
         	}, hideLoading);
     }
     function addListener() {
-        $(window).off("scroll").on("scroll", function() {
+        $(window).on("scroll", function() {
             if (canScrolling && !isEnd && ($(document).height() - $(window).height() - 10 <= $(document).scrollTop())) {
                 canScrolling = false;
                 showLoading();

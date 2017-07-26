@@ -1,18 +1,21 @@
 define([
     'app/controller/base',
+    'app/util/dict',
     'app/interface/CoachCtr'
-], function(base, CoachCtr) {
+], function(base, Dict, CoachCtr) {
     var config = {
         start: 1,
         limit: 10
     }, isEnd = false, canScrolling = false;
+    var orderStatus = Dict.get("coachOrderStatus");
     var currentType = 0,
         // status: 0 待付款，1 付款成功，2 已接单，3 已上课，4 已下课，5 用户取消，6 平台取消，7 已完成
         type2Status = {
-            "0": "0",
-            "1": "1",
-            "2": "4",
-            "3": "7"
+            "0": "",
+            "1": "0",
+            "2": "1",
+            "3": "2",
+            "4": "4"
         }, genderList = {
             "0": "女",
             "1": "男"
@@ -41,13 +44,13 @@ define([
                     isEnd = false;
                 }
                 if(data.list.length) {
-                    config.start++;
                     var html = "";
                     lists.forEach((item) => {
                         html += buildHtml(item);
                     });
-                    $("#content" + currentType).html(html);
+                    $("#content" + currentType)[refresh || config.start == 1 ? "html" : "append"](html);
                     isEnd && $("#loadAll" + currentType).removeClass("hidden");
+                    config.start++;
                 } else if(config.start == 1) {
                     $("#content" + currentType).html('<div class="no-data">暂无订单</div>');
                     $("#loadAll" + currentType).addClass("hidden");
@@ -84,17 +87,19 @@ define([
                                     </div>
                                 </div>
                             </div>
-                            <div class="order-status">¥${base.formatMoney(item.amount)}</div>
+                            <div class="order-status">${currentType == 0 ? orderStatus[item.status] : "¥" + base.formatMoney(item.amount)}</div>
                         </div>
                     </a>
                     ${
-                        item.status == "0" || item.status == "4"
+                        item.status == "0" || item.status == "1" || item.status == "2" || item.status == "4"
                             ? `<div class="order-item-footer">
                                     ${
                                         item.status == "0"
                                             ? `<a class="am-button am-button-small" href="../pay/pay.html?code=${item.code}&type=coach">立即支付</a>
                                                 <button class="am-button am-button-small cancel-order" data-code="${item.code}">取消订单</button>`
-                                            : `<a class="am-button am-button-small rating-order" href="./assessment.html?code=${item.code}">去评价</a>`
+                                            : item.status == "1" || item.status == "2"
+                                                ? `<button class="am-button am-button-small cancel-order" data-code="${item.code}">取消订单</button>`
+                                                : `<a class="am-button am-button-small rating-order" href="./assessment.html?code=${item.code}">去评价</a>`
                                     }
                                 </div>`
                             : ''
@@ -109,13 +114,13 @@ define([
             _tabpanes = $("#am-tabs-content").find(".am-tabs-tabpane");
         $("#am-tabs-bar").on("click", ".am-tabs-tab", function(){
             var _this = $(this), index = _this.index() - 1;
-            if(!_this.hasClass(".am-tabs-tab-active")){
+            if(!_this.hasClass("am-tabs-tab-active")){
                 _this.addClass("am-tabs-tab-active")
                     .siblings(".am-tabs-tab-active").removeClass("am-tabs-tab-active");
                 _tabsInkBar.css({
-                    "-webkit-transform": "translate3d(" + index * 1.875 + "rem, 0px, 0px)",
-                    "-moz-transform": "translate3d(" + index * 1.875 + "rem, 0px, 0px)",
-                    "transform": "translate3d(" + index * 1.875 + "rem, 0px, 0px)"
+                    "-webkit-transform": "translate3d(" + index * 1.5 + "rem, 0px, 0px)",
+                    "-moz-transform": "translate3d(" + index * 1.5 + "rem, 0px, 0px)",
+                    "transform": "translate3d(" + index * 1.5 + "rem, 0px, 0px)"
                 });
                 _tabpanes.eq(index).removeClass("am-tabs-tabpane-inactive")
                     .siblings().addClass("am-tabs-tabpane-inactive");
@@ -133,7 +138,7 @@ define([
                     base.showLoading("取消中...");
                     CoachCtr.cancelOrder(orderCode)
                         .then(() => {
-                            base.showMsg("取消成功");
+                            base.showMsg("操作成功");
                             base.showLoading();
                             config.start = 1;
                             getPageOrders(true);
@@ -141,7 +146,7 @@ define([
                 }, () => {});
         });
 
-        $(window).off("scroll").on("scroll", function() {
+        $(window).on("scroll", function() {
             if (canScrolling && !isEnd && ($(document).height() - $(window).height() - 10 <= $(document).scrollTop())) {
                 canScrolling = false;
                 var choseIndex = $(".am-tabs-tab-active").index() - 1;

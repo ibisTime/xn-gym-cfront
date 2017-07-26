@@ -33,6 +33,12 @@ define([
         addListener();
         buildDate();
         $("#am-tabs-bar").find(".am-tabs-tab:eq(" + type + ")").click();
+        weixin.initShare({
+            title: document.title,
+            desc: "自玩自健",
+            link: location.href,
+            imgUrl: base.getShareImg()
+        });
     }
     // 生成日期选择器
     function buildDate() {
@@ -137,7 +143,7 @@ define([
 
     // 分页查询私教
     function getPageCoach(refresh) {
-        return CoachCtr.getPageCoach({
+        return CoachCtr.getPageFilterCoach({
             skCycle: coachDatetime,
             ...config
         }, refresh)
@@ -174,7 +180,7 @@ define([
             _tabpanes = _tabsContent.find(".am-tabs-tabpane");
         $("#am-tabs-bar").on("click", ".am-tabs-tab", function(){
             var _this = $(this), index = _this.index() - 1;
-            if(!_this.hasClass(".am-tabs-tab-active")){
+            if(!_this.hasClass("am-tabs-tab-active")){
                 _this.addClass("am-tabs-tab-active")
                     .siblings(".am-tabs-tab-active").removeClass("am-tabs-tab-active");
                 _tabsInkBar.css({

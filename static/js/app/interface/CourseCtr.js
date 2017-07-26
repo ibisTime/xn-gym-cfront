@@ -59,6 +59,8 @@ define([
         getPageOrders(config, refresh) {
             return Ajax.get("622080", {
                 applyUser:  base.getUserId(),
+                orderColumn: "apply_datetime",
+                orderDir: "desc",
                 ...config
             }, refresh);
         },

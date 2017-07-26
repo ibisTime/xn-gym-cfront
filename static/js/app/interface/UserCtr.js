@@ -17,7 +17,7 @@ define([
             }, refresh);
         },
         /**
-         * 分页查询货客
+         * 分页查询获客
          * @param config: {code,mobile?,smsCaptcha?,userReferee}
          */
         getPageChildren(config, refresh) {
@@ -40,7 +40,7 @@ define([
                 tradePwd,
                 smsCaptcha,
                 tradePwdStrength: base.calculateSecurityLevel(tradePwd),
-                userId: base.getUserId(),
+                userId: base.getUserId()
             });
         },
         // 修改手机号
@@ -77,11 +77,28 @@ define([
                 ...config
             });
         },
-        // 获取银行卡列表
-        getBankCardList(){
+        // 列表查询银行卡
+        getBankCardList(refresh) {
             return Ajax.get("802016", {
                 userId: base.getUserId(),
                 status: "1"
+            }, refresh);
+        },
+        /**
+         * 分页查询银行卡
+         * @param config: {start, limit}
+         */
+        getPageBankCard(config, refresh) {
+            return Ajax.get("802015", {
+                userId: base.getUserId(),
+                status: "1",
+                ...config
+            }, refresh);
+        },
+        // 获取未完成的订单数量
+        getUnfinishedOrders() {
+            return Ajax.get("622920", {
+                applyUser: base.getUserId()
             });
         }
     };
