@@ -63,11 +63,15 @@ define([
             });
         },
         // 获取银行卡列表
-        getBankCardList(){
+        getBankCardList() {
             return Ajax.get("802016", {
                 userId: base.getUserId(),
                 status: "1"
             });
+        },
+        // 列表获取提现规则
+        getRules(config = {start: 1, limit: 100}, refresh) {
+            return Ajax.get("802025", config, refresh);
         }
     };
 })

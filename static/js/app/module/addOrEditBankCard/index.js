@@ -185,11 +185,11 @@ define([
                 wrap.animate({
                     left: "100%"
                 }, 200, function () {
+                    wrap.hide();
+                    func && func($("#bankcardNumber").val(), $("#bankName").find("option:selected").text());
                     $("#realName").val("");
                     $("#subbranch").val("");
                     $("#bankcardNumber").val("");
-                    wrap.hide();
-                    func && func($("#bankcardNumber").val(), $("#bankName").find("option:selected").text());
                     wrap.find("label.error").remove();
                 });
             }

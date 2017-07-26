@@ -41,7 +41,7 @@ define([
                 }
                 if(data.status == "0") {
                     $("#payBtn, #cancelBtn").removeClass("hidden");
-                } else if(data.status == "1" || data.status == "2") {
+                } else if(data.status == "1") {
                     $("#cancelBtn").removeClass("hidden");
                 }
             });

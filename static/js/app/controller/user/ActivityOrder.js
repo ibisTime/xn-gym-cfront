@@ -37,7 +37,7 @@ define([
                 if(status == "0") {
                     $("#payBtn, #cancelBtn").removeClass("hidden");
                 } else if(status == "1") {
-                    $("#cancelBtn").removeClass("hidden");
+                    $("#refundBtn").removeClass("hidden");
                 }
             });
     }
@@ -49,6 +49,18 @@ define([
                     ActivityCtr.cancelOrder(code)
                         .then(() => {
                             base.showMsg("取消成功");
+                            base.showLoading();
+                            getOrder(true);
+                        });
+                }, () => {});
+        });
+        $("#refundBtn").on("click", function() {
+            base.confirm('确定申请退款吗')
+                .then(() => {
+                    base.showLoading("提交中...");
+                    ActivityCtr.refundOrder(code)
+                        .then(() => {
+                            base.showMsg("申请提交成功");
                             base.showLoading();
                             getOrder(true);
                         });

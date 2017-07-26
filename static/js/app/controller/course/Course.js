@@ -78,8 +78,8 @@ define([
                     isEnd = false;
                 }
                 if(data.list.length) {
+                    $("#courseContent")[refresh || config.start == 1 ? "html" : "append"](_tmpl({items: data.list}));
                     config.start++;
-                    $("#courseContent").html(_tmpl({items: data.list}));
                     isEnd && $("#loadAll0").removeClass("hidden");
                 } else if(config.start == 1) {
                     $("#courseContent").html('<div class="no-data">暂无课程</div>');
@@ -138,7 +138,7 @@ define([
                         </div>
                     </a>`;
         });
-        $("#coachContent").html(html);
+        $("#coachContent")[config.start == 1 ? "html" : "append"](html);
     }
 
     // 分页查询私教
@@ -159,13 +159,18 @@ define([
                 }
                 if(data.list.length) {
                     coachList = data.list;
-                    config.start++;
-                    if(!--count) {
+                    if(!labelList) {
+                        if(!--count) {
+                            addLabelData();
+                        }
+                    } else {
                         addLabelData();
                     }
+                    config.start++;
                     isEnd && $("#loadAll1").removeClass("hidden");
                 } else if(config.start == 1) {
                     $("#coachContent").html('<div class="no-data">暂无私教</div>');
+                    $("#loadAll1").addClass("hidden");
                 } else {
                     $("#loadAll1").removeClass("hidden");
                 }

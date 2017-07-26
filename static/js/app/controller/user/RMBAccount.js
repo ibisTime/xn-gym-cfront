@@ -51,7 +51,6 @@ define([
     // 分页查询流水
     function getPageFlow() {
         return AccountCtr.getPageFlow(config).then(function(data) {
-            base.hideLoading();
             hideLoading();
             var lists = data.list;
             var totalCount = +data.totalCount;

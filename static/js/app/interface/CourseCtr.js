@@ -74,6 +74,13 @@ define([
                 orderCode,
                 payType
             });
+        },
+        // 用户申请退款
+        refundOrder(orderCode) {
+            return Ajax.post("622074", {
+                orderCode,
+                applyUser: base.getUserId()
+            });
         }
     };
 })

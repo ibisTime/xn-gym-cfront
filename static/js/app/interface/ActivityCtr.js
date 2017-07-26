@@ -55,9 +55,16 @@ define([
                 ...config
             }, refresh);
         },
-        // 2.8、 详情查询订单
+        // 详情查询订单
         getOrder(code, refresh) {
             return Ajax.get("622041", {code})
+        },
+        // 用户申请退款
+        refundOrder(orderCode) {
+            return Ajax.post("622034", {
+                orderCode,
+                applyUser: base.getUserId()
+            });
         }
     };
 })

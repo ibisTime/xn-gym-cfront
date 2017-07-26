@@ -17,6 +17,22 @@ define([
             base.hideLoading();
             addListener();
         });
+        getRules();
+    }
+    // 获取提现规则
+    function getRules() {
+        AccountCtr.getRules()
+            .then((data) => {
+                data.list.forEach((rule) => {
+                    if(rule.ckey == "CNYRechargeTimes") {
+                        $("#rechargeTimes").text(rule.cvalue);
+                    } else if(rule.ckey == "CNYRuleNote") {
+                        $("#ruleNote").text(rule.cvalue);
+                    } else if(rule.ckey == "CNYToAcoount") {
+                        $("#toAcoount").text(rule.cvalue);
+                    }
+                })
+            });
     }
     // 获取提现费率
     function getRate() {
@@ -75,9 +91,8 @@ define([
             'rules': {
                 amount: {
                     required: true,
-                    withdraw: true,
                     ltR: true,
-                    maxAmount: true
+                    isPositive: true
                 },
                 payCardNo: {
                     required: true
@@ -106,22 +121,6 @@ define([
             }
             $("#fee").text(base.formatMoney(amount) + "元");
         });
-        $.validator.addMethod("withdraw", function(value, element) {
-            if(!/\d+/.test(value)) {
-                return false;
-            }
-            value = +value;
-            if(value % 5) {
-                return false;
-            }
-            return !!value;
-        }, '必须为5的倍数');
-        $.validator.addMethod("maxAmount", function(value, element) {
-            if($.isNumeric(value)) {
-                return +value <= 50000;
-            }
-            return false;
-        }, '单笔最高50000元');
         $.validator.addMethod("ltR", function(value, element) {
             value = +value;
             if(value * 1000 > remainAmount) {
@@ -134,12 +133,13 @@ define([
     function doWithDraw(param) {
         param.payCardInfo = $("#payCardNo").find("option:selected").attr("data-name");
         param.amount = param.amount * 1000;
-        param.applyNote = base.getUserId() + "用户取现";
+        param.applyNote = base.getUserId() + "用户提现";
         AccountCtr.withDraw(param).then(function() {
-            base.showMsg("提交成功");
+            base.hideLoading();
+            base.showMsg("申请提交成功");
             setTimeout(function() {
-                location.replace('./account.html');
-            }, 500);
+                location.replace('./rmb-account.html');
+            }, 700);
         });
     }
 });

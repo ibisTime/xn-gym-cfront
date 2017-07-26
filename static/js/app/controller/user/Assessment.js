@@ -20,7 +20,7 @@ define([
             data.list.forEach((item) => {
                 html += `<div class="assessment-item" data-ckey="${item.ckey}">
                             <div class="am-flexbox">
-                                <div class="assessment-title">${item.note}</div>
+                                <div class="assessment-title">${item.remark}</div>
                                 <div class="assessment-content">
                                     <i class="hot-star"></i>
                                     <i class="hot-star"></i>

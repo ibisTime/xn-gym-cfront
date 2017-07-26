@@ -335,7 +335,6 @@ textarea {
 .inline {
     display: inline;
 }
-
 /*position*/
 .fixft {
     position: fixed;
@@ -382,6 +381,7 @@ textarea {
     vertical-align: middle;
     margin-right: 4px;
 }
+
 .loading-item {
     height: 0.8rem;
     line-height: 0.8rem;
@@ -393,6 +393,7 @@ textarea {
         vertical-align: middle;
     }
 }
+
 .global-loading-icon1 {
     background: url('../images/loading.png') no-repeat;
     animation: loadingCircle 1.2s infinite linear;
@@ -687,6 +688,7 @@ button[disabled] {
     -webkit-background-clip: padding-box;
     padding: 0 0.3rem;
 }
+
 .am-button-ghost {
     color: $primary-color;
     background-color: transparent;
@@ -857,4 +859,12 @@ sup {
     display: inline-block;
     line-height: 1;
     vertical-align: middle;
+}
+
+.ui-dialog-footer button+button {
+    margin-left: 10px !important;
+}
+
+.ui-dialog-footer button {
+    padding: 6px 20px !important;
 }

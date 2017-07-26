@@ -148,6 +148,20 @@ define([
     }
 
     function addListener() {
+        // $("#top-swiper").on("touchstart", ".swiper-slide img", function (e) {
+        //     var touches = e.originalEvent.targetTouches[0],
+        //         me = $(this);
+        //     me.data("x", touches.clientX);
+        // });
+        // $("#top-swiper").on("touchend", ".swiper-slide img", function (e) {
+        //     var me = $(this),
+        //         touches = e.originalEvent.changedTouches[0],
+        //         ex = touches.clientX,
+        //         xx = parseInt(me.data("x")) - ex;
+        //     if(Math.abs(xx) < 6){
+        //
+        //     }
+        // });
         $("#buy").click(function() {
             location.href = "./coach-confirm.html?code=" + code;
         });

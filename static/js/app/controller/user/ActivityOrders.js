@@ -93,7 +93,7 @@ define([
                                         item.status == "0"
                                             ? `<a class="am-button am-button-small" href="../pay/pay.html?code=${item.code}&type=activity">立即支付</a>
                                                 <button class="am-button am-button-small cancel-order" data-code="${item.code}">取消订单</button>`
-                                            : `<button class="am-button am-button-small cancel-order" data-code="${item.code}">取消订单</button>`
+                                            : `<button class="am-button am-button-small refund-order" data-code="${item.code}">申请退款</button>`
                                     }
                                 </div>`
                             : ''
@@ -134,6 +134,20 @@ define([
                     ActivityCtr.cancelOrder(orderCode)
                         .then(() => {
                             base.showMsg("取消成功");
+                            base.showLoading();
+                            config.start = 1;
+                            getPageOrders(true);
+                        });
+                }, () => {});
+        });
+        $("#orderWrapper").on("click", ".refund-order", function() {
+            var orderCode = $(this).attr("data-code");
+            base.confirm('确定申请退款吗')
+                .then(() => {
+                    base.showLoading("提交中...");
+                    ActivityCtr.refundOrder(orderCode)
+                        .then(() => {
+                            base.showMsg("申请提交成功");
                             base.showLoading();
                             config.start = 1;
                             getPageOrders(true);

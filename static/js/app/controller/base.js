@@ -193,7 +193,7 @@ define([
         // 获取分享的图片
         getShareImg: function(pic) {
             if (!pic) {
-                return location.origin + '/static/images/logo.png';
+                return location.origin + '/static/images/share.png';
             }
             return Base.getImg(pic);
         },

@@ -79,7 +79,7 @@ define([
                                         <div class="order-infos">
                                             <span class="pdr">${item.skDatetime.substr(0, 5)}-${item.xkDatetime.substr(0, 5)}</span>
                                             <span class="pdl pdr">${genderList[item.coach.gender]}</span>
-                                            <span class="pdl">${item.coach.star}分</span>
+                                            <span class="pdl">${item.coach.star}级</span>
                                         </div>
                                     </div>
                                     <div class="order-addr">
@@ -91,13 +91,13 @@ define([
                         </div>
                     </a>
                     ${
-                        item.status == "0" || item.status == "1" || item.status == "2" || item.status == "4"
+                        item.status == "0" || item.status == "1" || item.status == "4"
                             ? `<div class="order-item-footer">
                                     ${
                                         item.status == "0"
                                             ? `<a class="am-button am-button-small" href="../pay/pay.html?code=${item.code}&type=coach">立即支付</a>
                                                 <button class="am-button am-button-small cancel-order" data-code="${item.code}">取消订单</button>`
-                                            : item.status == "1" || item.status == "2"
+                                            : item.status == "1"
                                                 ? `<button class="am-button am-button-small cancel-order" data-code="${item.code}">取消订单</button>`
                                                 : `<a class="am-button am-button-small rating-order" href="./assessment.html?code=${item.code}">去评价</a>`
                                     }

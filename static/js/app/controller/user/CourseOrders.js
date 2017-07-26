@@ -99,7 +99,7 @@ define([
                                             ? `<a class="am-button am-button-small" href="../pay/pay.html?code=${item.code}&type=course">立即支付</a>
                                                 <button class="am-button am-button-small cancel-order" data-code="${item.code}">取消订单</button>`
                                             : item.status == "1"
-                                                ? `<button class="am-button am-button-small cancel-order" data-code="${item.code}">取消订单</button>`
+                                                ? `<button class="am-button am-button-small refund-order" data-code="${item.code}">申请退款</button>`
                                                 : `<a class="am-button am-button-small rating-order" href="./assessment.html?code=${item.code}">去评价</a>`
                                     }
                                 </div>`
@@ -134,12 +134,27 @@ define([
 
         $("#orderWrapper").on("click", ".cancel-order", function() {
             var orderCode = $(this).attr("data-code");
-            base.confirm("确定取消订单吗？", "取消", "确认")
+            base.confirm("确定取消订单吗？")
                 .then(() => {
                     base.showLoading("取消中...");
                     CourseCtr.cancelOrder(orderCode)
                         .then(() => {
                             base.showMsg("取消成功");
+                            base.showLoading();
+                            config.start = 1;
+                            getPageOrders(true);
+                        });
+                }, () => {});
+        });
+
+        $("#orderWrapper").on("click", ".refund-order", function() {
+            var orderCode = $(this).attr("data-code");
+            base.confirm('确定申请退款吗')
+                .then(() => {
+                    base.showLoading("提交中...");
+                    CourseCtr.refundOrder(orderCode)
+                        .then(() => {
+                            base.showMsg("申请提交成功");
                             base.showLoading();
                             config.start = 1;
                             getPageOrders(true);

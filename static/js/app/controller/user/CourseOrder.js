@@ -47,19 +47,31 @@ define([
                 if(data.status == "0") {
                     $("#payBtn, #cancelBtn").removeClass("hidden");
                 } else if(data.status == "1") {
-                    $("#cancelBtn").removeClass("hidden");
+                    $("#refundBtn").removeClass("hidden");
                 }
             });
     }
     function addListener(){
         showInMap.addMap();
         $("#cancelBtn").on("click", function() {
-            base.confirm("确定取消订单吗？", "取消", "确认")
+            base.confirm("确定取消订单吗？")
                 .then(() => {
                     base.showLoading("取消中...");
                     CourseCtr.cancelOrder(code)
                         .then(() => {
                             base.showMsg("操作成功");
+                            base.showLoading();
+                            getOrder(true);
+                        });
+                }, () => {});
+        });
+        $("#refundBtn").on("click", function() {
+            base.confirm('确定申请退款吗')
+                .then(() => {
+                    base.showLoading("提交中...");
+                    CourseCtr.refundOrder(code)
+                        .then(() => {
+                            base.showMsg("申请提交成功");
                             base.showLoading();
                             getOrder(true);
                         });
