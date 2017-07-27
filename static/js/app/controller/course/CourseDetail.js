@@ -2,9 +2,10 @@ define([
     'app/controller/base',
     'app/module/weixin',
     'app/module/showInMap',
+    'app/module/commentModal',
     'app/interface/CourseCtr',
     'swiper'
-], function(base, weixin, showInMap, CourseCtr, Swiper) {
+], function(base, weixin, showInMap, commentModal, CourseCtr, Swiper) {
     var code = base.getUrlParam("code"), address;
 
     init();
@@ -106,7 +107,7 @@ define([
         while(remainStar--) {
             starHtml += '<i class="hot-star"></i>';
         }
-        return `<div class="comment-item">
+        return `<div class="comment-item" data-code="${item.code}">
                     <div class="commer-info am-flexbox">
                         <div class="commer-avatar">
                             <img src="${base.getAvatar(item.photo)}"/>
@@ -125,6 +126,7 @@ define([
 
     function addListener() {
         showInMap.addMap();
+        commentModal.addCont();
         $("#address").click(function() {
             showInMap.showMapByName(address);
         });
@@ -133,6 +135,12 @@ define([
         });
         $("#goComment").click(function() {
             location.href = "../notice/comments.html?type=course&code=" + code;
+        });
+        $("#ratings").on("click", ".comment-item", function() {
+            CourseCtr.getComment($(this).attr("data-code"))
+                .then((data) => {
+                    commentModal.showCont(data);
+                });
         });
     }
 });

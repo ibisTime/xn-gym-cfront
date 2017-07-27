@@ -1,8 +1,9 @@
 define([
     'app/controller/base',
+    'app/module/commentModal',
     'app/interface/CourseCtr',
     'app/interface/CoachCtr'
-], function(base, CourseCtr, CoachCtr) {
+], function(base, commentModal, CourseCtr, CoachCtr) {
     const COACH = "coach", COURSE = "course";
     var type = base.getUrlParam("type") || COACH,
         code = base.getUrlParam("code");
@@ -10,6 +11,7 @@ define([
         start: 1,
         limit: 20
     }, isEnd = false, canScrolling = false;
+    var currentCtr;
 
     init();
     function init() {
@@ -18,8 +20,10 @@ define([
     }
     function judgeType(refresh) {
         if(type == COACH) {
+            currentCtr = CoachCtr;
             getPageCoachComment(refresh);
         } else if(type == COURSE) {
+            currentCtr = CourseCtr;
             getPageCourseComment(refresh);
         }
     }
@@ -72,7 +76,7 @@ define([
         while(remainStar--) {
             starHtml += '<i class="hot-star"></i>';
         }
-        return `<div class="comment-item">
+        return `<div class="comment-item" data-code="${item.code}">
                     <div class="commer-info am-flexbox">
                         <div class="commer-avatar">
                             <img src="${base.getAvatar(item.photo)}"/>
@@ -95,6 +99,13 @@ define([
                 showLoading();
                 judgeType();
             }
+        });
+        commentModal.addCont();
+        $("#content").on("click", ".comment-item", function() {
+            currentCtr.getComment($(this).attr("data-code"))
+                .then((data) => {
+                    commentModal.showCont(data);
+                });
         });
     }
     function showLoading() {

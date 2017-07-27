@@ -20,6 +20,7 @@ define([
             "0": "女",
             "1": "男"
         };
+    const SUFFIX = "?imageMogr2/auto-orient/thumbnail/!150x113r";
 
     init();
     function init(){
@@ -70,7 +71,7 @@ define([
                     <a href="./coach-order.html?code=${item.code}" class="order-item-cont">
                         <div class="am-flexbox am-flexbox-align-top">
                             <div class="order-img">
-                                <img src="${base.getImg(item.coach.pic)}"/>
+                                <img src="${base.getImg(item.coach.pic, SUFFIX)}"/>
                             </div>
                             <div class="order-name-infos am-flexbox-item">
                                 <div class="am-flexbox am-flexbox-dir-column am-flexbox-justify-between am-flexbox-align-top">

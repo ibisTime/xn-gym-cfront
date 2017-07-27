@@ -65,8 +65,11 @@ define([
                 if (res.errorCode == "4") {
                     clearSessionUser();
                     sessionStorage.setItem("l-return", location.pathname + location.search);
-                    location.replace("../user/redirect.htm");
-                    return $.Deferred().reject();
+                    loading.hideLoading();
+                    setTimeout(() => {
+                        location.replace("../user/redirect.html");
+                    }, 500);
+                    return $.Deferred().reject("登录超时，请重新登录");
                 }
                 if(res.errorCode != "0"){
                     loading.hideLoading();
@@ -74,7 +77,7 @@ define([
                 }
                 return res.data;
             }).fail(function(error){
-                showMsg(error);
+                error && showMsg(error);
             });
         }
     };

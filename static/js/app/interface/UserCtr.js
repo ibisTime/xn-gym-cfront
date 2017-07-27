@@ -34,7 +34,7 @@ define([
                 userId: base.getUserId()
             });
         },
-        // 设置交易密码
+        // 设置支付密码
         setTradePwd(tradePwd, smsCaptcha) {
             return Ajax.post('805045', {
                 tradePwd,

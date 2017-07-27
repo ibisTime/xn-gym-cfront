@@ -68,10 +68,6 @@ define([
                 userId: base.getUserId(),
                 status: "1"
             });
-        },
-        // 列表获取提现规则
-        getRules(config = {start: 1, limit: 100}, refresh) {
-            return Ajax.get("802025", config, refresh);
         }
     };
 })

@@ -72,7 +72,7 @@ define([
 
     // 根据code获取银行卡详情
     function getBankCard(){
-        return AccountCtr.getBankCard(defaultOpt.code);
+        return AccountCtr.getBankCard(defaultOpt.code, true);
     }
 
     // 获取银行select列表
@@ -157,11 +157,9 @@ define([
             if(this.hasCont()){
                 if(option.code) {
                     defaultOpt.code = option.code;
-                    $("#realName").prop("readonly", 1);
                     $("#addOrEditBankCardContainer").find(".right-left-cont-title-name").html("修改银行卡");
                 } else {
                     defaultOpt.code = "";
-                    $("#realName").prop("readonly", 0);
                     $("#addOrEditBankCardContainer").find(".right-left-cont-title-name").html("绑定银行卡");
                 }
                 initData().then(function(){

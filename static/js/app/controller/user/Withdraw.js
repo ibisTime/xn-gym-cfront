@@ -11,34 +11,31 @@ define([
         base.showLoading();
         $.when(
             getBankCardList(),
-            getRate(),
+            getRules(),
             getAccount()
         ).then(() => {
             base.hideLoading();
             addListener();
         });
-        getRules();
     }
     // 获取提现规则
     function getRules() {
-        AccountCtr.getRules()
+        return GeneralCtr.getPageAccountSysConfig()
             .then((data) => {
                 data.list.forEach((rule) => {
-                    if(rule.ckey == "CNYRechargeTimes") {
+                    if(rule.ckey == "CUSERMONTIMES") {
                         $("#rechargeTimes").text(rule.cvalue);
-                    } else if(rule.ckey == "CNYRuleNote") {
-                        $("#ruleNote").text(rule.cvalue);
-                    } else if(rule.ckey == "CNYToAcoount") {
-                        $("#toAcoount").text(rule.cvalue);
+                    } else if(rule.ckey == "CUSERQXBS") {
+                        $("#times").text(rule.cvalue);
+                    } else if(rule.ckey == "CUSERQXSX") {
+                        $("#toAccount").text(rule.cvalue);
+                    } else if(rule.ckey == "QXDBZDJE") {
+                        $("#maxAmount").text(rule.cvalue);
+                    } else if(rule.ckey == "CUSERQXFL") {   // 提现费率
+                        rate = +rule.cvalue;
                     }
-                })
+                });
             });
-    }
-    // 获取提现费率
-    function getRate() {
-        return GeneralCtr.getAccountSysConfig("BUSERQXFL").then((data) => {
-            rate = +data.cvalue;
-        });
     }
     // 获取银行卡列表
     function getBankCardList(){
@@ -92,7 +89,7 @@ define([
                 amount: {
                     required: true,
                     ltR: true,
-                    isPositive: true
+                    amount: true
                 },
                 payCardNo: {
                     required: true

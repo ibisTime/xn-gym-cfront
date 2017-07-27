@@ -29,11 +29,13 @@ define([
                 if(data.orgCourse.city == data.orgCourse.province) {
                     data.orgCourse.city = "";
                 }
+                $("#name").html(`<a class="under" href="../course/course-detail.html?code=${data.orgCourse.code}">${data.orgCourse.name}</a>`);
                 address = (data.orgCourse.province || "") + (data.orgCourse.city || "") + (data.orgCourse.area || "") + data.orgCourse.address;
                 $("#address").text(address);
                 $("#datetime").text(base.formatDate(data.orgCourse.skStartDatetime, "yyyy-MM-dd hh:mm") + "~" +
                     base.formatDate(data.orgCourse.skEndDatetime, "hh:mm"));
                 $("#coachRealName").text(data.coachRealName);
+                $("#contact").html(`<a href="tel://${data.orgCourse.contact}">${data.orgCourse.contact}</a>`);
                 $("#amount").text(base.formatMoney(data.amount) + "元");
                 if(data.penalty) {
                     $("#penalty").text(base.formatMoney(data.penalty) + "元")
@@ -43,6 +45,9 @@ define([
                 if(data.remark) {
                     $("#remark").text(data.remark)
                         .closest(".confirm-item").removeClass("hidden");
+                }
+                if(refresh) {
+                    $(".confirm-btn").find("button").addClass("hidden");
                 }
                 if(data.status == "0") {
                     $("#payBtn, #cancelBtn").removeClass("hidden");

@@ -1202,6 +1202,13 @@ label.error {
                 padding-left: 0.9rem;
                 color: #999;
             }
+
+            .over-select {
+                position: absolute;
+                left: 1rem;
+                top: 0.03rem;
+                width: 100%;
+            }
         }
     }
 
@@ -1306,6 +1313,10 @@ label.error {
                         line-height: 0.6rem;
                         margin-left: 1.35rem;
                     }
+                }
+
+                a.under {
+                    text-decoration: underline;
                 }
             }
 

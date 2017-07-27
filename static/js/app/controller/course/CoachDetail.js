@@ -1,10 +1,11 @@
 define([
     'app/controller/base',
     'app/module/weixin',
+    'app/module/commentModal',
     'app/interface/CoachCtr',
     'app/interface/GeneralCtr',
     'swiper'
-], function(base, weixin, CoachCtr, GeneralCtr, Swiper) {
+], function(base, weixin, commentModal, CoachCtr, GeneralCtr, Swiper) {
     var code = base.getUrlParam("code"),
         genderList = {
             "0": "女",
@@ -130,7 +131,7 @@ define([
         while(remainStar--) {
             starHtml += '<i class="hot-star"></i>';
         }
-        return `<div class="comment-item">
+        return `<div class="comment-item" data-code="${item.code}">
                     <div class="commer-info am-flexbox">
                         <div class="commer-avatar">
                             <img src="${base.getAvatar(item.photo)}"/>
@@ -148,25 +149,18 @@ define([
     }
 
     function addListener() {
-        // $("#top-swiper").on("touchstart", ".swiper-slide img", function (e) {
-        //     var touches = e.originalEvent.targetTouches[0],
-        //         me = $(this);
-        //     me.data("x", touches.clientX);
-        // });
-        // $("#top-swiper").on("touchend", ".swiper-slide img", function (e) {
-        //     var me = $(this),
-        //         touches = e.originalEvent.changedTouches[0],
-        //         ex = touches.clientX,
-        //         xx = parseInt(me.data("x")) - ex;
-        //     if(Math.abs(xx) < 6){
-        //
-        //     }
-        // });
+        commentModal.addCont();
         $("#buy").click(function() {
             location.href = "./coach-confirm.html?code=" + code;
         });
         $("#goComment").click(function() {
             location.href = "../notice/comments.html?type=coach&code=" + code;
+        });
+        $("#ratings").on("click", ".comment-item", function() {
+            CoachCtr.getComment($(this).attr("data-code"))
+                .then((data) => {
+                    commentModal.showCont(data);
+                });
         });
     }
 });

@@ -56,7 +56,6 @@ define([
                     mobile: true
                 },
                 applyNote: {
-                    required: true,
                     isNotFace: true,
                     maxlength: 255
                 }

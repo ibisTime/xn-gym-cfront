@@ -37,10 +37,18 @@ define([
     }
     function addListener(){
         $("#wrapper").on("click", ".hot-star", function() {
-            $(this).toggleClass("active");
+            var _me = $(this);
+            if(!_me.hasClass("active")) {
+                _me.addClass("active");
+                _me.prevAll().addClass("active");
+            } else {
+                if(!_me.nextAll(".active").length) {
+                    _me.removeClass("active");
+                }
+                _me.nextAll().removeClass("active");
+            }
         });
         $("#applyBtn").click(function() {
-            //
             rating();
         });
     }

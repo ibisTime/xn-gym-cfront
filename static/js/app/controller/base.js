@@ -169,7 +169,7 @@ define([
             }, tt)
         },
         // 获取图片
-        getImg: function(pic, no_suffix) {
+        getImg: function(pic, suffix) {
             if (!pic) {
                 return "";
             }
@@ -177,9 +177,7 @@ define([
                 pic = pic.split(/\|\|/)[0];
             }
             if (!/^http/i.test(pic)) {
-                var suffix = no_suffix
-                    ? ""
-                    : '?imageMogr2/auto-orient';
+                suffix = suffix || '?imageMogr2/auto-orient';
                 pic = PIC_PREFIX + pic + suffix;
             }
             return pic
@@ -188,7 +186,7 @@ define([
             if(!pic) {
                 return "/static/images/avatar.png";
             }
-            return Base.getImg(pic);
+            return Base.getImg(pic, "?imageMogr2/auto-orient/thumbnail/!200x200r");
         },
         // 获取分享的图片
         getShareImg: function(pic) {

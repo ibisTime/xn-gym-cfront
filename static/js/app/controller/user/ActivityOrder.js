@@ -21,8 +21,10 @@ define([
                 // "0": 待付款, "1": "付款成功", "2": "用户取消订单", "3": "平台取消订单",
                 // "4": "退款申请", "5": "退款成功", "6": "退款失败", "7": "活动开始", "8": "已完成"
                 $("#status").text(orderStatus[data.status]);
+                $("#activityTitle").html(`<a class="under" href="../notice/activity.html?code=${data.activityCode}">${data.activityTitle}</a>`);
                 $("#activityBeginDatetime").text(base.formatDate(data.activityBeginDatetime, "yyyy-MM-dd hh:mm"));
                 $("#activityEndDatetime").text(base.formatDate(data.activityEndDatetime, "yyyy-MM-dd hh:mm"));
+                $("#contact").html(`<a href="tel://${data.contact}">${data.contact}</a>`);
                 $("#quantity").text(data.quantity);
                 $("#amount").text(base.formatMoney(data.amount) + "元");
                 if(data.penalty) {
@@ -33,6 +35,9 @@ define([
                 if(data.remark) {
                     $("#remark").text(data.remark)
                         .closest(".confirm-item").removeClass("hidden");
+                }
+                if(refresh) {
+                    $(".confirm-btn").find("button").addClass("hidden");
                 }
                 if(status == "0") {
                     $("#payBtn, #cancelBtn").removeClass("hidden");

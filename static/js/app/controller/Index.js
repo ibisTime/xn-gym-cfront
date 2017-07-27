@@ -14,6 +14,7 @@ define([
             "0": "女",
             "1": "男"
         };
+    const SUFFIX = "?imageMogr2/auto-orient/thumbnail/!200x200r";
 
     init();
     function init(){
@@ -65,7 +66,7 @@ define([
             });
             html += `<a href="./course/coach-detail.html?code=${coach.code}" class="hot-item hot-item-coach">
                         <div class="hot-adv">
-                            <img class="wp100 hp100" src="${base.getImg(coach.pic)}"/>
+                            <img class="wp100 hp100" src="${base.getImg(coach.pic, SUFFIX)}"/>
                         </div>
                         <div class="hot-item-cont">
                             <div class="hot-item-time">
@@ -86,9 +87,10 @@ define([
 
     // 分页查询私教
     function getPageCoach(refresh) {
-        return CoachCtr.getPageCoach({
+        return CoachCtr.getPageFilterCoach({
             start: 1,
-            limit: 10
+            limit: 10,
+            location: 1
         }, refresh).then((data) => {
             if(data.list.length) {
                 coachList = data.list;

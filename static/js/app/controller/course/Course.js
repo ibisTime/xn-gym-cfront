@@ -26,6 +26,7 @@ define([
             "6": "六",
             "0": "七",
         }, courseDatetime, coachDatetime;
+    const SUFFIX = "?imageMogr2/auto-orient/thumbnail/!200x200r";
 
     init();
     function init(){
@@ -122,7 +123,7 @@ define([
             });
             html += `<a href="./coach-detail.html?code=${coach.code}" class="hot-item hot-item-coach">
                         <div class="hot-adv">
-                            <img class="wp100 hp100" src="${base.getImg(coach.pic)}"/>
+                            <img class="wp100 hp100" src="${base.getImg(coach.pic, SUFFIX)}"/>
                         </div>
                         <div class="hot-item-cont">
                             <div class="hot-item-time">

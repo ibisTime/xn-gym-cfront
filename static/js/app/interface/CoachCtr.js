@@ -41,6 +41,10 @@ define([
                 ...config
             });
         },
+        // 详情查询评论
+        getComment(code, refresh) {
+            return Ajax.get("622146", {code}, refresh);
+        },
         // 查询私教的评分
         getCoachRating(coachCode) {
             return Ajax.get("622147", {

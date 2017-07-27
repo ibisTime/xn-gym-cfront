@@ -4,10 +4,14 @@ define([
     'app/interface/UserCtr',
     'app/interface/AccountCtr'
 ], function(base, Foot, UserCtr, AccountCtr) {
-
+    const SUFFIX = "?imageMogr2/auto-orient/thumbnail/!200x200r";
     init();
 
     function init() {
+        $("#logout").click(function() {
+            base.clearSessionUser();
+            location.reload(true);
+        });
         Foot.addFoot(3);
         base.showLoading("加载中...", 1);
         $.when(
@@ -57,7 +61,7 @@ define([
     function getUserInfo() {
         return UserCtr.getUser().then(function(data) {
             $("#nickName").text(data.nickname);
-            $("#userImg").attr("src", base.getImg(data.userExt.photo))
+            $("#userImg").attr("src", base.getImg(data.userExt.photo, SUFFIX));
             $("#mobile").text(data.mobile);
         });
     }

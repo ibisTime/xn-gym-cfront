@@ -31,7 +31,7 @@ define([
                 $("body").append(tmpl);
             }
             var that = this;
-            var html = '<div class="login-chose-avatar"><img src="/static/images/avatar.png" /></div>';
+            var html = '<div class="login-chose-avatar"><img src="/static/images/share.png" /></div>';
             $("#login-avatar-module").html(loadImg.loadImg(html));
             $("#login-nickname-module").html(defaultOpt.nickname);
             if(first){

@@ -29,6 +29,10 @@ define([
                 ...config
             });
         },
+        // 详情查询评论
+        getComment(code, refresh) {
+            return Ajax.get("622146", {code}, refresh);
+        },
         // 查询课程的评分
         getCourseRating(productCode) {
             return Ajax.get("622147", {

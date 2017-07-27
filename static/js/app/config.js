@@ -1,5 +1,5 @@
 var SYSTEM_CODE = "CD-ZWZJ000012";
-var PIC_PREFIX = 'http://oq4vi26fi.bkt.clouddn.com/';
+var PIC_PREFIX = 'http://otomdv0mr.bkt.clouddn.com/';
 
 (function() {
     // 判断是否登录

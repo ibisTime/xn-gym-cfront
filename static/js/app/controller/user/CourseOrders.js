@@ -17,6 +17,7 @@ define([
             "3": "7",
             "4": "8"
         };
+    const SUFFIX = "?imageMogr2/auto-orient/thumbnail/!150x113r";
 
     init();
     function init(){
@@ -71,7 +72,7 @@ define([
                     <a href="./course-order.html?code=${item.code}" class="order-item-cont">
                         <div class="am-flexbox am-flexbox-align-top">
                             <div class="order-img">
-                                <img src="${base.getImg(item.orgCourse.pic)}"/>
+                                <img src="${base.getImg(item.orgCourse.pic, SUFFIX)}"/>
                             </div>
                             <div class="order-name-infos am-flexbox-item">
                                 <div class="am-flexbox am-flexbox-dir-column am-flexbox-justify-between am-flexbox-align-top">
