@@ -66,7 +66,7 @@ define([
                     clearSessionUser();
                     sessionStorage.setItem("l-return", location.pathname + location.search);
                     loading.hideLoading();
-                    setTimeout(() => {
+                    setTimeout(function() {
                         location.replace("../user/redirect.html");
                     }, 500);
                     return $.Deferred().reject("登录超时，请重新登录");

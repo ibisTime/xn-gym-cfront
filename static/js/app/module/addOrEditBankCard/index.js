@@ -94,7 +94,7 @@ define([
                 $("body").append(tmpl);
             }
             var wrap = $("#addOrEditBankCardContainer");
-            defaultOpt.title && wrap.find(".right-left-cont-title-name").html(defaultOpt.title);
+            defaultOpt.title && wrap.find(".right-left-cont-title-name").text(defaultOpt.title);
             var that = this;
             if(firstAdd){
                 var _form = $("#addOrEditBankCardForm");
@@ -142,7 +142,6 @@ define([
                     onkeyup: false
                 });
                 $("#bankName").on("change", function(){
-                    $("#bankNameSpan").html($("#bankName").val())
                     $("#bankCode").val($("#bankName option:selected").attr("code"));
                 });
             }
@@ -157,10 +156,10 @@ define([
             if(this.hasCont()){
                 if(option.code) {
                     defaultOpt.code = option.code;
-                    $("#addOrEditBankCardContainer").find(".right-left-cont-title-name").html("修改银行卡");
+                    $("#addOrEditBankCardContainer").find(".right-left-cont-title-name").text("修改银行卡");
                 } else {
                     defaultOpt.code = "";
-                    $("#addOrEditBankCardContainer").find(".right-left-cont-title-name").html("绑定银行卡");
+                    $("#addOrEditBankCardContainer").find(".right-left-cont-title-name").text("绑定银行卡");
                 }
                 initData().then(function(){
                     ModuleObj._showCont();

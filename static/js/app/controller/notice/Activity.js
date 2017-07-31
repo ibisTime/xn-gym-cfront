@@ -3,15 +3,19 @@ define([
     'app/module/weixin',
     'app/interface/ActivityCtr',
     'app/util/handlebarsHelpers',
+    'app/util/dict',
     'swiper'
-], function(base, weixin, ActivityCtr, Handlebars, Swiper) {
-    var code = base.getUrlParam("code");
+], function(base, weixin, ActivityCtr, Handlebars, Dict, Swiper) {
+    var code = base.getUrlParam("code"),
+        activityStatus = Dict.get("activityStatus"),
+        status, remainNum;
     init();
     function init() {
         base.showLoading();
 		getActivity();
         addListener();
     }
+    // 查询活动详情
     function getActivity() {
         ActivityCtr.getActivity(code)
             .then((data) => {
@@ -24,6 +28,13 @@ define([
                 });
                 addBanner(data);
                 $("#title").text(data.title);
+                status = data.status;
+                remainNum = data.remainNum;
+                if(status == 1) {
+                    $("#remainNum").text(remainNum);
+                } else {
+                    $("#remainNum").parent().html(activityStatus[status]);
+                }
                 $("#slogan").text(data.slogan);
                 $("#contact")
                     .html(`<a href="tel://${data.contact}" class="course-tel am-flexbox-item">
@@ -57,7 +68,15 @@ define([
     }
     function addListener() {
         $("#buyBtn").on("click", function() {
-            location.href = "./activity-confirm.html?code=" + code;
+            if(status == 1) {
+                if(remainNum) {
+                    location.href = "./activity-confirm.html?code=" + code;
+                } else {
+                    base.showMsg("该活动报名人数已满");
+                }
+            } else {
+                base.showMsg("该活动暂时无法报名");
+            }
         });
     }
 });

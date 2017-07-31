@@ -19,7 +19,7 @@ define([
 
     function addListener() {
         var wrap = $("#J_SearchMapWrapper");
-        wrap.find(".show-one-point-map-title-name").html(defaultOpt.title);
+        wrap.find(".show-one-point-map-title-name").text(defaultOpt.title);
         var that = this;
         $("#search-map-back").on("click", function() {
             that.hideMap();

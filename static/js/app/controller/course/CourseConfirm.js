@@ -33,10 +33,10 @@ define([
                     data.city = "";
                 }
                 address = (data.province || "") + (data.city || "") + (data.area || "") + data.address;
-                $("#price").html(base.formatMoney(data.price) + "元");
-                $("#skStartDatetime").html(base.formatDate(data.skStartDatetime, 'yyyy-MM-dd hh:mm') + " ~ " + base.formatDate(data.skEndDatetime, 'hh:mm'));
-                $("#remainNum").html(data.remainNum);
-                $("#address").html(address);
+                $("#price").text(base.formatMoney(data.price) + "元");
+                $("#skStartDatetime").text(base.formatDate(data.skStartDatetime, 'yyyy-MM-dd hh:mm') + " ~ " + base.formatDate(data.skEndDatetime, 'hh:mm'));
+                $("#remainNum").text(data.remainNum);
+                $("#address").text(address);
                 addListener();
             });
     }

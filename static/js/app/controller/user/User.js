@@ -50,9 +50,9 @@ define([
             .then(function(data) {
                 data.forEach(function(d, i) {
                     if (d.currency == "CNY") {
-                        $("#cnyAmount").html(base.formatMoney(d.amount));
+                        $("#cnyAmount").text(base.formatMoney(d.amount));
                     } else if (d.currency == "JF") {
-                        $("#jfAmount").html(base.formatMoney(d.amount));
+                        $("#jfAmount").text(base.formatMoney(d.amount));
                     }
                 })
             });
@@ -61,7 +61,7 @@ define([
     function getUserInfo() {
         return UserCtr.getUser().then(function(data) {
             $("#nickName").text(data.nickname);
-            $("#userImg").attr("src", base.getImg(data.userExt.photo, SUFFIX));
+            $("#userImg").attr("src", base.getAvatar(data.userExt.photo));
             $("#mobile").text(data.mobile);
         });
     }

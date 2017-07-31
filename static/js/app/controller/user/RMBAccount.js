@@ -26,7 +26,7 @@ define([
             .then(function(data) {
                 data.forEach(function(account) {
                     if (account.currency == "CNY") {
-                        $("#amount").html(base.formatMoney(account.amount));
+                        $("#amount").text(base.formatMoney(account.amount));
                         config.accountNumber = account.accountNumber;
                     }
                 });

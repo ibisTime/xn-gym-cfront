@@ -34,7 +34,7 @@ define([
                 $("body").append(temp);
             }
             var wrap = $("#J_OnePointMapWrapper");
-            wrap.find(".right-left-cont-title-name").html(defaultOpt.title);
+            wrap.find(".right-left-cont-title-name").text(defaultOpt.title);
             var that = this;
             wrap.find(".right-left-cont-back").on("click", function(){
                 that.hideMap();

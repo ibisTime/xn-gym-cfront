@@ -44,15 +44,14 @@ define([
     // 生成日期选择器
     function buildDate() {
         var topHtml = "", bottomHtml = "";
-        var now = new Date(),
-            date = now.getDate();
+        var now = new Date();
         for(var i = 1; i <= 7; i++) {
             var date1 = now.getDate() + "",
                 day = now.getDay(),
                 attr_date = now.format("yyyy-MM-dd");
             topHtml += `<span data-time="${day + 1}" class="${i === 1 ? "active" : ""}">${_weeks[day]}</span>`;
             bottomHtml += `<span data-time="${attr_date}" class="${i === 1 ? "active" : ""}">${("00" + date1).substr(date1.length)}</span>`;
-            now.setDate(date + i);
+            now.setDate(+date1 + 1);
             if(i === 1) {
                 courseDatetime = attr_date;
                 coachDatetime = day + 1;

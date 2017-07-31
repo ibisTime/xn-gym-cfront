@@ -37,7 +37,7 @@ define([
             .then((data) => {
                 data.forEach((account) => {
                     if (account.currency == "CNY") {
-                        $("#remainAmount").html(base.formatMoney(account.amount));
+                        $("#remainAmount").text(base.formatMoney(account.amount));
                     }
                 });
             });

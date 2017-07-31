@@ -10,8 +10,8 @@ define([
         genderList = {
             "0": "女",
             "1": "男"
-        };
-    var count = 2, labelList = {}, labels;
+        },
+        count = 2, labelList = {}, labels;
 
     init();
     function init(){
@@ -76,7 +76,7 @@ define([
                 while(star--) {
                     _hotStars.eq(star).addClass("active")
                 }
-                $("#realName").html(data.realName);
+                $("#realName").text(data.realName);
                 $("#description").html(data.description);
                 labels = data.label.split("||");
                 if(!--count) {

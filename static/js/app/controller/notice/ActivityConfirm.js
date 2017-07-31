@@ -17,11 +17,11 @@ define([
             .then((data) => {
                 price = data.amount;
                 remainNum = data.remainNum;
-                $("#title").html(data.title);
-                $("#remainNum").html(data.remainNum);
-                $("#price").html(base.formatMoney(data.amount) + "元");
-                $("#startDatetime").html(base.formatDate(data.startDatetime, 'yyyy-MM-dd hh:mm'));
-                $("#endDatetime").html(base.formatDate(data.endDatetime, "yyyy-MM-dd hh:mm"));
+                $("#title").text(data.title);
+                $("#remainNum").text(data.remainNum);
+                $("#price").text(base.formatMoney(data.amount) + "元");
+                $("#startDatetime").text(base.formatDate(data.startDatetime, 'yyyy-MM-dd hh:mm'));
+                $("#endDatetime").text(base.formatDate(data.endDatetime, "yyyy-MM-dd hh:mm"));
                 addListener();
             });
     }

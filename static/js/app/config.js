@@ -3,7 +3,7 @@ var PIC_PREFIX = 'http://otomdv0mr.bkt.clouddn.com/';
 
 (function() {
     // 判断是否登录
-    if (!/\/redirect\.htm/.test(location.href)) {
+    if (!/\/redirect\.html/.test(location.href)) {
         var arr,
             reg = new RegExp("(^| )userId=([^;]*)(;|$)"),
             userId,

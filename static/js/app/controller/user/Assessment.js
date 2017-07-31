@@ -72,13 +72,21 @@ define([
                         score
                     });
                 });
+            content = base.encode(content);
             GeneralCtr.rating(orderCode, content, itemScoreList)
-                .then(() => {
+                .then((data) => {
                     base.hideLoading();
-                    base.showMsg("评论成功");
+                    var time = 500;
+                    if(/;filter/.test(data.code)){
+                        base.showMsg("您的评论存在敏感词，我们将进行审核");
+                        time = 1500;
+                    } else {
+                        base.showMsg("评论成功");
+                    }
+
                     setTimeout(() => {
                         location.href = "../index.html";
-                    }, 500);
+                    }, time);
                 });
         }
 

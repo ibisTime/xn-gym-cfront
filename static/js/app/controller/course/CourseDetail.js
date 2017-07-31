@@ -4,9 +4,12 @@ define([
     'app/module/showInMap',
     'app/module/commentModal',
     'app/interface/CourseCtr',
+    'app/util/dict',
     'swiper'
-], function(base, weixin, showInMap, commentModal, CourseCtr, Swiper) {
-    var code = base.getUrlParam("code"), address;
+], function(base, weixin, showInMap, commentModal, CourseCtr, Dict, Swiper) {
+    var code = base.getUrlParam("code"),
+        courseStatus = Dict.get("courseStatus"),
+        status, address, remainNum;
 
     init();
     function init(){
@@ -48,18 +51,24 @@ define([
                     data.city = "";
                 }
                 address = (data.province || "") + (data.city || "") + (data.area || "") + data.address;
-                $("#name").html(data.name);
-                $("#remainNum").html(data.remainNum);
-                $("#datetime").html(base.formatDate(data.skStartDatetime, 'yyyy-MM-dd hh:mm') + " ~ " + base.formatDate(data.skEndDatetime, 'hh:mm'));
-                $("#realName").html(data.realName);
-                $("#address").find("span").html(address);
+                $("#name").text(data.name);
+                status = data.status;
+                remainNum = data.remainNum;
+                if(status == 1) {
+                    $("#remainNum").text(remainNum);
+                } else {
+                    $("#remainNum").parent().html(courseStatus[status]);
+                }
+                $("#datetime").text(base.formatDate(data.skStartDatetime, 'yyyy-MM-dd hh:mm') + " ~ " + base.formatDate(data.skEndDatetime, 'hh:mm'));
+                $("#realName").text(data.realName);
+                $("#address").find("span").text(address);
                 $("#contact")
                     .html(`<a href="tel://${data.contact}" class="course-tel am-flexbox-item">
                                 <span>${data.contact}</span>
                             </a>
                             <i class="right-arrow"></i>`);
                 $("#description").html(data.description);
-                $("#price").html(base.formatMoney(data.price));
+                $("#price").text(base.formatMoney(data.price));
             });
     }
 
@@ -131,7 +140,15 @@ define([
             showInMap.showMapByName(address);
         });
         $("#buy").click(function() {
-            location.href = "./course-confirm.html?code=" + code;
+            if(status == 1) {
+                if(remainNum) {
+                    location.href = "./course-confirm.html?code=" + code;
+                } else {
+                    base.showMsg("该课程报名人数已满");
+                }
+            } else {
+                base.showMsg("该课程暂时无法报名");
+            }
         });
         $("#goComment").click(function() {
             location.href = "../notice/comments.html?type=course&code=" + code;

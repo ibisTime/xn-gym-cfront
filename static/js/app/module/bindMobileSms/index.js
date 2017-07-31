@@ -27,7 +27,7 @@ define([
                 $("body").append(tmpl);
             }
             var wrap = $("#bindMobileSmsWrap");
-            defaultOpt.title && wrap.find(".right-left-cont-title-name").html(defaultOpt.title);
+            defaultOpt.title && wrap.find(".right-left-cont-title-name").text(defaultOpt.title);
             defaultOpt.mobile && $("#bind-mobileSms").val(defaultOpt.mobile);
             var that = this;
             if(first){

@@ -137,20 +137,6 @@ define([
             CookieUtil.del("userId"); //userId
             CookieUtil.del("token"); //token
         },
-        goBackUrl: function(url, isLoginBack) {
-            var rUrl = Base.getUrlParam("return");
-            if (isLoginBack) {
-                var returnUrl = sessionStorage.getItem("l-return");
-                location.href = returnUrl || url || "../user/user_info.htm";
-            } else {
-                if (rUrl) {
-                    location.href = rUrl;
-                } else {
-                    location.href = url || "../index.htm";
-                }
-            }
-
-        },
         isLogin: function() {
             return !!Base.getUserId();
         },
@@ -159,7 +145,7 @@ define([
         },
         goLogin: function() {
             sessionStorage.setItem("l-return", location.pathname + location.search);
-            location.href = "../user/redirect.htm";
+            location.href = "../user/redirect.html";
         },
         throttle: function(method, context, t) {
             var tt = t || 100;
@@ -212,17 +198,6 @@ define([
                 card = "**** **** **** **** " + card.substr(16);
             }
             return card;
-        },
-        // 返回上一页
-        getBack: function() {
-            location.href = document.referrer;
-        },
-        getDictListValue: function(dkey, arrayData) { //类型
-            for (var i = 0; i < arrayData.length; i++) {
-                if (dkey == arrayData[i].dkey) {
-                    return arrayData[i].dvalue;
-                }
-            }
         },
         //判断终端
         getUserBrowser: function() {
@@ -287,6 +262,18 @@ define([
         // 清除内容里的标签
         clearTag: function(content) {
             return content.replace(/<[^>]+>|<\/[^>]+>|<[^>]+\/>|&nbsp;/ig, "");
+        },
+        encode: function(str) {
+            if (!str || str.length === 0) {
+                return '';
+            }
+            var s = '';
+            s = str.replace(/&amp;/g, "&");
+            s = s.replace(/<(?=[^o][^)])/g, "&lt;");
+            s = s.replace(/>/g, "&gt;");
+            s = s.replace(/\"/g, "&quot;");
+            s = s.replace(/\n/g, "<br>");
+            return s;
         }
     };
 
