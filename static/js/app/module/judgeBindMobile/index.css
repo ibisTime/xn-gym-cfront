@@ -5,7 +5,7 @@ input, button {
 }
 
 .login-chose-module-container {
-    padding: 0 1.5rem;
+    padding: 0 0.3rem;
     position: absolute;
     top: 0;
     left: 100%;
@@ -62,10 +62,10 @@ input, button {
 }
 
 .login-chose-input-container {
-    margin-top: 0.4rem;
+    margin-top: 0.8rem;
 }
 .login-chose-input-container1{
-    margin-top: 1.8rem;
+    margin-top: 1rem;
 }
 
 .login-chose-title {
@@ -73,9 +73,9 @@ input, button {
 }
 
 .login-chose-title1 {
-    margin-top: 1rem;
+    margin-top: 0.1rem;
     line-height: 1.5;
-    color: #636363;
+    /*color: #636363;*/
     font-size: 0.28rem;
 }
 
