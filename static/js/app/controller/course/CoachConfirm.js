@@ -6,7 +6,6 @@ define([
     'app/module/searchMap'
 ], function(base, CoachCtr, GeneralCtr, Validate, searchMap) {
     var code = base.getUrlParam("code");
-
     init();
     function init(){
         base.showLoading();
@@ -52,7 +51,9 @@ define([
     }
 
     function addListener() {
-        searchMap.addMap();
+        searchMap.addMap({
+          initInDW: true
+        });
         var _formWrapper = $("#formWrapper");
         _formWrapper.validate({
             'rules': {

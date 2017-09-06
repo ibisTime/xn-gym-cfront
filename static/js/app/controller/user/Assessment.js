@@ -85,7 +85,7 @@ define([
                     }
 
                     setTimeout(() => {
-                        location.href = "../index.html";
+                        location.href = "../user/user.html";
                     }, time);
                 });
         }

@@ -274,6 +274,23 @@ define([
             s = s.replace(/\"/g, "&quot;");
             s = s.replace(/\n/g, "<br>");
             return s;
+        },
+        // 微信设置页面标题
+        setTitle: function(title) {
+          if (document.title !== title) {
+            document.title = title;
+            if (/(iphone|ipod|ipad)/i.test(navigator.userAgent)) {
+                var iframe = document.createElement('iframe');
+                iframe.src = '//m.baidu.com/favicon.ico';
+                iframe.style.display = 'none';
+                iframe.onload = function() {
+                    setTimeout(function() {
+                      iframe.remove();
+                    }, 9);
+                };
+                document.body.appendChild(iframe);
+            }
+          }
         }
     };
 

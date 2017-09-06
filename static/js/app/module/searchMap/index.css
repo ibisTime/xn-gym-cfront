@@ -80,4 +80,21 @@
 .tangram-suggestion-main{
 	z-index: 9999;
 }
+.show-search-map-wrap .loading-wrapper{
+    display: none;
+    position: absolute;
+    top: 0.8rem;
+    left: 0;
+    width: 100%;
+    bottom: 0;
+    z-index: 10;
+    color: #fff;
+    background: rgba(0,0,0,0.4);
+}
+.show-search-map-wrap .loading-wrapper .loading-inner-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
 /*地图上显示定位css---end*/

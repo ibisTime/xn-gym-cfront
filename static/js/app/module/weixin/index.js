@@ -27,7 +27,6 @@ define([
                 "onMenuShareQZone"
             ]
         });
-        let me = this;
         wx.ready(() => {
             // 分享给某人
             wx.onMenuShareAppMessage(config);

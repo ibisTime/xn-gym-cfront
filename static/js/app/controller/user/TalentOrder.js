@@ -48,9 +48,9 @@ define([
                     $("#callWrapper").empty();
                 } else if(data.status == "1") {
                     $("#cancelBtn").removeClass("hidden");
-                    $("#callWrapper").html(`<a href="tel://${data.coach.mobile}" class="am-button am-button-primary am-button-call">联系教练</a>`);
+                    $("#callWrapper").html(`<a href="tel://${data.coach.mobile}" class="am-button am-button-primary am-button-call">联系达人</a>`);
                 } else {
-                    $("#callWrapper").html(`<a href="tel://${data.coach.mobile}" class="am-button am-button-primary am-button-call">联系教练</a>`);
+                    $("#callWrapper").html(`<a href="tel://${data.coach.mobile}" class="am-button am-button-primary am-button-call">联系达人</a>`);
                 }
             });
     }

@@ -1,6 +1,6 @@
 {
   "name": "xn-gym-cfront",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "scripts": {
     "dist": "fis3 release -d ../dist -w",

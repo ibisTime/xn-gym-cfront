@@ -60,7 +60,7 @@ define([
         } else {
             params.status = type2Status[currentType];
         }
-        return CoachCtr.getPageOrders(params, refresh)
+        return CoachCtr.getPageTalentOrders(params, refresh)
             .then((data) => {
                 base.hideLoading();
                 hideLoading(currentType);
@@ -95,7 +95,7 @@ define([
                         <span>${item.code}</span>
                         <span class="fr">${base.formatDate(item.applyDatetime, "yyyy-MM-dd")}</span>
                     </div>
-                    <a href="./coach-order.html?code=${item.code}" class="order-item-cont">
+                    <a href="./talent-order.html?code=${item.code}" class="order-item-cont">
                         <div class="am-flexbox am-flexbox-align-top">
                             <div class="order-img">
                                 <img src="${base.getImg(item.coach.pic, SUFFIX)}"/>

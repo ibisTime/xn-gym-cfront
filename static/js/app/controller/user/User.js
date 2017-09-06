@@ -9,10 +9,10 @@ define([
   init();
 
   function init() {
-    // $("#logout").click(function() {
-    //     base.clearSessionUser();
-    //     location.reload(true);
-    // });
+    $("#logout").click(function() {
+        base.clearSessionUser();
+        location.reload(true);
+    });
     Foot.addFoot(3);
     base.showLoading("加载中...", 1);
     $.when(
@@ -26,28 +26,36 @@ define([
     UserCtr.getUnfinishedOrders()
       .then((data) => {
         if (data.activityCount) {
-          $("#activityWrap")
-            .append(
-              `<span class="am-badge am-badge-not-a-wrapper">
-                            <sup class="am-badge-text">${data.activityCount}</sup>
-                        </span>`
-            );
+            $("#activityWrap")
+                .append(
+                  `<span class="am-badge am-badge-not-a-wrapper">
+                        <sup class="am-badge-text">${data.activityCount}</sup>
+                    </span>`
+                );
         }
         if (data.orgCourseCount) {
-          $("#courseWrap")
-            .append(
-              `<span class="am-badge am-badge-not-a-wrapper">
-                            <sup class="am-badge-text">${data.orgCourseCount}</sup>
-                        </span>`
-            );
+            $("#courseWrap")
+                .append(
+                  `<span class="am-badge am-badge-not-a-wrapper">
+                        <sup class="am-badge-text">${data.orgCourseCount}</sup>
+                    </span>`
+                );
         }
         if (data.perCourseCount) {
-          $("#coachWrap")
-            .append(
-              `<span class="am-badge am-badge-not-a-wrapper">
-                            <sup class="am-badge-text">${data.perCourseCount}</sup>
-                        </span>`
-            );
+            $("#coachWrap")
+                .append(
+                  `<span class="am-badge am-badge-not-a-wrapper">
+                        <sup class="am-badge-text">${data.perCourseCount}</sup>
+                    </span>`
+                );
+        }
+        if (data.drCourseCount) {
+            $("#talentWrap")
+                .append(
+                  `<span class="am-badge am-badge-not-a-wrapper">
+                        <sup class="am-badge-text">${data.drCourseCount}</sup>
+                    </span>`
+                );
         }
       });
   }
@@ -68,11 +76,9 @@ define([
   }
   // 获取用户信息
   function getUserInfo() {
-    return UserCtr.getUser().then(function(
-      data) {
+    return UserCtr.getUser().then(function(data) {
       $("#nickname").text(data.nickname);
-      $("#userImg").attr("src", base.getAvatar(
-        data.userExt.photo));
+      $("#userImg").attr("src", base.getAvatar(data.userExt.photo));
       $("#mobile").text(data.mobile);
     });
   }

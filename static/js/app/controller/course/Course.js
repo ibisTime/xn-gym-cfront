@@ -25,7 +25,7 @@ define([
             "5": "五",
             "6": "六",
             "0": "七",
-        }, courseDatetime, coachDatetime;
+        }, courseDatetime, coachDatetime, talentDatetime;
     const SUFFIX = "?imageMogr2/auto-orient/thumbnail/!200x200r";
 
     init();
@@ -54,7 +54,7 @@ define([
             now.setDate(+date1 + 1);
             if(i === 1) {
                 courseDatetime = attr_date;
-                coachDatetime = day + 1;
+                talentDatetime = coachDatetime = day + 1;
             }
         }
         $("#weekWrapper0, #weekWrapper1").html(topHtml);
@@ -78,11 +78,11 @@ define([
                     isEnd = false;
                 }
                 if(data.list.length) {
-                    $("#courseContent")[refresh || config.start == 1 ? "html" : "append"](_tmpl({items: data.list}));
+                    $("#talentContent")[refresh || config.start == 1 ? "html" : "append"](_tmpl({items: data.list}));
                     config.start++;
                     isEnd && $("#loadAll0").removeClass("hidden");
                 } else if(config.start == 1) {
-                    $("#courseContent").html('<div class="no-data">暂无课程</div>');
+                    $("#talentContent").html('<div class="no-data">暂无课程</div>');
                     $("#loadAll0").addClass("hidden");
                 } else {
                     $("#loadAll0").removeClass("hidden");
@@ -105,7 +105,7 @@ define([
             });
     }
     // 当label的数据字典 和 coach 的数据都获取到了之后，再把值添加到页面中
-    function addLabelData(list) {
+    function addLabelData() {
         var html = "";
         coachList.forEach((coach) => {
             var star = Math.floor(+coach.star), remainStar = 5 - star,
@@ -138,7 +138,11 @@ define([
                         </div>
                     </a>`;
         });
-        $("#coachContent")[config.start == 1 ? "html" : "append"](html);
+        if (!type) {
+            $("#talentContent")[config.start == 1 ? "html" : "append"](html);
+        } else {
+            $("#coachContent")[config.start == 1 ? "html" : "append"](html);
+        }
     }
 
     // 分页查询私教
@@ -178,6 +182,44 @@ define([
                 canScrolling = true;
             }, () => hideLoading(1));
     }
+
+    // 分页查询达人
+    function getPageTalent (refresh) {
+        return CoachCtr.getPageFilterTalent({
+            skCycle: talentDatetime,
+            ...config
+        }, refresh).then((data) => {
+            base.hideLoading();
+            hideLoading(0);
+            var lists = data.list;
+            var totalCount = +data.totalCount;
+            if (totalCount <= config.limit || lists.length < config.limit) {
+                isEnd = true;
+            } else {
+                isEnd = false;
+            }
+            if(data.list.length) {
+                coachList = data.list;
+                if(!labelList) {
+                    if(!--count) {
+                        addLabelData();
+                    }
+                } else {
+                    addLabelData();
+                }
+                config.start++;
+                isEnd && $("#loadAll0").removeClass("hidden");
+            } else if(config.start == 1) {
+                $("#talentContent").html('<div class="no-data">暂无达人</div>');
+                $("#loadAll0").addClass("hidden");
+            } else {
+                $("#loadAll0").removeClass("hidden");
+            }
+            !isEnd && $("#loadAll0").addClass("hidden");
+            canScrolling = true;
+        }, () => hideLoading(0));
+    }
+
     function addListener(){
         // tabs切换事件
         var _tabsInkBar = $("#am-tabs-bar").find(".am-tabs-ink-bar"),
@@ -197,8 +239,15 @@ define([
                     .siblings().addClass("am-tabs-tabpane-inactive");
                 config.start = 1;
                 base.showLoading();
-                if(!index) {    // 团课
-                    getPageCourse();
+                type = index;
+                if(!index) {    // 达人
+                    if(!labelList){
+                        count = 2;
+                        getLabelList();
+                        getPageTalent();
+                    } else {
+                        getPageTalent();
+                    }
                 } else {    // 私教
                     if(!labelList){
                         count = 2;
@@ -220,12 +269,12 @@ define([
                 var _span = _weekTitles.find("span").eq(index);
                 _span.addClass("active").siblings(".active").removeClass("active");
                 courseDatetime = _this.attr("data-time");
-                coachDatetime = _span.attr("data-time");
+                talentDatetime = coachDatetime = _span.attr("data-time");
                 config.start = 1;
                 base.showLoading();
                 var choseIndex = $(".am-tabs-tab-active").index() - 1;
-                if(!choseIndex) {    // 团课
-                    getPageCourse();
+                if(!choseIndex) {    // 达人
+                    getPageTalent();
                 } else {    // 私教
                     getPageCoach();
                 }
@@ -240,13 +289,13 @@ define([
                     .siblings(".active").removeClass("active");
                 var _span = _weekdays.find("span").eq(index);
                 _span.addClass("active").siblings(".active").removeClass("active");
-                coachDatetime = _this.attr("data-time");
+                talentDatetime = coachDatetime = _this.attr("data-time");
                 courseDatetime = _span.attr("data-time");
                 config.start = 1;
                 base.showLoading();
                 var choseIndex = $(".am-tabs-tab-active").index() - 1;
                 if(!choseIndex) {    // 团课
-                    getPageCourse();
+                    getPageTalent();
                 } else {    // 私教
                     getPageCoach();
                 }

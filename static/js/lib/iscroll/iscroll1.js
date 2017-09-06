@@ -1014,7 +1014,7 @@
             that._startAni();
         },
 
-        scrollToElement: function(el, time) {
+        scrollToElement: function(el, time, offsetX, offsetY) {
             var that = this,
                 pos;
             el = el.nodeType ? el : that.scroller.querySelector(el);
@@ -1023,6 +1023,17 @@
             pos = that._offset(el);
             pos.left += that.wrapperOffsetLeft;
             pos.top += that.wrapperOffsetTop;
+
+            // if offsetX/Y are true we center the element to the screen
+            if (offsetX === true) {
+                offsetX = Math.round(el.offsetWidth / 2 - this.wrapper.offsetWidth / 2);
+            }
+            if (offsetY === true) {
+                offsetY = Math.round(el.offsetHeight / 2 - this.wrapper.offsetHeight / 2);
+            }
+
+            pos.left -= offsetX || 0;
+            pos.top -= offsetY || 0;
 
             pos.left = pos.left > 0 ? 0 : pos.left < that.maxScrollX ? that.maxScrollX : pos.left;
             pos.top = pos.top > that.minScrollY ? that.minScrollY : pos.top < that.maxScrollY ? that.maxScrollY : pos.top;

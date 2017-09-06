@@ -5,11 +5,11 @@ define([
     'app/interface/GeneralCtr',
     'app/interface/CoachCtr',
     'app/interface/ActivityCtr',
-    'app/interface/CourseCtr',
+    // 'app/interface/CourseCtr',
     'swiper',
     'app/util/handlebarsHelpers'
-], function(base, Foot, weixin, GeneralCtr, CoachCtr, ActivityCtr, CourseCtr, Swiper, Handlebars) {
-    var count = 2, coachList, labelList = {},
+], function(base, Foot, weixin, GeneralCtr, CoachCtr, ActivityCtr, Swiper, Handlebars) {
+    var count = 3, coachList, talentList, labelList = {},
         genderList = {
             "0": "女",
             "1": "男"
@@ -20,15 +20,15 @@ define([
     function init(){
         Foot.addFoot(0);
         base.showLoading();
-    	$.when(
-    		getBanner(),
-    		getNotice(),
+      	$.when(
+        		getBanner(),
+        		getNotice(),
             getLabelList(),
             getPageCoach(),
-            getPageCourse(),
+            getPageTalent(),
             getPageActivities()
-    	).then(base.hideLoading);
-    	addListener();
+      	).then(base.hideLoading);
+      	addListener();
         weixin.initShare({
             title: document.title,
             desc: "自玩自健",
@@ -50,9 +50,14 @@ define([
     }
     // 当label的数据字典 和 coach 的数据都获取到了之后，再把值添加到页面中
     function addLabelData(list) {
+        buildHtml(coachList, '#coachContent');
+        buildHtml(talentList, '#courseContent');
+    }
+
+    function buildHtml(list, id) {
         var html = "";
-        coachList.forEach((coach) => {
-            var star = +coach.star, remainStar = 5 - star,
+        list.forEach((item) => {
+            var star = +item.star, remainStar = 5 - star,
                 starHtml = "";
             while(star--) {
                 starHtml += '<i class="hot-star active"></i>';
@@ -60,18 +65,18 @@ define([
             while(remainStar--) {
                 starHtml += '<i class="hot-star"></i>';
             }
-            var labels = coach.label.split("||"), labelHtml = "";
+            var labels = item.label.split("||"), labelHtml = "";
             labels.forEach((label, index) => {
                 labelHtml += `<span class="hot-tip hot-tip${index % 3}">${labelList[label]}</span>`;
             });
-            html += `<a href="./course/coach-detail.html?code=${coach.code}" class="hot-item hot-item-coach">
+            html += `<a href="./course/coach-detail.html?code=${item.code}" class="hot-item hot-item-coach">
                         <div class="hot-adv">
-                            <img class="wp100 hp100" src="${base.getImg(coach.pic, SUFFIX)}"/>
+                            <img class="wp100 hp100" src="${base.getImg(item.pic, SUFFIX)}"/>
                         </div>
                         <div class="hot-item-cont">
                             <div class="hot-item-time">
-                                <span class="hot-time">${coach.realName}</span>
-                                <span class="hot-course-title">${genderList[coach.gender]}</span>
+                                <span class="hot-time">${item.realName}</span>
+                                <span class="hot-course-title">${genderList[item.gender]}</span>
                             </div>
                             <div class="hot-stars">
                                 ${starHtml}
@@ -82,7 +87,7 @@ define([
                         </div>
                     </a>`;
         });
-        $("#coachContent").html(html);
+        $(id).html(html);
     }
 
     // 分页查询私教
@@ -103,17 +108,34 @@ define([
         })
     }
     // 分页查询课程
-    function getPageCourse(refresh) {
-        return CourseCtr.getPageCourse({
+    // function getPageCourse(refresh) {
+    //     return CourseCtr.getPageCourse({
+    //         start: 1,
+    //         limit: 10,
+    //         location: 1
+    //     }, refresh).then((data) => {
+    //         var _tmpl = __inline('../ui/index_course.handlebars');
+    //         if(data.list.length) {
+    //             $("#courseContent").html(_tmpl({items: data.list}));
+    //         } else {
+    //             $("#courseContent").html('<div class="no-data">暂无课程</div>');
+    //         }
+    //     });
+    // }
+    // 分页查询达人
+    function getPageTalent(refresh) {
+        return CoachCtr.getPageFilterTalent({
             start: 1,
             limit: 10,
             location: 1
         }, refresh).then((data) => {
-            var _tmpl = __inline('../ui/index_course.handlebars');
-            if(data.list.length) {
-                $("#courseContent").html(_tmpl({items: data.list}));
-            } else {
-                $("#courseContent").html('<div class="no-data">暂无课程</div>');
+            if (data.list.length) {
+                talentList = data.list;
+                if (!--count) {
+                    addLabelData();
+                } else {
+                    $("#courseContent").html('<div class="no-data">暂无达人</div>');
+                }
             }
         });
     }

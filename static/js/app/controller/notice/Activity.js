@@ -20,8 +20,9 @@ define([
         ActivityCtr.getActivity(code)
             .then((data) => {
                 base.hideLoading();
+                base.setTitle(data.title);
                 weixin.initShare({
-                    title: document.title,
+                    title: data.title,
                     desc: data.slogan,
                     link: location.href,
                     imgUrl: base.getShareImg(data.advPic)

@@ -10,6 +10,7 @@ define([
         getPageCoach(config, refresh) {
             return Ajax.get("622095", {
                 status: 1,
+                type: 0,
                 ...config
             }, refresh);
         },
@@ -20,6 +21,29 @@ define([
         getPageFilterCoach(config, refresh) {
             return Ajax.get("622093", {
                 status: 1,
+                type: 0,
+                ...config
+            }, refresh);
+        },
+        /**
+         * 分页查询达人
+         * @param config: {start, limit, ...}
+         */
+        getPageTalent(config, refresh) {
+            return Ajax.get(622905, {
+                status: 1,
+                type: 1,
+                ...config
+            }, refresh);
+        },
+        /**
+         * 分页查询达人(带有筛选)
+         * @param config: {start, limit, skCycle, ...}
+         */
+        getPageFilterTalent(config, refresh) {
+            return Ajax.get("622093", {
+                status: 1,
+                type: 1,
                 ...config
             }, refresh);
         },
@@ -75,6 +99,20 @@ define([
         getPageOrders(config, refresh) {
             return Ajax.get("622130", {
                 applyUser:  base.getUserId(),
+                type: 0,
+                orderColumn: "apply_datetime",
+                orderDir: "desc",
+                ...config
+            }, refresh);
+        },
+        /**
+         * 分页查询达人订单
+         * @param config {start, limit, status}
+         */
+        getPageTalentOrders(config, refresh) {
+            return Ajax.get("622130", {
+                applyUser:  base.getUserId(),
+                type: 1,
                 orderColumn: "apply_datetime",
                 orderDir: "desc",
                 ...config

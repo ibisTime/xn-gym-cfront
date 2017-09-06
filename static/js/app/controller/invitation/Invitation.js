@@ -12,8 +12,8 @@ define([
         calculate();
         createQRCode();
         weixin.initShare({
-            title: document.title,
-            desc: "自玩自健",
+            title: "自玩自健",
+            desc: "邀您一起健身",
             link: location.href,
             imgUrl: base.getShareImg()
         });

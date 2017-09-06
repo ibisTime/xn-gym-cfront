@@ -63,8 +63,11 @@ define([
     function getCoach() {
         return CoachCtr.getCoach(code)
             .then((data) => {
+                if (data.type == '1') {
+                    base.setTitle('达人详情');
+                }
                 weixin.initShare({
-                    title: document.title,
+                    title: '自玩自健',
                     desc: base.clearTag(data.description),
                     link: location.href,
                     imgUrl: base.getShareImg(data.advPic)

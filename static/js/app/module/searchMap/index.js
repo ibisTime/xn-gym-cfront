@@ -10,6 +10,7 @@ define([
     };
     var css = __inline("index.css");
     var myValue, point, map, transit;
+    var isShow = false;
 
     init();
 
@@ -99,10 +100,29 @@ define([
                 addListener.call(this);
 
                 map = new BMap.Map("J_SearchMapCont");
-                // var po = new BMap.Point(defaultOpt.lng, defaultOpt.lat);
-                // map.centerAndZoom(po, 12);
-                // var marker = new BMap.Marker(po); // 创建标注
-                // map.addOverlay(marker); // 将标注添加到地图中
+                if (defaultOpt.initInDW) {
+                    var _loading = $('#moduleLoadingWrapper');
+                    _loading.show();
+                    var geolocation = new BMap.Geolocation();
+                    geolocation.getCurrentPosition(function(r) {
+                        if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+                            var geoc = new BMap.Geocoder();
+                            geoc.getLocation(r.point, function(rs){
+                                _loading.hide();
+                                var po = new BMap.Point(r.point);
+                                map.centerAndZoom(po, 12);
+                                var mk = new BMap.Marker(r.point);
+                                map.addOverlay(mk);
+                                map.panTo(r.point);
+                                point = r.point;
+                                myValue = rs.address;
+                                if (isShow) {
+                                    $("#J_SearchMapInput").val(myValue);
+                                }
+                            });
+                        } else {}
+                    },{enableHighAccuracy: true})
+                }
 
                 map.enableScrollWheelZoom(true);
 
@@ -126,33 +146,29 @@ define([
         },
         showMap: function(option) {
             if (this.hasMap()) {
+                isShow = true;
                 option = option || {};
                 defaultOpt.success = option.success;
                 if (option.text) {
                     point = new BMap.Point(option.point.lng, option.point.lat);
                     myValue = option.text;
                     setShowPlace();
-                }else{
-                    point = null;
-                    map.clearOverlays();
-                    $("#J_SearchMapInput").val("");
+                } else {
+                    if (myValue && !$("#J_SearchMapInput").val()) {
+                        $("#J_SearchMapInput").val(myValue);
+                    }
                 }
                 var mapCont = $("#J_SearchMapWrapper");
                 mapCont.css("top", $(window).scrollTop() + "px");
                 mapCont.show().animate({
                     left: 0
-                }, 200, function () {
-                    // if(!option.text && option.showDw){
-                    //     var address = sessionStorage.getItem("address");
-                    //     $("#J_SearchMapInput").val(address);
-                    //     $("#search-map-icon").click();
-                    // }
-                });
+                }, 200);
             }
             return this;
         },
         hideMap: function(fnc) {
             if (this.hasMap()) {
+                isShow = false;
                 var mapCont = $("#J_SearchMapWrapper");
                 // mapCont.fadeOut(100);
                 mapCont.animate({

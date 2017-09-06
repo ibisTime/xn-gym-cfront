@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <link rel="import" href="../head.html?__inline">
+  <title>确认订单</title>
+  <!--SCRIPT_PLACEHOLDER-->
+</head>
+
+<body>
+  <div class="confirm-order-wrapper">
+    <div class="confirm-head">
+      <img src="../../images/warning.png" />
+      <span>上课前两小时取消扣<label id="rate"></label>预约金，两小时内不可取消</span>
+    </div>
+    <div class="am-whitespace-sm"></div>
+    <form class="confirm-list" id="formWrapper">
+      <div class="confirm-item border-bottom-1px">
+        <div class="am-flexbox">
+          <span class="title">上课时间</span>
+          <select class="text" id="perCourseCode" name="perCourseCode"></select>
+        </div>
+      </div>
+      <div class="confirm-item border-bottom-1px">
+        <div class="am-flexbox">
+          <span class="title">上课地点</span>
+          <div class="text over-addr" id="addrWrap">请输入上课地点</div>
+          <input type="text" id="address" name="address" class="text v-hide" />
+          <i class="right-arrow"></i>
+        </div>
+      </div>
+      <div class="confirm-item border-bottom-1px">
+        <div class="am-flexbox">
+          <span class="title">课程单价</span>
+          <div class="text amount" id="price"></div>
+        </div>
+      </div>
+      <div class="confirm-item border-bottom-1px">
+        <div class="am-flexbox">
+          <span class="title">上课人数</span>
+          <input class="text" id="quantity" name="quantity" placeholder="上课人数不超过5人" type="tel" />
+        </div>
+      </div>
+      <div class="confirm-item border-bottom-1px">
+        <div class="am-flexbox">
+          <span class="title">支付金额</span>
+          <div class="text amount" id="amount"></div>
+        </div>
+      </div>
+      <div class="confirm-item border-bottom-1px">
+        <div class="am-flexbox">
+          <span class="title">联系方式</span>
+          <input class="text" type="tel" name="mobile" placeholder="请输入手机号码" id="mobile" />
+        </div>
+      </div>
+      <div class="confirm-item border-bottom-1px">
+        <div class="am-flexbox am-flexbox-align-top">
+          <span class="title">特别嘱咐</span>
+          <textarea class="text remark" id="applyNote" name="applyNote" placeholder="填写要求等"></textarea>
+        </div>
+      </div>
+    </form>
+    <div class="confirm-btn">
+      <button type="button" class="am-button am-button-primary" id="buy">确认</button>
+    </div>
+  </div>
+  <link rel="import" href="../footer.html?__inline">
+  <script src="//api.map.baidu.com/api?v=2.0&ak=GZO262tQ251t2DsFWsQy7A7swoQ4MgyB&s=1"></script>
+  <script>
+    require(['app/controller/course/CoachConfirm']);
+  </script>
+</body>
+
+</html>
