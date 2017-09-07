@@ -1,10 +1,12 @@
 define([
     'app/controller/base',
     'app/interface/ActivityCtr',
-    'app/util/dict'
-], function(base, ActivityCtr, Dict) {
+    'app/util/dict',
+    'app/module/showInMap'
+], function(base, ActivityCtr, Dict, showInMap) {
     var code = base.getUrlParam("code"),
         orderStatus = Dict.get("activityOrderStatus");
+    var address;
 
     init();
     function init(){
@@ -27,6 +29,8 @@ define([
                 $("#contact").html(`<a href="tel://${data.contact}">${data.contact}</a>`);
                 $("#quantity").text(data.quantity);
                 $("#amount").text(base.formatMoney(data.amount) + "元");
+                $("#address").text(data.holdPlace);
+                address = data.holdPlace;
                 if(data.penalty) {
                     $("#penalty").text(base.formatMoney(data.penalty) + "元")
                         .closest(".confirm-item").removeClass("hidden");
@@ -47,6 +51,7 @@ define([
             });
     }
     function addListener(){
+        showInMap.addMap();
         $("#cancelBtn").on("click", function() {
             base.confirm("确定取消订单吗？", "取消", "确认")
                 .then(() => {
@@ -73,6 +78,9 @@ define([
         });
         $("#payBtn").on("click", function() {
             location.href = "../pay/pay.html?type=activity&code=" + code;
+        });
+        $("#address").on("click", function() {
+            address && showInMap.showMapByName(address);
         });
     }
 });

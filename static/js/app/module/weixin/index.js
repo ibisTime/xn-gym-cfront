@@ -1,8 +1,9 @@
 define([
     'jweixin',
     'app/module/loading',
-    'app/interface/GeneralCtr'
-], function (wx, loading, GeneralCtr) {
+    'app/interface/GeneralCtr',
+    'app/util/cookie'
+], function (wx, loading, GeneralCtr, cookieUtil) {
     var globalConfig = {};
     /*
      * 初始化微信分享
@@ -15,6 +16,9 @@ define([
      * }
      */
     function _initShare(data, config) {
+        var _link = config.link;
+        _link += (_link.indexOf('?') !== -1 ? '&' : '?') + `userRefree=${cookieUtil.get('userId')}`;
+        config.link = _link;
         wx.config({
             appId: data.appId,
             timestamp: data.timestamp,
@@ -37,7 +41,9 @@ define([
             // qq空间分享
             wx.onMenuShareQZone(config);
         });
-        wx.error((error) => {});
+        wx.error((error) => {
+            // alert(JSON.stringify(error));
+        });
     }
     // 微信支付
     function _onBridgeReady() {

@@ -33,6 +33,7 @@ define([
                         $("#maxAmount").text(rule.cvalue);
                     } else if(rule.ckey == "CUSERQXFL") {   // 提现费率
                         rate = +rule.cvalue;
+                        $("#toRate").text(rate);
                     }
                 });
             });

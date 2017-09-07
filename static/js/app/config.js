@@ -1,10 +1,9 @@
 var SYSTEM_CODE = "CD-ZWZJ000012";
-var PIC_PREFIX =
-  'http://otomdv0mr.bkt.clouddn.com/';
+var PIC_PREFIX = 'http://otomdv0mr.bkt.clouddn.com/';
 
 (function() {
   // 判断是否登录
-  if (!/\/redirect\.html/.test(location.href)) {
+  if (!( /\/redirect\.html/.test(location.href) || /\/activity\//.test(location.href) )) {
     var arr,
       reg = new RegExp(
         "(^| )userId=([^;]*)(;|$)"),
@@ -19,14 +18,12 @@ var PIC_PREFIX =
         "(^|&)userReferee=([^&]*)(&|$)(^|&)userReferee=([^&" +
         "]*)(&|$)(^|&)userReferee=([^&]*)(&|$)",
         "i");
-      var r = window.location.search.substr(1).match(
-        reg);
-      if (r != null)
+      var r = window.location.search.substr(1).match(reg);
+      if (r != null) {
         userReferee = decodeURIComponent(r[2]);
-      sessionStorage.setItem("userReferee",
-        userReferee);
-      sessionStorage.setItem("l-return",
-        location.pathname + location.search);
+      }
+      sessionStorage.setItem("userReferee", userReferee);
+      sessionStorage.setItem("l-return", location.pathname + location.search);
       location.replace("../user/redirect.html");
     }
   }

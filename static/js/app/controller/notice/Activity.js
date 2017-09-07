@@ -1,14 +1,17 @@
 define([
     'app/controller/base',
     'app/module/weixin',
+    'app/module/showInMap',
     'app/interface/ActivityCtr',
     'app/util/handlebarsHelpers',
     'app/util/dict',
     'swiper'
-], function(base, weixin, ActivityCtr, Handlebars, Dict, Swiper) {
+], function(base, weixin, showInMap, ActivityCtr, Handlebars, Dict, Swiper) {
     var code = base.getUrlParam("code"),
         activityStatus = Dict.get("activityStatus"),
         status, remainNum;
+    var holdPlace;
+
     init();
     function init() {
         base.showLoading();
@@ -29,6 +32,8 @@ define([
                 });
                 addBanner(data);
                 $("#title").text(data.title);
+                holdPlace = data.holdPlace;
+                $("#address").find('div').text(data.holdPlace);
                 status = data.status;
                 remainNum = data.remainNum;
                 if(status == 1) {
@@ -68,6 +73,7 @@ define([
         });
     }
     function addListener() {
+        showInMap.addMap();
         $("#buyBtn").on("click", function() {
             if(status == 1) {
                 if(remainNum) {
@@ -78,6 +84,9 @@ define([
             } else {
                 base.showMsg("该活动暂时无法报名");
             }
+        });
+        $('#address').on('click', function() {
+            holdPlace && showInMap.showMapByName(holdPlace);
         });
     }
 });

@@ -10,13 +10,13 @@
 <body>
     <div class="user-list-wrap">
         <div class="user-list-item border-bottom-1px am-flexbox am-flexbox-justify-between">
-            <a href="./change-mobile.html" class="am-flexbox am-flexbox-item">
-                <span>修改手机号码</span>
+            <a href="javascript:void(0)" id="setMobile" class="am-flexbox am-flexbox-item">
+                <span>绑定手机号</span>
             </a>
             <i class="right-arrow"></i>
         </div>
         <div class="user-list-item border-bottom-1px am-flexbox am-flexbox-justify-between">
-            <a href="./set-tradePwd.html" class="am-flexbox am-flexbox-item">
+            <a href="javascript:void(0)" id="setTradePwd" class="am-flexbox am-flexbox-item">
                 <span>支付密码</span>
             </a>
             <i class="right-arrow"></i>
@@ -28,6 +28,10 @@
             <i class="right-arrow"></i>
         </div>
     </div>
+    <link rel="import" href="../footer.html?__inline">
+    <script>
+        require(['app/controller/user/Set']);
+    </script>
 </body>
 
 </html>

@@ -9,12 +9,13 @@ define([
     'swiper',
     'app/util/handlebarsHelpers'
 ], function(base, Foot, weixin, GeneralCtr, CoachCtr, ActivityCtr, Swiper, Handlebars) {
-    var count = 3, coachList, talentList, labelList = {},
+    var count = 3, coachList = [], talentList = [], labelList = {},
         genderList = {
             "0": "女",
             "1": "男"
         };
     const SUFFIX = "?imageMogr2/auto-orient/thumbnail/!200x200r";
+    const DEFAULT_IMG = location.origin + '/static/images/default-bg.png';
 
     init();
     function init(){
@@ -49,9 +50,9 @@ define([
             });
     }
     // 当label的数据字典 和 coach 的数据都获取到了之后，再把值添加到页面中
-    function addLabelData(list) {
-        buildHtml(coachList, '#coachContent');
-        buildHtml(talentList, '#courseContent');
+    function addLabelData() {
+        coachList.length && buildHtml(coachList, '#coachContent');
+        talentList.length && buildHtml(talentList, '#courseContent');
     }
 
     function buildHtml(list, id) {
@@ -65,13 +66,13 @@ define([
             while(remainStar--) {
                 starHtml += '<i class="hot-star"></i>';
             }
-            var labels = item.label.split("||"), labelHtml = "";
+            var labels = item.label && item.label.split("||") || [], labelHtml = "";
             labels.forEach((label, index) => {
                 labelHtml += `<span class="hot-tip hot-tip${index % 3}">${labelList[label]}</span>`;
             });
             html += `<a href="./course/coach-detail.html?code=${item.code}" class="hot-item hot-item-coach">
                         <div class="hot-adv">
-                            <img class="wp100 hp100" src="${base.getImg(item.pic, SUFFIX)}"/>
+                            <img class="wp100 hp100" src="${base.getImg(item.pic || DEFAULT_IMG, SUFFIX)}"/>
                         </div>
                         <div class="hot-item-cont">
                             <div class="hot-item-time">
@@ -97,12 +98,11 @@ define([
             limit: 10,
             location: 1
         }, refresh).then((data) => {
-            if(data.list.length) {
-                coachList = data.list;
-                if(!--count) {
-                    addLabelData();
-                }
-            } else {
+            coachList = data.list;
+            if(!--count) {
+                addLabelData();
+            }
+            if(!data.list.length) {
                 $("#coachContent").html('<div class="no-data">暂无私教</div>');
             }
         })
@@ -129,13 +129,12 @@ define([
             limit: 10,
             location: 1
         }, refresh).then((data) => {
-            if (data.list.length) {
-                talentList = data.list;
-                if (!--count) {
-                    addLabelData();
-                } else {
-                    $("#courseContent").html('<div class="no-data">暂无达人</div>');
-                }
+            talentList = data.list;
+            if (!--count) {
+                addLabelData();
+            }
+            if (!data.list.length) {
+                $("#courseContent").html('<div class="no-data">暂无达人</div>');
             }
         });
     }

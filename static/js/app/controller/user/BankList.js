@@ -12,13 +12,13 @@ define([
 
     init();
     function init() {
-		getPageBankCard();
+	      getPageBankCard();
         addListener();
     }
     //公告
     function getPageBankCard(refresh) {
         base.showLoading();
-    	UserCtr.getPageBankCard(config, refresh)
+        UserCtr.getPageBankCard(config, refresh)
             .then(function(data) {
                 base.hideLoading();
                 hideLoading();
@@ -27,17 +27,17 @@ define([
                 if (totalCount <= config.limit || lists.length < config.limit) {
                     isEnd = true;
                 }
-    			if(data.list.length) {
-                    $("#content")[refresh ? "html" : "append"](_tmpl({items: data.list}));
-                    isEnd && $("#loadAll").removeClass("hidden");
-                    config.start++;
-    			} else if(config.start == 1) {
+          			if(data.list.length) {
+                          $("#content")[refresh ? "html" : "append"](_tmpl({items: data.list}));
+                          isEnd && $("#loadAll").removeClass("hidden");
+                          config.start++;
+          			} else if(config.start == 1) {
                     $("#content").html('<li class="no-data">暂无银行卡</li>')
                 } else {
                     $("#loadAll").removeClass("hidden");
                 }
                 canScrolling = true;
-        	}, hideLoading);
+          	}, hideLoading);
     }
     function addListener() {
         addOrEditBankCard.addCont({

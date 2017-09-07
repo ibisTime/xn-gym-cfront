@@ -28,18 +28,18 @@ define([
         $("body").append(tmpl);
       }
       var wrap = $("#bindMobileSmsWrap");
-      defaultOpt.title && wrap.find(".right-left-cont-title-name").text(defaultOpt.title);
-      defaultOpt.mobile && $("#bind-mobileSms").val(defaultOpt.mobile);
       var that = this;
       if (first) {
-        wrap.find(".right-left-cont-title")
-          .on("touchmove", function(e) {
-            e.preventDefault();
-          });
+        wrap.find(".right-left-cont-title").on("touchmove", function(e) {
+          e.preventDefault();
+        });
+        wrap.find(".right-left-cont-back").on("click", function(){
+          that.hideMobileCont();
+        });
         $("#bind-mobile-btnSms")
           .on("click", function() {
             if ($("#bind-mobile-formSms").valid()) {
-              BMobile.hideMobileCont(defaultOpt.success);
+              bindMobile();
             }
           });
         $("#bind-mobile-formSms").validate({
@@ -59,7 +59,7 @@ define([
           checkInfo: function() {
             return $("#bind-mobileSms").valid();
           },
-          bizType: "805151",
+          bizType: "805153",
           id: "bind-getVerification",
           mobile: "bind-mobileSms"
         });

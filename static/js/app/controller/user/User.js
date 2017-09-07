@@ -4,8 +4,7 @@ define([
   'app/interface/UserCtr',
   'app/interface/AccountCtr'
 ], function(base, Foot, UserCtr, AccountCtr) {
-  const SUFFIX =
-    "?imageMogr2/auto-orient/thumbnail/!200x200r";
+  const SUFFIX = "?imageMogr2/auto-orient/thumbnail/!200x200r";
   init();
 
   function init() {

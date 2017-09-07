@@ -12,6 +12,7 @@ define([
                 status: 1,
                 orderColumn: "order_no",
                 orderDir: "asc",
+                type: 1,
                 ...config
             }, refresh);
         },
@@ -64,6 +65,48 @@ define([
             return Ajax.post("622034", {
                 orderCode,
                 applyUser: base.getUserId()
+            });
+        },
+        /***教练和达人端的热门活动***/
+        /**
+         * 分页查询活动
+         * @param config {start, limit, ...}
+         */
+        getPageSpecActivities(config, refresh) {
+            return Ajax.get("622020", {
+                status: 1,
+                orderColumn: "order_no",
+                orderDir: "asc",
+                type: 0,
+                ...config
+            }, refresh);
+        },
+        /**
+         * 通过手机号和密码参与活动
+         * @param config {loginName, loginPwd, kind, activityCode}
+         */
+        joinByMobile(config) {
+            return Ajax.post('622220', config);
+        },
+        /**
+         * 通过填写信息参与活动
+         * @param config {realName, mobile, gender, duration, pdf, advPic, address, activityCode}
+         */
+        joinByInfos(config) {
+            return Ajax.post('622221', config);
+        },
+        /**
+         * 分页查询活动参与者
+         * @param config {start, limit, type}
+         */
+        getPageJoiners(config, refresh) {
+            return Ajax.get('622230', config, refresh);
+        },
+        // 投票
+        ratingActivity(attendCode) {
+            return Ajax.post('622240', {
+                attendCode,
+                userId: base.getUserId()
             });
         }
     };

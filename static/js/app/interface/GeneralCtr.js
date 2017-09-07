@@ -3,6 +3,10 @@ define([
     'app/util/ajax'
 ], function(base, Ajax) {
     return {
+        // 加载七牛token
+        getQiniuToken() {
+            return Ajax.get("807900");
+        },
         // 获取微信sdk初始化的参数
         getInitWXSDKConfig() {
             return Ajax.get("807910", {

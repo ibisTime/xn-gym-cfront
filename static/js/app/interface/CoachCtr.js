@@ -22,6 +22,8 @@ define([
             return Ajax.get("622093", {
                 status: 1,
                 type: 0,
+                orderColumn: 'order_no',
+                orderDir: 'asc',
                 ...config
             }, refresh);
         },
@@ -44,6 +46,8 @@ define([
             return Ajax.get("622093", {
                 status: 1,
                 type: 1,
+                orderColumn: 'order_no',
+                orderDir: 'asc',
                 ...config
             }, refresh);
         },

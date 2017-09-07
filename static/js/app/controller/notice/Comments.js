@@ -30,7 +30,7 @@ define([
     // 分页查询私教评论
     function getPageCoachComment(refresh) {
         base.showLoading();
-    	CoachCtr.getPageComment({
+        CoachCtr.getPageComment({
             coachCode: code,
             ...config
         }, refresh).then(addContent, hideLoading);

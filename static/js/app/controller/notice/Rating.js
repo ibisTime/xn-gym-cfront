@@ -1,13 +1,11 @@
 define([
     'app/controller/base',
-    'app/module/foot',
     'app/module/weixin',
-    // 'app/interface/CourseCtr',
     'app/interface/GeneralCtr',
-    'app/interface/CoachCtr',
+    'app/interface/ActivityCtr',
     'app/util/handlebarsHelpers'
-], function(base, Foot, weixin, GeneralCtr, CoachCtr, Handlebars) {
-    var type = base.getUrlParam("type") || 0,
+], function(base, weixin, GeneralCtr, ActivityCtr, Handlebars) {
+    var type = 0,
         config = {
             start: 1,
             limit: 10
@@ -17,23 +15,12 @@ define([
             "0": "女",
             "1": "男"
         };
-    var _weeks = {
-            "1": "一",
-            "2": "二",
-            "3": "三",
-            "4": "四",
-            "5": "五",
-            "6": "六",
-            "0": "七",
-        }, courseDatetime, coachDatetime, talentDatetime;
     const SUFFIX = "?imageMogr2/auto-orient/thumbnail/!200x200r";
     const DEFAULT_IMG = location.origin + '/static/images/default-bg.png';
 
     init();
     function init(){
-        Foot.addFoot(1);
         addListener();
-        buildDate();
         $("#am-tabs-bar").find(".am-tabs-tab:eq(" + type + ")").click();
         weixin.initShare({
             title: document.title,
@@ -42,56 +29,6 @@ define([
             imgUrl: base.getShareImg()
         });
     }
-    // 生成日期选择器
-    function buildDate() {
-        var topHtml = "", bottomHtml = "";
-        var now = new Date();
-        for(var i = 1; i <= 7; i++) {
-            var date1 = now.getDate() + "",
-                day = now.getDay(),
-                attr_date = now.format("yyyy-MM-dd");
-            topHtml += `<span data-time="${day + 1}" class="${i === 1 ? "active" : ""}">${_weeks[day]}</span>`;
-            bottomHtml += `<span data-time="${attr_date}" class="${i === 1 ? "active" : ""}">${("00" + date1).substr(date1.length)}</span>`;
-            now.setDate(+date1 + 1);
-            if(i === 1) {
-                courseDatetime = attr_date;
-                talentDatetime = coachDatetime = day + 1;
-            }
-        }
-        $("#weekWrapper0, #weekWrapper1").html(topHtml);
-        $("#dayWrapper0, #dayWrapper1").html(bottomHtml);
-    }
-    // 分页查询课程
-    // function getPageCourse(refresh) {
-    //     var _tmpl = __inline('../../ui/course_course.handlebars');
-    //     return CourseCtr.getPageCourse({
-    //         classDatetime: courseDatetime,
-    //         ...config
-    //     }, refresh)
-    //         .then((data) => {
-    //             base.hideLoading();
-    //             hideLoading(0);
-    //             var lists = data.list;
-    //             var totalCount = +data.totalCount;
-    //             if (totalCount <= config.limit || lists.length < config.limit) {
-    //                 isEnd = true;
-    //             } else {
-    //                 isEnd = false;
-    //             }
-    //             if(data.list.length) {
-    //                 $("#talentContent")[refresh || config.start == 1 ? "html" : "append"](_tmpl({items: data.list}));
-    //                 config.start++;
-    //                 isEnd && $("#loadAll0").removeClass("hidden");
-    //             } else if(config.start == 1) {
-    //                 $("#talentContent").html('<div class="no-data">暂无课程</div>');
-    //                 $("#loadAll0").addClass("hidden");
-    //             } else {
-    //                 $("#loadAll0").removeClass("hidden");
-    //             }
-    //             !isEnd && $("#loadAll0").addClass("hidden");
-    //             canScrolling = true;
-    //         }, () => hideLoading(0));
-    // }
     // 获取标签数据字典
     function getLabelList() {
         return GeneralCtr.getDictList("label_kind")
@@ -108,7 +45,8 @@ define([
     // 当label的数据字典 和 coach 的数据都获取到了之后，再把值添加到页面中
     function addLabelData() {
         var html = "";
-        coachList.forEach((coach) => {
+        coachList.forEach((item) => {
+            var coach = item.coach;
             var star = Math.floor(+coach.star), remainStar = 5 - star,
                 starHtml = "";
             while(star--) {
@@ -121,9 +59,10 @@ define([
             labels.forEach((label, index) => {
                 labelHtml += `<span class="hot-tip hot-tip${index % 3}">${labelList[label]}</span>`;
             });
-            html += `<a href="./coach-detail.html?code=${coach.code}" class="hot-item hot-item-coach">
+            html += `<a href="javascript:void(0)" data-code="${item.code}" class="hot-item rating-item-coach">
                         <div class="hot-adv">
                             <img class="wp100 hp100" src="${base.getImg(coach.pic || DEFAULT_IMG, SUFFIX)}"/>
+                            <label class="vote-text">${item.isVote=='0'?'投票':'已投票'}</label>
                         </div>
                         <div class="hot-item-cont">
                             <div class="hot-item-time">
@@ -139,7 +78,7 @@ define([
                         </div>
                     </a>`;
         });
-        if (!type) {
+        if (type) {
             $("#talentContent")[config.start == 1 ? "html" : "append"](html);
         } else {
             $("#coachContent")[config.start == 1 ? "html" : "append"](html);
@@ -148,8 +87,8 @@ define([
 
     // 分页查询私教
     function getPageCoach(refresh) {
-        return CoachCtr.getPageFilterCoach({
-            skCycle: coachDatetime,
+        return ActivityCtr.getPageJoiners({
+            type: 0,
             ...config
         }, refresh)
             .then((data) => {
@@ -172,26 +111,26 @@ define([
                         addLabelData();
                     }
                     config.start++;
-                    isEnd && $("#loadAll1").removeClass("hidden");
+                    isEnd && $("#loadAll0").removeClass("hidden");
                 } else if(config.start == 1) {
                     $("#coachContent").html('<div class="no-data">暂无私教</div>');
-                    $("#loadAll1").addClass("hidden");
+                    $("#loadAll0").addClass("hidden");
                 } else {
-                    $("#loadAll1").removeClass("hidden");
+                    $("#loadAll0").removeClass("hidden");
                 }
-                !isEnd && $("#loadAll1").addClass("hidden");
+                !isEnd && $("#loadAll0").addClass("hidden");
                 canScrolling = true;
-            }, () => hideLoading(1));
+            }, () => hideLoading(0));
     }
 
     // 分页查询达人
     function getPageTalent (refresh) {
-        return CoachCtr.getPageFilterTalent({
-            skCycle: talentDatetime,
+        return ActivityCtr.getPageJoiners({
+            type: 1,
             ...config
         }, refresh).then((data) => {
             base.hideLoading();
-            hideLoading(0);
+            hideLoading(1);
             var lists = data.list;
             var totalCount = +data.totalCount;
             if (totalCount <= config.limit || lists.length < config.limit) {
@@ -209,18 +148,26 @@ define([
                     addLabelData();
                 }
                 config.start++;
-                isEnd && $("#loadAll0").removeClass("hidden");
+                isEnd && $("#loadAll1").removeClass("hidden");
             } else if(config.start == 1) {
                 $("#talentContent").html('<div class="no-data">暂无达人</div>');
-                $("#loadAll0").addClass("hidden");
+                $("#loadAll1").addClass("hidden");
             } else {
-                $("#loadAll0").removeClass("hidden");
+                $("#loadAll1").removeClass("hidden");
             }
-            !isEnd && $("#loadAll0").addClass("hidden");
+            !isEnd && $("#loadAll1").addClass("hidden");
             canScrolling = true;
-        }, () => hideLoading(0));
+        }, () => hideLoading(1));
     }
-
+    // 投票
+    function ratingActivity(attendCode) {
+        base.showLoading();
+        ActivityCtr.ratingActivity(attendCode).then((data) => {
+            base.hideLoading();
+            base.showMsg('投票成功');
+            $("#am-tabs-content").find('.rating-item-coach[data-code='+attendCode+'] .vote-text').text('已投票');
+        });
+    }
     function addListener(){
         // tabs切换事件
         var _tabsInkBar = $("#am-tabs-bar").find(".am-tabs-ink-bar"),
@@ -241,7 +188,7 @@ define([
                 config.start = 1;
                 base.showLoading();
                 type = index;
-                if(!index) {    // 达人
+                if(index) {    // 达人
                     if(!labelList){
                         count = 2;
                         getLabelList();
@@ -260,58 +207,14 @@ define([
                 }
             }
         });
-        _tabsContent.on("click", ".week-days span", function(){
-            var _this = $(this),
-                index = _this.index(),
-                _weekTitles = _this.parent().siblings(".week-titles");
-            if(!_this.hasClass("active")) {
-                _this.addClass("active")
-                    .siblings(".active").removeClass("active");
-                var _span = _weekTitles.find("span").eq(index);
-                _span.addClass("active").siblings(".active").removeClass("active");
-                // courseDatetime = _this.attr("data-time");
-                talentDatetime = coachDatetime = _span.attr("data-time");
-                config.start = 1;
-                base.showLoading();
-                var choseIndex = $(".am-tabs-tab-active").index() - 1;
-                type = choseIndex;
-                if(!choseIndex) {    // 达人
-                    talentDatetime = _span.attr("data-time");
-                    getPageTalent();
-                } else {    // 私教
-                    coachDatetime = _span.attr("data-time");
-                    getPageCoach();
-                }
-            }
-        });
-        _tabsContent.on("click", ".week-titles span", function(){
-            var _this = $(this),
-                index = _this.index(),
-                _weekdays = _this.parent().siblings(".week-days");
-            if(!_this.hasClass("active")) {
-                _this.addClass("active")
-                    .siblings(".active").removeClass("active");
-                var _span = _weekdays.find("span").eq(index);
-                _span.addClass("active").siblings(".active").removeClass("active");
-                // courseDatetime = _span.attr("data-time");
-                config.start = 1;
-                base.showLoading();
-                var choseIndex = $(".am-tabs-tab-active").index() - 1;
-                if(!choseIndex) {    // 团课
-                    talentDatetime = _this.attr("data-time");
-                    getPageTalent();
-                } else {    // 私教
-                    coachDatetime = _this.attr("data-time");
-                    getPageCoach();
-                }
-            }
+        $("#am-tabs-content").on('click', '.rating-item-coach', function() {
+            ratingActivity($(this).attr('data-code'));
         });
         $(window).off("scroll").on("scroll", function() {
             if (canScrolling && !isEnd && ($(document).height() - $(window).height() - 10 <= $(document).scrollTop())) {
                 canScrolling = false;
-                var choseIndex = $(".am-tabs-tab-active").index() - 1;
-                showLoading(choseIndex);
-                if(!choseIndex) {    // 团课
+                showLoading(type);
+                if(type) {    // 达人
                     getPageTalent();
                 } else {    // 私教
                     getPageCoach();

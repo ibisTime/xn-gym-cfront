@@ -28,7 +28,7 @@ define([
         },
         // 绑定手机号
         bindMobile(mobile, smsCaptcha) {
-            return Ajax.post("805151", {
+            return Ajax.post("805153", {
                 mobile,
                 smsCaptcha,
                 userId: base.getUserId()

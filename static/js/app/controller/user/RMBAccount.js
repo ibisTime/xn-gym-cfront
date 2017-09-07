@@ -2,13 +2,15 @@ define([
     'app/controller/base',
     'app/interface/AccountCtr',
     'app/interface/UserCtr',
-    'app/module/setTradePwd'
-], function(base, AccountCtr, UserCtr, setTradePwd) {
+    'app/module/setTradePwd',
+    'app/module/bindMobile'
+], function(base, AccountCtr, UserCtr, setTradePwd, bindMobile) {
     var config = {
         start: 1,
         limit: 20
     }, isEnd = false, canScrolling = false;
     var tradepwdFlag = false;
+    var mobile;
 
     init();
 
@@ -36,11 +38,11 @@ define([
     function getUser() {
         return UserCtr.getUser()
             .then((data) => {
+                mobile = data.mobile;
                 if(data.tradepwdFlag != "0"){
                     tradepwdFlag = true;
                 } else {
                     setTradePwd.addCont({
-                        mobile: data.mobile,
                         success: function() {
                             tradepwdFlag = true;
                         }
@@ -102,6 +104,11 @@ define([
         return html;
     }
     function addListener() {
+        bindMobile.addMobileCont({
+            success: function(mob) {
+                mobile = mob;
+            }
+        });
         //下拉加载
         $(window).off("scroll").on("scroll", function() {
             if (canScrolling && !isEnd && ($(document).height() - $(window).height() - 10 <= $(document).scrollTop())) {
@@ -116,12 +123,19 @@ define([
         });
         // 提现
         $("#withdrawBtn").click(() => {
+            if (!mobile) {
+              base.confirm("您还未绑定手机号，无法提现。<br/>点击确认前往设置")
+                  .then(() => {
+                      bindMobile.showMobileCont();
+                  }, () => {});
+              return;
+            }
             if(tradepwdFlag) {
                 location.replace("./withdraw.html");
             } else {
                 base.confirm("您还未设置支付密码，无法提现。<br/>点击确认前往设置")
                     .then(() => {
-                        setTradePwd.showCont();
+                        setTradePwd.showCont(mobile);
                     }, () => {});
             }
         });

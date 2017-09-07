@@ -25,7 +25,11 @@
         <div class="course-time pb">
             <span id="slogan"></span>
         </div>
-        <div class="am-flexbox course-item none-border" id="contact"></div>
+        <div class="am-flexbox course-item" id="contact"></div>
+        <div class="am-flexbox course-item none-border" id="address">
+          <div class="am-flexbox-item course-addr"></div>
+          <i class="right-arrow"></i>
+        </div>
     </div>
     <div class="am-whitespace-sm"></div>
     <div class="detail-header">
@@ -44,6 +48,7 @@
     </footer>
 
     <link rel="import" href="../footer.html?__inline">
+    <script src="//api.map.baidu.com/api?v=2.0&ak=GZO262tQ251t2DsFWsQy7A7swoQ4MgyB&s=1"></script>
     <script>
         require(['app/controller/notice/Activity']);
     </script>
