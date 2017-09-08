@@ -179,22 +179,37 @@ label.error {
             width: 3.6rem;
 
             &.rating-item-coach {
-              padding-top: 0.2rem;
+                margin-top: 0.28rem;
+
+                .hot-adv {
+                    .adv-wrap {
+                      position: absolute;
+                      right: 0;
+                      bottom: 0;
+                      color: #fff;
+                      line-height: 1;
+
+                      .rate-count {
+                        background: rgba(0,0,0, 0.4);
+                        padding: 0.14rem 0.14rem;
+                        font-size: 0.26rem;
+                        display: inline-block;
+                      }
+
+                      .vote-text {
+                        padding: 0.14rem;
+                        font-size: 0.26rem;
+                        display: inline-block;
+                        background: #ff0200;
+                      }
+                    }
+                }
+
             }
 
             .hot-adv {
                 height: 3.3rem;
                 position: relative;
-
-                .vote-text {
-                  position: absolute;
-                  right: 0;
-                  bottom: 0;
-                  padding: 0.09rem 0.14rem;
-                  font-size: 0.26rem;
-                  background: $primary-color;
-                  color: #fff;
-                }
             }
 
             .hot-item-cont {

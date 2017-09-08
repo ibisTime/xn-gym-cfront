@@ -62,12 +62,15 @@ define([
             html += `<a href="javascript:void(0)" data-code="${item.code}" class="hot-item rating-item-coach">
                         <div class="hot-adv">
                             <img class="wp100 hp100" src="${base.getImg(coach.pic || DEFAULT_IMG, SUFFIX)}"/>
-                            <label class="vote-text">${item.isVote=='0'?'投票':'已投票'}</label>
+                            <div class="adv-wrap">
+                              <label data-count="${item.totalNum}" class="rate-count">${item.totalNum}票</label>
+                              <label class="vote-text">${item.isVote=='0'?'投票':'已投票'}</label>
+                            </div>
                         </div>
                         <div class="hot-item-cont">
                             <div class="hot-item-time">
                                 <span class="hot-time">${coach.realName}</span>
-                                <span class="hot-course-title">${genderList[coach.gender]}</span>
+                                <span class="hot-course-title">${item.orderNo}号</span>
                             </div>
                             <div class="hot-stars">
                                 ${starHtml}
@@ -165,7 +168,11 @@ define([
         ActivityCtr.ratingActivity(attendCode).then((data) => {
             base.hideLoading();
             base.showMsg('投票成功');
-            $("#am-tabs-content").find('.rating-item-coach[data-code='+attendCode+'] .vote-text').text('已投票');
+            var _item = $("#am-tabs-content").find('.rating-item-coach[data-code='+attendCode+']').find('.adv-wrap');
+            _item.find('.vote-text').text('已投票');
+            var _label = _item.find('.rate-count');
+            var count = +_label.attr('data-count') + 1;
+            _label.attr('data-count', count).text(count + '票');
         });
     }
     function addListener(){

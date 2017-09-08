@@ -8,7 +8,7 @@ define([
          * @param config: {code,mobile?,smsCaptcha?,userReferee?}
          */
         wxLogin(config) {
-            return Ajax.post("805151", config);
+            return Ajax.post("805152", config);
         },
         // 获取用户详情
         getUser(refresh) {

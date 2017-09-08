@@ -100,7 +100,12 @@ define([
          * @param config {start, limit, type}
          */
         getPageJoiners(config, refresh) {
-            return Ajax.get('622230', config, refresh);
+            return Ajax.get('622230', {
+              coachStatus: 1,
+              orderColumn: 'order_no',
+              orderDir: 'asc',
+              ...config
+            }, refresh);
         },
         // 投票
         ratingActivity(attendCode) {
