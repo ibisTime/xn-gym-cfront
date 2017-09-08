@@ -34,7 +34,7 @@ define([
           base.goLogin();
         }, () => {});
       } else {
-        location.href = '../notice/rating.html';
+        location.href = '../notice/rating.html?code=' + code;
       }
     });
     $("#joinBtn").click(function() {

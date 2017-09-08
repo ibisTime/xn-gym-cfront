@@ -102,6 +102,8 @@ define([
         getPageJoiners(config, refresh) {
             return Ajax.get('622230', {
               coachStatus: 1,
+              activityStatus: 1,
+              userId: base.getUserId(),
               orderColumn: 'order_no',
               orderDir: 'asc',
               ...config

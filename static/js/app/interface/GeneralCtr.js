@@ -73,6 +73,14 @@ define([
         getBizSysConfig(ckey, refresh) {
             return Ajax.get("622917", {ckey}, refresh);
         },
+        // 分页查询业务系统参数
+        getPageBizSysConfig(start, limit, type) {
+            return Ajax.get('622915', {
+                start,
+                limit,
+                type
+            });
+        },
         // 查询banner列表
         getBanner(refresh) {
             return Ajax.get("806051", {

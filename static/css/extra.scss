@@ -1942,3 +1942,15 @@ label.error {
   height: 100%;
   background: #f7f7f7;
 }
+
+.rating-head-tips {
+  margin-bottom: 0.1rem;
+  padding: 0.1rem 0.2rem;
+  color: #fdaa3f;
+  background: #fffbed;
+
+  label {
+    width: 0.5rem;
+    display: inline-block;
+  }
+}

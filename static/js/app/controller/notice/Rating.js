@@ -5,6 +5,7 @@ define([
     'app/interface/ActivityCtr',
     'app/util/handlebarsHelpers'
 ], function(base, weixin, GeneralCtr, ActivityCtr, Handlebars) {
+    var code = base.getUrlParam('code');
     var type = 0,
         config = {
             start: 1,
@@ -22,11 +23,25 @@ define([
     function init(){
         addListener();
         $("#am-tabs-bar").find(".am-tabs-tab:eq(" + type + ")").click();
+        getRatingRules();
         weixin.initShare({
             title: document.title,
             desc: "邀您一起健身",
             link: location.href,
             imgUrl: base.getShareImg()
+        });
+    }
+    function getRatingRules() {
+        GeneralCtr.getPageBizSysConfig(1, 10, 6).then((data) => {
+            data.list.forEach((item) => {
+                if (item.ckey === 'XTVOTE') {
+                    $("#rule1,#rule1_1").text(item.cvalue);
+                } else if (item.ckey === 'JLVOTE') {
+                    $("#rule2,#rule2_1").text(item.cvalue);
+                } else if (item.ckey === 'DRVOTE') {
+                    $("#rule3,#rule3_1").text(item.cvalue);
+                }
+            });
         });
     }
     // 获取标签数据字典
@@ -92,6 +107,7 @@ define([
     function getPageCoach(refresh) {
         return ActivityCtr.getPageJoiners({
             type: 0,
+            activityCode: code,
             ...config
         }, refresh)
             .then((data) => {
@@ -130,6 +146,7 @@ define([
     function getPageTalent (refresh) {
         return ActivityCtr.getPageJoiners({
             type: 1,
+            activityCode: code,
             ...config
         }, refresh).then((data) => {
             base.hideLoading();
