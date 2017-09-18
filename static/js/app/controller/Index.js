@@ -7,8 +7,9 @@ define([
     'app/interface/ActivityCtr',
     // 'app/interface/CourseCtr',
     'swiper',
-    'app/util/handlebarsHelpers'
-], function(base, Foot, weixin, GeneralCtr, CoachCtr, ActivityCtr, Swiper, Handlebars) {
+    'app/util/handlebarsHelpers',
+    'app/module/picker'
+], function(base, Foot, weixin, GeneralCtr, CoachCtr, ActivityCtr, Swiper, Handlebars, picker) {
     var count = 3, coachList = [], talentList = [], labelList = {},
         genderList = {
             "0": "女",
@@ -18,6 +19,7 @@ define([
     const DEFAULT_IMG = location.origin + '/static/images/default-bg.png';
 
     init();
+    
     function init(){
         Foot.addFoot(0);
         base.showLoading();
