@@ -120,7 +120,8 @@ define([
 
     // 分页查询私教
     function getPageCoach(refresh) {
-        return CoachCtr.getPageFilterCoach({
+        var funName = coachDatetime ? 'getPageFilterCoach' : 'getPageCoach';
+        return CoachCtr[funName]({
             skCycle: coachDatetime,
             ...config
         }, refresh)
@@ -158,7 +159,8 @@ define([
 
     // 分页查询达人
     function getPageTalent (refresh) {
-        return CoachCtr.getPageFilterTalent({
+        var funName = talentDatetime ? 'getPageFilterTalent' : 'getPageTalent';
+        return CoachCtr[funName]({
             skCycle: talentDatetime,
             ...config
         }, refresh).then((data) => {

@@ -2,8 +2,9 @@ define([
   'app/controller/base',
   'app/module/validate',
   'app/module/qiniu',
+  'app/module/picker',
   'app/interface/ActivityCtr'
-], function(base, Validate, qiniu, AcitvityCtr) {
+], function(base, Validate, qiniu, picker, AcitvityCtr) {
   var code = base.getUrlParam('code');
   var choseType = 0;
   const TALENT = 'TALENT', COACH = 'COACH';
@@ -92,6 +93,19 @@ define([
             </div>`;
   }
 
+  function initPicker(id) {
+      picker.init({
+          id,
+          select: function(prov, city, area) {
+              var _nameEl = $(id);
+              _nameEl.val(prov + ' ' + city + ' ' + area);
+              _nameEl.attr("data-prv", prov);
+              _nameEl.attr("data-city", city);
+              _nameEl.attr("data-area", area);
+          }
+      });
+  }
+
   function hideOrShowContainer(bType, type, count, containerId) {
     var _container = $('#' + containerId);
     if (bType === PDF) {
@@ -147,6 +161,21 @@ define([
         }
       }
     }
+  }
+
+  function getCityInfo(param, id) {
+    var province = $(id);
+    var prov = province.attr('data-prv');
+    if (!prov) {
+        base.showMsg('授课区域不能为空');
+        return;
+    }
+    var city = province.attr('data-city');
+    var area = province.attr('data-area');
+    param.province = prov;
+    param.city = city;
+    param.area = area;
+    joinByInfos(param);
   }
 
   function addListener() {
@@ -252,10 +281,12 @@ define([
           _talentWrapper.removeClass('hidden');
           initPdf(PDF, TALENT);
           initPdf(ADV_PIC, TALENT);
+          initPicker('#talentProvince');
         } else {
           _coachWrapper.removeClass('hidden');
           initPdf(PDF, COACH);
           initPdf(ADV_PIC, COACH);
+          initPicker('#coachProvince');
         }
       });
     });
@@ -266,11 +297,17 @@ define([
     });
     // 达人点击参加
     $('#talentSubmitBtn').click(function() {
-      _talentForm.valid() && joinByInfos(_talentForm.serializeObject());
+      if (_talentForm.valid()) {
+        var param = _talentForm.serializeObject();
+        getCityInfo(param, '#talentProvince');
+      }
     });
     // 教练点击参加
     $('#coachSubmitBtn').click(function() {
-      _coachForm.valid() && joinByInfos(_coachForm.serializeObject());
+      if (_coachForm.valid()) {
+        var param = _coachForm.serializeObject();
+        getCityInfo(param, '#coachProvince');
+      }
     });
   }
 
@@ -278,7 +315,9 @@ define([
   function joinByMobile(params) {
     params.kind = choseType ? 'f3' : 'f2';
     params.activityCode = code;
+    base.showLoading("提交中...");
     AcitvityCtr.joinByMobile(params).then((data) => {
+      base.hideLoading();
       base.showMsg('申请提交成功');
       setTimeout(() => {
         history.back();
@@ -290,13 +329,35 @@ define([
   function joinByInfos(params) {
     params.activityCode = code;
     if (choseType) {
-      params.advPic = $('#tAdvPicFile').data('pic');
-      params.pdf = $('#tPdfFile').data('pic');
+      var pdf = $('#tPdfFile').data('pic');
+      if (!pdf) {
+        base.showMsg('身份证照片不能为空');
+        return;
+      }
+      params.pdf = pdf;
+      var advPic = $('#tAdvPicFile').data('pic');
+      if (!advPic) {
+        base.showMsg('健身照片不能为空');
+        return;
+      }
+      params.advPic = advPic;
     } else {
-      params.advPic = $('#cAdvPicFile').data('pic');
-      params.pdf = $('#cPdfFile').data('pic');
+      var pdf = $('#cPdfFile').data('pic');
+      if (!pdf) {
+        base.showMsg('教练资格证书不能为空');
+        return;
+      }
+      params.pdf = pdf;
+      var advPic = $('#cAdvPicFile').data('pic');
+      if (!advPic) {
+        base.showMsg('健身照片不能为空');
+        return;
+      }
+      params.advPic = advPic;
     }
+    base.showLoading("提交中...");
     AcitvityCtr.joinByInfos(params).then((data) => {
+      base.hideLoading();
       base.showMsg('申请提交成功');
       setTimeout(() => {
         history.back();

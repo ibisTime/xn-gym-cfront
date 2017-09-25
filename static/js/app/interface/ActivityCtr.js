@@ -97,11 +97,11 @@ define([
         },
         /**
          * 分页查询活动参与者
-         * @param config {start, limit, type}
+         * @param config {start, limit, type, activityCode}
          */
         getPageJoiners(config, refresh) {
             return Ajax.get('622230', {
-              coachStatus: 1,
+              coachStatusList: [1, 3],
               activityStatus: 1,
               userId: base.getUserId(),
               orderColumn: 'order_no',

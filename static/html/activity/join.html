@@ -61,6 +61,12 @@
                     <input type="text" name="address" class="input-item" placeholder="请输入工作地址"/>
                 </div>
             </div>
+            <div class="info-item border-bottom-1px">
+                <div class="am-flexbox">
+                    <span class="title">授课区域</span>
+                    <input id="coachProvince" name="province" class="input-item" placeholder="请选择授课区域" readonly/>
+                </div>
+            </div>
             <div class="am-whitespace-sm"></div>
             <div class="info-item">
                 <div class="am-flexbox am-flexbox-justify-between">
@@ -137,6 +143,12 @@
                     <input type="text" name="address" class="input-item" placeholder="请输入健身地址"/>
                 </div>
             </div>
+            <div class="info-item border-bottom-1px">
+                <div class="am-flexbox">
+                    <span class="title">授课区域</span>
+                    <input id="talentProvince" name="province" class="input-item" placeholder="请选择授课区域" readonly/>
+                </div>
+            </div>
             <div class="am-whitespace-sm"></div>
             <div class="info-item">
                 <div class="am-flexbox am-flexbox-justify-between">
@@ -192,6 +204,7 @@
     <link rel="import" href="../footer.html?__inline">
     <script src="../../js/lib/qiniu/plupload.full.min.js"></script>
     <script src="../../js/lib/qiniu/qiniu.min.js"></script>
+    <script src="../../js/lib/city.js"></script>
     <script>
         require(['app/controller/activity/Join']);
     </script>

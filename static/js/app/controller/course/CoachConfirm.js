@@ -78,13 +78,8 @@ define([
                 if (!perCourseList.length) {
                     base.showMsg("该私教还未添加上课时间");
                     return;
-                } else {
-                    totalNum = perCourseList[0].totalNum;
                 }
-                if (coachType === '1') {
-                    courseAddr = perCourseList[0].address;
-                    $("#addrWrap").text(courseAddr);
-                } else {
+                if (coachType !== '1') {
                     rules.address = {
                         required: true,
                         isNotFace: true
@@ -95,10 +90,13 @@ define([
                     var skCycle = weekList[course.skCycle],
                         skEndDatetime = course.skEndDatetime.substr(0, 5),
                         skStartDatetime = course.skStartDatetime.substr(0, 5);
-                    html += `<option value="${course.code}" data-price="${course.price}">${skCycle} ${skStartDatetime}~${skEndDatetime}</option>`;
+                    if (course.isAppoint=='1') {
+                        html += `<option disabled value="${course.code}" data-price="${course.price}">${skCycle} ${skStartDatetime}~${skEndDatetime}(已被预定)</option>`;
+                    } else {
+                        html += `<option value="${course.code}" data-price="${course.price}">${skCycle} ${skStartDatetime}~${skEndDatetime}</option>`;
+                    }
                 });
                 $("#perCourseCode").html(html).trigger("change");
-                $("#quantity").attr('placeholder', '上课人数不超过' + totalNum + '人');
             });
     }
 

@@ -9,8 +9,10 @@ define([
          */
         getPageCoach(config, refresh) {
             return Ajax.get("622095", {
-                status: 1,
+                status: 3,
                 type: 0,
+                orderColumn: 'teach_num',
+                orderDir: 'desc',
                 ...config
             }, refresh);
         },
@@ -20,10 +22,10 @@ define([
          */
         getPageFilterCoach(config, refresh) {
             return Ajax.get("622093", {
-                status: 1,
+                status: 3,
                 type: 0,
-                orderColumn: 'order_no',
-                orderDir: 'asc',
+                orderColumn: 'teach_num',
+                orderDir: 'desc',
                 ...config
             }, refresh);
         },
@@ -32,9 +34,11 @@ define([
          * @param config: {start, limit, ...}
          */
         getPageTalent(config, refresh) {
-            return Ajax.get(622905, {
-                status: 1,
+            return Ajax.get(622095, {
+                status: 3,
                 type: 1,
+                orderColumn: 'teach_num',
+                orderDir: 'desc',
                 ...config
             }, refresh);
         },
@@ -44,10 +48,10 @@ define([
          */
         getPageFilterTalent(config, refresh) {
             return Ajax.get("622093", {
-                status: 1,
+                status: 3,
                 type: 1,
-                orderColumn: 'order_no',
-                orderDir: 'asc',
+                orderColumn: 'teach_num',
+                orderDir: 'desc',
                 ...config
             }, refresh);
         },
