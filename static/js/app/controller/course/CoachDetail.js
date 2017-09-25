@@ -79,6 +79,12 @@ define([
                 while(star--) {
                     _hotStars.eq(star).addClass("active")
                 }
+                if (data.province) {
+                    data.province = data.province === data.city ? '' : data.province;
+                    data.area = data.area === '全部' ? '' : data.area;
+                    let address = data.province + data.city + data.area;
+                    $("#skAddr").text('授课区域：' + address);
+                }
                 $("#realName").text(data.realName);
                 $("#description").html(data.description);
                 labels = data.label.split("||");

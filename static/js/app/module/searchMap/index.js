@@ -36,9 +36,11 @@ define([
             Map.hideMap(defaultOpt.success);
         });
         $("#search-map-icon").on("click", function(e) {
-            var val = $("#J_SearchMapInput").val();
-            if (!val || val.trim() == "")
+            var _input = $("#J_SearchMapInput");
+            var val = _input.val() || _input.attr('placeholder');
+            if (!val || val.trim() == "") {
                 return;
+            }
             myValue = val;
             setPlace();
         })

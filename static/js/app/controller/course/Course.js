@@ -2,7 +2,6 @@ define([
     'app/controller/base',
     'app/module/foot',
     'app/module/weixin',
-    // 'app/interface/CourseCtr',
     'app/interface/GeneralCtr',
     'app/interface/CoachCtr',
     'app/util/handlebarsHelpers'
@@ -50,48 +49,13 @@ define([
             var date1 = now.getDate() + "",
                 day = now.getDay(),
                 attr_date = now.format("yyyy-MM-dd");
-            topHtml += `<span data-time="${day + 1}" class="${i === 1 ? "active" : ""}">${_weeks[day]}</span>`;
-            bottomHtml += `<span data-time="${attr_date}" class="${i === 1 ? "active" : ""}">${("00" + date1).substr(date1.length)}</span>`;
+            topHtml += `<span data-time="${day + 1}">${_weeks[day]}</span>`;
+            bottomHtml += `<span data-time="${attr_date}">${("00" + date1).substr(date1.length)}</span>`;
             now.setDate(+date1 + 1);
-            if(i === 1) {
-                courseDatetime = attr_date;
-                talentDatetime = coachDatetime = day + 1;
-            }
         }
         $("#weekWrapper0, #weekWrapper1").html(topHtml);
         $("#dayWrapper0, #dayWrapper1").html(bottomHtml);
     }
-    // 分页查询课程
-    // function getPageCourse(refresh) {
-    //     var _tmpl = __inline('../../ui/course_course.handlebars');
-    //     return CourseCtr.getPageCourse({
-    //         classDatetime: courseDatetime,
-    //         ...config
-    //     }, refresh)
-    //         .then((data) => {
-    //             base.hideLoading();
-    //             hideLoading(0);
-    //             var lists = data.list;
-    //             var totalCount = +data.totalCount;
-    //             if (totalCount <= config.limit || lists.length < config.limit) {
-    //                 isEnd = true;
-    //             } else {
-    //                 isEnd = false;
-    //             }
-    //             if(data.list.length) {
-    //                 $("#talentContent")[refresh || config.start == 1 ? "html" : "append"](_tmpl({items: data.list}));
-    //                 config.start++;
-    //                 isEnd && $("#loadAll0").removeClass("hidden");
-    //             } else if(config.start == 1) {
-    //                 $("#talentContent").html('<div class="no-data">暂无课程</div>');
-    //                 $("#loadAll0").addClass("hidden");
-    //             } else {
-    //                 $("#loadAll0").removeClass("hidden");
-    //             }
-    //             !isEnd && $("#loadAll0").addClass("hidden");
-    //             canScrolling = true;
-    //         }, () => hideLoading(0));
-    // }
     // 获取标签数据字典
     function getLabelList() {
         return GeneralCtr.getDictList("label_kind")
@@ -105,12 +69,13 @@ define([
                 }
             });
     }
+
     // 当label的数据字典 和 coach 的数据都获取到了之后，再把值添加到页面中
     function addLabelData() {
         var html = "";
         coachList.forEach((coach) => {
             var star = Math.floor(+coach.star), remainStar = 5 - star,
-                starHtml = "";
+                starHtml = "", address = '';
             while(star--) {
                 starHtml += '<i class="hot-star active"></i>';
             }
@@ -121,6 +86,11 @@ define([
             labels.forEach((label, index) => {
                 labelHtml += `<span class="hot-tip hot-tip${index % 3}">${labelList[label]}</span>`;
             });
+            if (coach.province) {
+                coach.province = coach.province === coach.city ? '' : coach.province;
+                coach.area = coach.area === '全部' ? '' : coach.area;
+                address = coach.province + coach.city + coach.area;
+            }
             html += `<a href="./coach-detail.html?code=${coach.code}" class="hot-item hot-item-coach">
                         <div class="hot-adv">
                             <img class="wp100 hp100" src="${base.getImg(coach.pic || DEFAULT_IMG, SUFFIX)}"/>
@@ -129,10 +99,12 @@ define([
                             <div class="hot-item-time">
                                 <span class="hot-time">${coach.realName}</span>
                                 <span class="hot-course-title">${genderList[coach.gender]}</span>
+                                <span class="hot-course-title1">${coach.duration}年</span>
                             </div>
                             <div class="hot-stars">
                                 ${starHtml}
                             </div>
+                            <div class="hot-item-addr">${address}</div>
                             <div class="hot-tips">
                                 ${labelHtml}
                             </div>
@@ -225,10 +197,12 @@ define([
         // tabs切换事件
         var _tabsInkBar = $("#am-tabs-bar").find(".am-tabs-ink-bar"),
             _tabsContent = $("#am-tabs-content"),
-            _tabpanes = _tabsContent.find(".am-tabs-tabpane");
+            _tabpanes = _tabsContent.find(".am-tabs-tabpane"),
+            _choseWrapper = $("#weekChoseWrapper");
         $("#am-tabs-bar").on("click", ".am-tabs-tab", function(){
             var _this = $(this), index = _this.index() - 1;
             if(!_this.hasClass("am-tabs-tab-active")){
+                _choseWrapper.find('.week-wrap').eq(type).slideUp();
                 _this.addClass("am-tabs-tab-active")
                     .siblings(".am-tabs-tab-active").removeClass("am-tabs-tab-active");
                 _tabsInkBar.css({
@@ -260,7 +234,7 @@ define([
                 }
             }
         });
-        _tabsContent.on("click", ".week-days span", function(){
+        _choseWrapper.on("click", ".week-days span", function(){
             var _this = $(this),
                 index = _this.index(),
                 _weekTitles = _this.parent().siblings(".week-titles");
@@ -269,22 +243,32 @@ define([
                     .siblings(".active").removeClass("active");
                 var _span = _weekTitles.find("span").eq(index);
                 _span.addClass("active").siblings(".active").removeClass("active");
-                // courseDatetime = _this.attr("data-time");
-                talentDatetime = coachDatetime = _span.attr("data-time");
-                config.start = 1;
-                base.showLoading();
-                var choseIndex = $(".am-tabs-tab-active").index() - 1;
-                type = choseIndex;
-                if(!choseIndex) {    // 达人
-                    talentDatetime = _span.attr("data-time");
-                    getPageTalent();
-                } else {    // 私教
-                    coachDatetime = _span.attr("data-time");
-                    getPageCoach();
-                }
+            } else {
+              _this.removeClass("active");
+              var _span = _weekTitles.find("span").eq(index);
+              _span.removeClass("active");
             }
+            config.start = 1;
+            base.showLoading();
+            var choseIndex = $(".am-tabs-tab-active").index() - 1;
+            if(!choseIndex) {    // 达人
+                if (_span.hasClass('active')) {
+                    talentDatetime = _span.attr("data-time");
+                } else {
+                    talentDatetime = '';
+                }
+                getPageTalent();
+            } else {    // 私教
+                if (_span.hasClass('active')) {
+                    coachDatetime = _span.attr("data-time");
+                } else {
+                    coachDatetime = '';
+                }
+                getPageCoach();
+            }
+            _choseWrapper.find('.week-wrap').eq(type).slideUp();
         });
-        _tabsContent.on("click", ".week-titles span", function(){
+        _choseWrapper.on("click", ".week-titles span", function(){
             var _this = $(this),
                 index = _this.index(),
                 _weekdays = _this.parent().siblings(".week-days");
@@ -293,29 +277,49 @@ define([
                     .siblings(".active").removeClass("active");
                 var _span = _weekdays.find("span").eq(index);
                 _span.addClass("active").siblings(".active").removeClass("active");
-                // courseDatetime = _span.attr("data-time");
-                config.start = 1;
-                base.showLoading();
-                var choseIndex = $(".am-tabs-tab-active").index() - 1;
-                if(!choseIndex) {    // 团课
-                    talentDatetime = _this.attr("data-time");
-                    getPageTalent();
-                } else {    // 私教
-                    coachDatetime = _this.attr("data-time");
-                    getPageCoach();
-                }
+            } else {
+                _this.removeClass("active");
+                var _span = _weekdays.find("span").eq(index);
+                _span.removeClass("active");
             }
+            config.start = 1;
+            base.showLoading();
+            var choseIndex = $(".am-tabs-tab-active").index() - 1;
+            if(!choseIndex) {    // 达人
+                if (_span.hasClass('active')) {
+                    talentDatetime = _span.attr("data-time");
+                } else {
+                    talentDatetime = '';
+                }
+                getPageTalent();
+            } else {    // 私教
+                if (_span.hasClass('active')) {
+                    coachDatetime = _span.attr("data-time");
+                } else {
+                    coachDatetime = '';
+                }
+                getPageCoach();
+            }
+            _choseWrapper.find('.week-wrap').eq(type).slideUp();
         });
         $(window).off("scroll").on("scroll", function() {
             if (canScrolling && !isEnd && ($(document).height() - $(window).height() - 10 <= $(document).scrollTop())) {
                 canScrolling = false;
                 var choseIndex = $(".am-tabs-tab-active").index() - 1;
                 showLoading(choseIndex);
-                if(!choseIndex) {    // 团课
+                if(!choseIndex) {    // 达人
                     getPageTalent();
                 } else {    // 私教
                     getPageCoach();
                 }
+            }
+        });
+        $("#sxIcon").click(function() {
+            var _wrap = _choseWrapper.find('.week-wrap').eq(type);
+            if (_wrap.css('display') === 'none') {
+              _wrap.slideDown();
+            } else {
+              _wrap.slideUp();
             }
         });
     }

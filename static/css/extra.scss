@@ -146,8 +146,9 @@ label.error {
 
 .home-content {
     background: #fff;
-    padding-left: 0.15rem;
+    padding-top: 0.15rem;
     padding-right: 0.15rem;
+    padding-left: 0.15rem;
 
     .hot-title {
         padding-top: 0.36rem;
@@ -232,9 +233,18 @@ label.error {
                         padding-right: 0.3rem;
                     }
 
-                    .hot-course-title {
-                        // float: right;
+                    .hot-course-title1 {
+                        padding-left: 0.3rem;
                     }
+                }
+
+                .hot-item-addr {
+                    padding-top: 0.1rem;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    font-size: 0.28rem;
+                    color: #999;
                 }
 
                 .hot-stars {
@@ -1342,15 +1352,14 @@ label.error {
 
 .confirm-order-wrapper {
     .confirm-head {
-        padding: 0 0.3rem;
-        height: 0.8rem;
-        line-height: 0.8rem;
+        display: flex;
+        align-items: flex-start;
+        padding: 0.1rem 0.3rem;
         font-size: 0;
         color: #fdaa3f;
         background: #fffbed;
 
         img {
-            vertical-align: middle;
             width: 0.28rem;
             height: 0.28rem;
         }
@@ -1360,6 +1369,7 @@ label.error {
             display: inline-block;
             vertical-align: middle;
             font-size: 0.24rem;
+            line-height: 1.2;
         }
     }
 
@@ -1584,6 +1594,7 @@ label.error {
     border-bottom-left-radius: 4px;
     bottom: 100px;
     right: 0;
+    z-index: 100;
     background: rgba(0, 0, 0, 0.7);
 
     a {
@@ -1955,29 +1966,68 @@ label.error {
   }
 }
 
-.cityTop{
+.cityTop {
     width: 100%;
     height: .8rem;
     background-color: #fff;
     border-bottom: 1px solid $border-color;
     position: relative;
-    
-    .cityTop-left{
-        width: 2.3rem;
+
+    .cityTop-left {
         line-height: .8rem;
         font-size: .28rem;
         position: absolute;
         top: 0;
         left: .3rem;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
+
+        .city-content {
+          display: inline-block;
+          max-width: 1.3rem;
+          vertical-align: middle;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+
+        .icon-city {
+          display: inline-block;
+          vertical-align: middle;
+          width: 0.2rem;
+          height: 0.2rem;
+          @include bg-image('arrow-down');
+          background-size: 0.2rem 0.2rem;
+          background-repeat: no-repeat;
+        }
     }
-    
-    p{
+
+    p {
         text-align: center;
-        font-size: .3rem;
+        font-size: .34rem;
         line-height: .8rem;
     }
-    
+}
+
+.sx-fixed-icon {
+    position: fixed;
+    right: 10px;
+    bottom: 1.5rem;
+    width: 0.88rem;
+    height: 0.88rem;
+    line-height: 0.88rem;
+    border-radius: 50%;
+    text-align: center;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.week-chose-wrapper {
+    position: fixed;
+    top: 0.87rem;
+    left: 0;
+    width: 100%;
+    z-index: 1;
+
+    .week-wrap {
+      display: none;
+    }
 }

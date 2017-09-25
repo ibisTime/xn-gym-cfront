@@ -7,6 +7,7 @@ define([
 ], function(base, CourseCtr, GeneralCtr, Validate, showInMap) {
     var code = base.getUrlParam("code"),
         price, remainNum, address;
+    var defAddr;
 
     init();
     function init(){
@@ -14,7 +15,10 @@ define([
         $.when(
             getCourse(),
             getRate()
-        ).then(base.hideLoading);
+        ).then(() => {
+            base.hideLoading();
+            addListener();
+        });
     }
     // 获取违约金比率
     function getRate() {
@@ -37,7 +41,6 @@ define([
                 $("#skStartDatetime").text(base.formatDate(data.skStartDatetime, 'yyyy-MM-dd hh:mm') + " ~ " + base.formatDate(data.skEndDatetime, 'hh:mm'));
                 $("#remainNum").text(data.remainNum);
                 $("#address").text(address);
-                addListener();
             });
     }
 

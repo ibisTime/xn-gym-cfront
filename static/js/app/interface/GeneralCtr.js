@@ -46,8 +46,23 @@ define([
                 "channelType": 4,
                 "status": 1,
                 "fromSystemCode": SYSTEM_CODE,
+                userId: base.getUserId(),
                 ...config
             }, refresh);
+        },
+        // 未读公告统计
+        getUnReadNoticeCount() {
+            return Ajax.get('804500', {
+                userId: base.getUserId(),
+                kind: '1'
+            });
+        },
+        // 阅读公告
+        readNotices(smsIdList) {
+            return Ajax.get('804100', {
+                smsIdList,
+                userId: base.getUserId()
+            });
         },
         // 查询数据字典列表
         getDictList(parentKey, code = "807706") {
@@ -85,6 +100,12 @@ define([
         getBanner(refresh) {
             return Ajax.get("806051", {
                 type: "2"
+            }, refresh);
+        },
+        // 查询引流列表
+        getCategorys(refresh) {
+            return Ajax.get("806051", {
+                type: "4"
             }, refresh);
         },
         /**

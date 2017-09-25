@@ -2,14 +2,13 @@ define([
     'app/controller/base',
     'app/module/foot',
     'app/module/weixin',
+    'app/module/cityChose',
     'app/interface/GeneralCtr',
     'app/interface/CoachCtr',
     'app/interface/ActivityCtr',
-    // 'app/interface/CourseCtr',
     'swiper',
-    'app/util/handlebarsHelpers',
-    'app/module/picker'
-], function(base, Foot, weixin, GeneralCtr, CoachCtr, ActivityCtr, Swiper, Handlebars, picker) {
+    'app/util/handlebarsHelpers'
+], function(base, Foot, weixin, cityChose, GeneralCtr, CoachCtr, ActivityCtr, Swiper, Handlebars) {
     var count = 3, coachList = [], talentList = [], labelList = {},
         genderList = {
             "0": "女",
@@ -19,18 +18,20 @@ define([
     const DEFAULT_IMG = location.origin + '/static/images/default-bg.png';
 
     init();
-    
+
     function init(){
         Foot.addFoot(0);
         base.showLoading();
       	$.when(
         		getBanner(),
+            getCategorys(),
         		getNotice(),
             getLabelList(),
             getPageCoach(),
             getPageTalent(),
             getPageActivities()
       	).then(base.hideLoading);
+        initAddr();
       	addListener();
         weixin.initShare({
             title: document.title,
@@ -38,6 +39,18 @@ define([
             link: location.href,
             imgUrl: base.getShareImg()
         });
+    }
+    function initAddr() {
+        var prov = sessionStorage.getItem('prov');
+        if (prov) {
+            var city = sessionStorage.getItem('city');
+            var area = sessionStorage.getItem('area') || '';
+            var text = area || city;
+            $("#cityWrap").find('.city-content').text(text)
+              .attr('data-prv', prov)
+              .attr('data-city', city)
+              .attr('data-area', area);
+        }
     }
     // 获取标签数据字典
     function getLabelList() {
@@ -61,7 +74,7 @@ define([
         var html = "";
         list.forEach((item) => {
             var star = +item.star, remainStar = 5 - star,
-                starHtml = "";
+                starHtml = "", address = "";
             while(star--) {
                 starHtml += '<i class="hot-star active"></i>';
             }
@@ -72,6 +85,11 @@ define([
             labels.forEach((label, index) => {
                 labelHtml += `<span class="hot-tip hot-tip${index % 3}">${labelList[label]}</span>`;
             });
+            if (item.province) {
+                item.province = item.province === item.city ? '' : item.province;
+                item.area = item.area === '全部' ? '' : item.area;
+                address = item.province + item.city + item.area;
+            }
             html += `<a href="./course/coach-detail.html?code=${item.code}" class="hot-item hot-item-coach">
                         <div class="hot-adv">
                             <img class="wp100 hp100" src="${base.getImg(item.pic || DEFAULT_IMG, SUFFIX)}"/>
@@ -80,10 +98,12 @@ define([
                             <div class="hot-item-time">
                                 <span class="hot-time">${item.realName}</span>
                                 <span class="hot-course-title">${genderList[item.gender]}</span>
+                                <span class="hot-course-title1">${item.duration}年</span>
                             </div>
                             <div class="hot-stars">
                                 ${starHtml}
                             </div>
+                            <div class="hot-item-addr">${address}</div>
                             <div class="hot-tips">
                                 ${labelHtml}
                             </div>
@@ -109,21 +129,7 @@ define([
             }
         })
     }
-    // 分页查询课程
-    // function getPageCourse(refresh) {
-    //     return CourseCtr.getPageCourse({
-    //         start: 1,
-    //         limit: 10,
-    //         location: 1
-    //     }, refresh).then((data) => {
-    //         var _tmpl = __inline('../ui/index_course.handlebars');
-    //         if(data.list.length) {
-    //             $("#courseContent").html(_tmpl({items: data.list}));
-    //         } else {
-    //             $("#courseContent").html('<div class="no-data">暂无课程</div>');
-    //         }
-    //     });
-    // }
+
     // 分页查询达人
     function getPageTalent(refresh) {
         return CoachCtr.getPageFilterTalent({
@@ -157,8 +163,8 @@ define([
     }
 
     //banner图
-    function getBanner(){
-        return GeneralCtr.getBanner()
+    function getBanner(refresh){
+        return GeneralCtr.getBanner(refresh)
             .then(function(data){
                 if(data.length){
                     var html = "";
@@ -181,6 +187,22 @@ define([
             });
     }
 
+    // 引流
+    function getCategorys(refresh) {
+      return GeneralCtr.getCategorys(refresh).then((data) => {
+        if (data.length) {
+          var html = '';
+          for(var i = 0; i < data.length; i++) {
+            html += `<a href="${data[i].url || 'javascript:void(0)'}" class="cate-item">
+                <img src="${base.getImg(data[i].pic)}"/>
+                <p>${data[i].name}</p>
+            </a>`;
+          }
+          $('#category').html(html);
+        }
+      });
+    }
+
     //公告
     function getNotice(){
     	return GeneralCtr.getPageSysNotice({
@@ -201,6 +223,21 @@ define([
     }
 
     function addListener(){
+        cityChose.addCont({
+          data: city,
+          chose: function(text, prov, city, area) {
+              $("#cityWrap").find('.city-content').text(text)
+                .attr('data-prv', prov)
+                .attr('data-city', city)
+                .attr('data-area', area);
+              sessionStorage.setItem('prov', prov);
+              sessionStorage.setItem('city', city);
+              sessionStorage.setItem('area', area || '');
+          }
+        });
+        $("#cityWrap").on('click', function() {
+          cityChose.showCont();
+        });
         $("#swiper-container").on("touchstart", ".swiper-slide img", function (e) {
             var touches = e.originalEvent.targetTouches[0],
                 me = $(this);

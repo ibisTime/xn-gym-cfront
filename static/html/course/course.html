@@ -14,12 +14,18 @@
             <div class="am-tabs-tab">达人</div>
             <div class="am-tabs-tab">私教</div>
         </div>
+        <div class="week-chose-wrapper" id="weekChoseWrapper">
+          <div class="week-wrap">
+              <div class="week-titles am-flexbox am-flexbox-justify-between" id="weekWrapper0"></div>
+              <div class="week-days am-flexbox am-flexbox-justify-between" id="dayWrapper0"></div>
+          </div>
+          <div class="week-wrap">
+              <div class="week-titles am-flexbox am-flexbox-justify-between" id="weekWrapper1"></div>
+              <div class="week-days am-flexbox am-flexbox-justify-between" id="dayWrapper1"></div>
+          </div>
+        </div>
         <div id="am-tabs-content" class="am-tabs-content am-tabs-content-animated" style="transform: translateX(0%) translateZ(0px); touch-action: pan-y; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
             <div class="am-tabs-tabpane">
-                <div class="week-wrap">
-                    <div class="week-titles am-flexbox am-flexbox-justify-between" id="weekWrapper0"></div>
-                    <div class="week-days am-flexbox am-flexbox-justify-between" id="dayWrapper0"></div>
-                </div>
                 <div class="home-content">
                     <div class="hot-content clearfix" id="talentContent"></div>
                 </div>
@@ -30,10 +36,6 @@
                 </div>
             </div>
             <div class="am-tabs-tabpane am-tabs-tabpane-inactive">
-                <div class="week-wrap">
-                    <div class="week-titles am-flexbox am-flexbox-justify-between" id="weekWrapper1"></div>
-                    <div class="week-days am-flexbox am-flexbox-justify-between" id="dayWrapper1"></div>
-                </div>
                 <div class="home-content">
                     <div class="hot-content clearfix" id="coachContent"></div>
                 </div>
@@ -45,6 +47,7 @@
             </div>
         </div>
     </div>
+    <div class="sx-fixed-icon" id="sxIcon">筛选</div>
 
     <link rel="import" href="../footer.html?__inline">
     <script>
