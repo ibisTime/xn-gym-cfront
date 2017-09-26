@@ -950,8 +950,9 @@ label.error {
     bottom: 0;
     left: 0;
     width: 100%;
-    background: #fff;
     border-top: 1px solid $border-color;
+    z-index: 200;
+    background: #fff;
 
     .foot-label {
         font-size: 0.24rem;
@@ -1397,6 +1398,7 @@ label.error {
 
                 &.v-hide {
                     visibility: hidden;
+                    position: absolute;
                 }
 
                 &.amount {
@@ -1435,10 +1437,6 @@ label.error {
             }
 
             .over-addr {
-                position: absolute;
-                left: 0;
-                padding-left: 2.06rem;
-                padding-right: 0.6rem;
                 width: 100%;
             }
         }

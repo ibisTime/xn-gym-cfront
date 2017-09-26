@@ -1,11 +1,14 @@
 define([
   'jquery',
-  'node_modules/better-scroll/build/bscroll.min'
-], function($, BScroll) {
+  'node_modules/better-scroll/build/bscroll.min',
+  'lib/city'
+], function($, BScroll, city) {
   var tmpl = __inline("index.html");
   var css = __inline("index.css");
   $("head").append('<style>'+css+'</style>');
-  var defaultOption = {};
+  var defaultOption = {
+    data: city
+  };
   var shortcutList = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K',
    'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'W', 'X', 'Y', 'Z'];
   var cityInfos = {};

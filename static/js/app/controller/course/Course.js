@@ -289,14 +289,14 @@ define([
             var choseIndex = $(".am-tabs-tab-active").index() - 1;
             if(!choseIndex) {    // 达人
                 if (_span.hasClass('active')) {
-                    talentDatetime = _span.attr("data-time");
+                    talentDatetime = _this.attr("data-time");
                 } else {
                     talentDatetime = '';
                 }
                 getPageTalent();
             } else {    // 私教
                 if (_span.hasClass('active')) {
-                    coachDatetime = _span.attr("data-time");
+                    coachDatetime = _this.attr("data-time");
                 } else {
                     coachDatetime = '';
                 }

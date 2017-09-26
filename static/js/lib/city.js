@@ -1,4 +1,4 @@
-var city = [{
+var cityData = [{
   'sort': 'B',
   'name': '北京市',
   'sub': [{
@@ -8415,3 +8415,5 @@ var city = [{
     }]
   }]
 }];
+
+define(function() { return cityData; });

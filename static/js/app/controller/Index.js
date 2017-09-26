@@ -115,10 +115,12 @@ define([
 
     // 分页查询私教
     function getPageCoach(refresh) {
-        return CoachCtr.getPageFilterCoach({
+        return CoachCtr.getPageCoach({
             start: 1,
             limit: 10,
-            location: 1
+            location: 1,
+            orderColumn: 'order_no',
+            orderDir: 'asc'
         }, refresh).then((data) => {
             coachList = data.list;
             if(!--count) {
@@ -132,10 +134,12 @@ define([
 
     // 分页查询达人
     function getPageTalent(refresh) {
-        return CoachCtr.getPageFilterTalent({
+        return CoachCtr.getPageTalent({
             start: 1,
             limit: 10,
-            location: 1
+            location: 1,
+            orderColumn: 'order_no',
+            orderDir: 'asc'
         }, refresh).then((data) => {
             talentList = data.list;
             if (!--count) {
@@ -205,12 +209,12 @@ define([
 
     //公告
     function getNotice(){
-    	return GeneralCtr.getPageSysNotice({
+        return GeneralCtr.getPageSysNotice({
             start: 1,
             limit: 1
         }).then(function(data){
-			if(data.list.length){
-				$("#noticeWrap").html(`
+            if(data.list.length){
+			          $("#noticeWrap").html(`
                     <a href="../notice/notice.html" class="am-flexbox am-flexbox-justify-between">
                         <div class="am-flexbox am-flexbox-item">
                             <img src="/static/images/notice.png" alt="">
@@ -218,13 +222,13 @@ define([
                         </div>
                         <i class="right-arrow"></i>
                     </a>`).removeClass("hidden");
-			}
-    	});
+            }
+        });
     }
 
     function addListener(){
         cityChose.addCont({
-          data: city,
+          // data: city,
           chose: function(text, prov, city, area) {
               $("#cityWrap").find('.city-content').text(text)
                 .attr('data-prv', prov)
