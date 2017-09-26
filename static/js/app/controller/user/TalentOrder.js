@@ -27,7 +27,11 @@ define([
                 }
                 address = data.address;
                 $("#address").text(address);
-                $("#datetime").text(base.formatDate(data.appointDatetime, "yyyy-MM-dd") + " " + data.skDatetime.substr(0, 5) + "~" + data.xkDatetime.substr(0, 5));
+                if (data.skStartDatetime && data.skEndDatetime) {
+                    $("#datetime").text(base.formatDate(data.skStartDatetime, 'yyyy-MM-dd hh:mm') + '~' + base.formatDate(data.skEndDatetime, 'hh:mm'));
+                } else {
+                    $("#datetime").text(base.formatDate(data.appointDatetime, "yyyy-MM-dd") + " " + data.skDatetime.substr(0, 5) + "~" + data.xkDatetime.substr(0, 5));
+                }
                 $("#coachRealName").html(`<a class="under" href="../course/coach-detail.html?code=${data.coach.code}">${data.coach.realName}</a>`);
                 $("#mobile").html(`<a href="tel://${data.coach.mobile}">${data.coach.mobile}</a>`);
                 $("#amount").text(base.formatMoney(data.amount) + "元");

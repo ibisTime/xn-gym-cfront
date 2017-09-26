@@ -90,6 +90,12 @@ define([
             }, () => hideLoading(currentType));
     }
     function buildHtml(item) {
+        var time;
+        if (item.skStartDatetime && item.skEndDatetime) {
+            time = base.formatDate(item.skStartDatetime, 'yyyy-MM-dd hh:mm') + '~' + base.formatDate(item.skEndDatetime, 'hh:mm');
+        } else {
+            time = base.formatDate(item.appointDatetime, "yyyy-MM-dd") + " " + item.skDatetime.substr(0, 5) + "~" + item.xkDatetime.substr(0, 5);
+        }
         return `<div class="order-item">
                     <div class="order-item-header">
                         <span>${item.code}</span>
@@ -105,7 +111,7 @@ define([
                                     <div>
                                         <h1>${item.coach.realName}</h1>
                                         <div class="order-infos">
-                                            <span class="pdr">${base.formatDate(item.appointDatetime, "MM-dd")} ${item.skDatetime.substr(0, 5)}~${item.xkDatetime.substr(0, 5)}</span><span class="pdr pdl">${item.quantity}人</span><span class="pdl">¥${base.formatMoney(item.amount)}</span>
+                                            <span class="pdr">${time}</span><span class="pdr pdl">${item.quantity}人</span><span class="pdl">¥${base.formatMoney(item.amount)}</span>
                                         </div>
                                     </div>
                                     <div class="order-addr">
