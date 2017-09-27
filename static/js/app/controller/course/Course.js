@@ -144,6 +144,11 @@ define([
                     } else {
                         addLabelData();
                     }
+                    if (config.start == 1) {
+                        setTimeout(() => {
+                            window.scrollTo(0, 0);
+                        }, 20);
+                    }
                     config.start++;
                     isEnd && $("#loadAll1").removeClass("hidden");
                 } else if(config.start == 1) {
@@ -181,6 +186,11 @@ define([
                     }
                 } else {
                     addLabelData();
+                }
+                if (config.start == 1) {
+                    setTimeout(() => {
+                        window.scrollTo(0, 0);
+                    }, 20);
                 }
                 config.start++;
                 isEnd && $("#loadAll0").removeClass("hidden");

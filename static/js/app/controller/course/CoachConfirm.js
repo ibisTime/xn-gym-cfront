@@ -49,16 +49,13 @@ define([
     }
     // 获取违约金比率
     function getConfigs() {
-        return GeneralCtr.getPageBizSysConfig(1, 100, 4)
-            .then((data) => {
-              data.list.forEach((item) => {
-                  if (item.ckey === 'WY') {
-                      $("#rate1").text(+item.cvalue * 100 + "%");
-                  } else if (item.ckey === 'QWY') {
-                      $("#rate2").text(+item.cvalue * 100 + "%");
-                  }
-              });
-            });
+        return $.when(
+            GeneralCtr.getBizSysConfig('WY'),
+            GeneralCtr.getBizSysConfig('QWY')
+        ).then((data1, data2) => {
+            $("#rate1").text(+data1.cvalue * 100 + "%");
+            $("#rate2").text(+data2.cvalue * 100 + "%");
+        });
     }
     // 获取私教详情
     function getCoach() {
@@ -76,7 +73,7 @@ define([
                 }, html = "";
                 perCourseList = data.perCourseList;
                 if (!perCourseList.length) {
-                    base.showMsg("该私教还未添加上课时间");
+                    base.showMsg("该私教还未添加课程");
                     return;
                 }
                 if (coachType !== '1') {
@@ -85,7 +82,7 @@ define([
                         isNotFace: true
                     };
                 }
-                addListener();
+                var flag = false;
                 perCourseList.forEach((course) => {
                     var skCycle = weekList[course.skCycle],
                         skEndDatetime = course.skEndDatetime.substr(0, 5),
@@ -93,9 +90,15 @@ define([
                     if (course.isAppoint=='1') {
                         html += `<option disabled value="${course.code}" data-price="${course.price}">${skCycle} ${skStartDatetime}~${skEndDatetime}(已被预定)</option>`;
                     } else {
+                        flag = true;
                         html += `<option value="${course.code}" data-price="${course.price}">${skCycle} ${skStartDatetime}~${skEndDatetime}</option>`;
                     }
                 });
+                if (flag) {
+                    addListener();
+                } else {
+                    base.showMsg("该私教暂无可以预约的课程");
+                }
                 $("#perCourseCode").html(html).trigger("change");
             });
     }
@@ -118,13 +121,16 @@ define([
             _perCourseCode = $("#perCourseCode");
 
         _perCourseCode.on("change", function() {
-            _price.text(base.formatMoney($(this).find("option:selected").attr("data-price")) + "元");
-            _amount.text(base.formatMoney($(this).find("option:selected").attr("data-price")) + "元");
-            totalNum = perCourseList[this.selectedIndex].totalNum;
-            $("#quantity").attr('placeholder', '上课人数不超过' + totalNum + '人');
-            if (coachType === '1') {  // 达人
-                courseAddr = perCourseList[this.selectedIndex].address;
-                $("#addrWrap").text(courseAddr);
+            var selectOpt = $(this).find("option:selected");
+            if (selectOpt.length) {
+                _price.text(base.formatMoney(selectOpt.attr("data-price")) + "元");
+                _amount.text(base.formatMoney(selectOpt.attr("data-price")) + "元");
+                totalNum = perCourseList[this.selectedIndex].totalNum;
+                $("#quantity").attr('placeholder', '上课人数不超过' + totalNum + '人');
+                if (coachType === '1') {  // 达人
+                    courseAddr = perCourseList[this.selectedIndex].address;
+                    $("#addrWrap").text(courseAddr);
+                }
             }
         });
         // 提交订单
@@ -137,14 +143,14 @@ define([
         // 点击显示地图
         $("#addrWrap").on("click", function() {
             if (coachType === '1') {
-              showInMap.showMapByName(courseAddr);
+                showInMap.showMapByName(courseAddr);
             } else {
-              searchMap.showMap({
-                  success: function(point, address) {
-                      $("#address").val(address).valid();
-                      $("#addrWrap").text(address);
-                  }
-              });
+                searchMap.showMap({
+                    success: function(point, address) {
+                        $("#address").val(address).valid();
+                        $("#addrWrap").text(address);
+                    }
+                });
             }
         });
         $.validator.addMethod("ltR", function(value, element) {

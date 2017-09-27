@@ -77,7 +77,13 @@ define([
                 }
                 return res.data;
             }).fail(function(error){
-                error && showMsg(error);
+                if (error) {
+                    if (typeof error == 'object') {
+                        showMsg(error.statusText || error.responseText);
+                    } else {
+                        showMsg(error);
+                    }
+                }
             });
         }
     };

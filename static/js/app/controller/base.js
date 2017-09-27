@@ -2,7 +2,7 @@ define([
     'app/util/dialog',
     'app/util/cookie',
     'app/util/ajax',
-    'app/module/loading',
+    'app/module/loading'
 ], function(dialog, CookieUtil, Ajax, loading) {
 
     Date.prototype.format = function(format) {
@@ -297,7 +297,7 @@ define([
 
     if (Base.isLogin()) {
         Ajax.get("805056", {
-            "userId": Base.getUserId()
+            userId: Base.getUserId()
         }).then((data) => {
             if (data.status != '0') {
                 Base.showMsg('用户被锁定');
@@ -307,6 +307,40 @@ define([
                 }, 1000);
             }
         });
+        var flag = sessionStorage.getItem('__check__');
+        if (!flag) {
+            Ajax.get('622921', {
+                userId: Base.getUserId()
+            }).then((data) => {
+                // 教练未评论 bToComment、达人未评论 dToComment
+                if (data.bToComment || data.dToComment) {
+                    var str = '你有';
+                    if (data.bToComment) {
+                        str += data.bToComment + '条私教订单';
+                    }
+                    if (data.dToComment) {
+                        if (data.bToComment) {
+                            str += '和';
+                        }
+                        str += data.dToComment + '条达人订单';
+                    }
+                    str += '未评价，点击确认前往评价';
+                    Base.confirm(str)
+                        .then(() => {
+                            sessionStorage.setItem('__check__', 1);
+                            if (data.bToComment) {
+                                location.href = '../user/coach-orders.html?type=5';
+                            } else {
+                                location.href = '../user/talent-orders.html?type=5';
+                            }
+                        }, () => {
+                            sessionStorage.setItem('__check__', 1);
+                        });
+                } else {
+                    sessionStorage.setItem('__check__', 1);
+                }
+            });
+        }
     }
 
     return Base;

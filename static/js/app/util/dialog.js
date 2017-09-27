@@ -60,6 +60,7 @@ define([], function() {
                 .css({
                     display: 'none',
                     position: 'absolute',
+                    'max-width': '80%',
                     /*
                      left: 0,
                      top: 0,

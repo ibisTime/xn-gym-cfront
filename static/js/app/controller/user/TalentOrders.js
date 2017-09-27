@@ -2,14 +2,15 @@ define([
     'app/controller/base',
     'app/util/dict',
     'app/interface/CoachCtr',
+    'app/interface/GeneralCtr',
     'app/module/scroll'
-], function(base, Dict, CoachCtr, scroll) {
+], function(base, Dict, CoachCtr, GeneralCtr, scroll) {
     var config = {
         start: 1,
         limit: 10
     }, isEnd = false, canScrolling = false;
     var orderStatus = Dict.get("coachOrderStatus");
-    var currentType = 0,
+    var currentType = base.getUrlParam('type') || 0,
         // status: 0 待付款, 1 待接单, 2 待上课, 3 待下课, 4 待下课 5 待评价, 6 用户取消, 7 私教取消, 8 已完成
         type2Status = {
             "0": "",
@@ -21,14 +22,31 @@ define([
             "6": "8"
         };
     const SUFFIX = "?imageMogr2/auto-orient/thumbnail/!150x113r";
-    var myScroll;
+    var myScroll, rate1, rate2;
 
     init();
     function init(){
         initScroll();
+        var _tab = $('#am-tabs-bar').find('.am-tabs-tab').eq(currentType);
+        _tab.addClass('am-tabs-tab-active');
+        myScroll.myScroll.scrollToElement(_tab[0], 200, true);
+        $("#am-tabs-content").find(".am-tabs-tabpane").eq(currentType).removeClass("am-tabs-tabpane-inactive");
         addListener();
         base.showLoading();
-        getPageOrders();
+        $.when(
+            getPageOrders(),
+            getConfigs()
+        ).then(base.hideLoading);
+    }
+    // 获取违约金比率
+    function getConfigs() {
+        return $.when(
+            GeneralCtr.getBizSysConfig('WY'),
+            GeneralCtr.getBizSysConfig('QWY')
+        ).then((data1, data2) => {
+            rate1 = +data1.cvalue * 100 + "%";
+            rate2 = +data2.cvalue * 100 + "%";
+        });
     }
     function initScroll() {
         var width = 0;
@@ -62,7 +80,6 @@ define([
         }
         return CoachCtr.getPageTalentOrders(params, refresh)
             .then((data) => {
-                base.hideLoading();
                 hideLoading(currentType);
                 var lists = data.list;
                 var totalCount = +data.totalCount;
@@ -128,9 +145,9 @@ define([
                                     ${
                                         item.status == "0"
                                             ? `<a class="am-button am-button-small" href="../pay/pay.html?code=${item.code}&type=coach">立即支付</a>
-                                                <button class="am-button am-button-small cancel-order" data-code="${item.code}">取消订单</button>`
+                                                <button class="am-button am-button-small cancel-order" data-status="${item.status}" data-code="${item.code}">取消订单</button>`
                                             : item.status == "1"
-                                                ? `<button class="am-button am-button-small cancel-order" data-code="${item.code}">取消订单</button>`
+                                                ? `<button class="am-button am-button-small cancel-order" data-status="${item.status}" data-code="${item.code}">取消订单</button>`
                                                 : `<a class="am-button am-button-small rating-order" href="./assessment.html?code=${item.code}">去评价</a>`
                                     }
                                 </div>`
@@ -155,12 +172,17 @@ define([
                 currentType = index;
                 config.start = 1;
                 base.showLoading();
-                getPageOrders();
+                getPageOrders().then(base.hideLoading);
             }
         });
         $("#orderWrapper").on("click", ".cancel-order", function() {
             var orderCode = $(this).attr("data-code");
-            base.confirm("确定取消订单吗？", "取消", "确认")
+            var _orderStatus = $(this).attr("data-status");
+            var str = '确定取消订单吗？';
+            if (_orderStatus != '0') {
+                str += `<div style="font-size: 12px;color: #999;padding-top: 4px;">上课前两小时外取消扣${rate1}订单金额，两小时内取消扣${rate2}订单金额</div>`;
+            }
+            base.confirm(str, "取消", "确认")
                 .then(() => {
                     base.showLoading("取消中...");
                     CoachCtr.cancelOrder(orderCode)
@@ -168,7 +190,7 @@ define([
                             base.showMsg("操作成功");
                             base.showLoading();
                             config.start = 1;
-                            getPageOrders(true);
+                            getPageOrders(true).then(base.hideLoading);
                         });
                 }, () => {});
         });
