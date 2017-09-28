@@ -77,6 +77,7 @@ define([
                 }
                 return res.data;
             }).fail(function(error){
+                loading.hideLoading();
                 if (error) {
                     if (typeof error == 'object') {
                         showMsg(error.statusText || error.responseText);
