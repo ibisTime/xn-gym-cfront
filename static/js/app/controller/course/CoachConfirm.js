@@ -97,7 +97,8 @@ define([
                 if (flag) {
                     addListener();
                 } else {
-                    base.showMsg("该私教暂无可以预约的课程");
+                    var str = coachType !== '1' ? '该私教暂无可以预约的课程' : '该达人暂无可以预约的课程';
+                    base.showMsg(str);
                 }
                 $("#perCourseCode").html(html).trigger("change");
             });

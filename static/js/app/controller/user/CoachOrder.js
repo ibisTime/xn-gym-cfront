@@ -64,7 +64,7 @@ define([
                 if(data.status == "0") {
                     $("#payBtn, #cancelBtn").removeClass("hidden");
                     $("#callWrapper").empty();
-                } else if(data.status == "1") {
+                } else if(data.status == "1" || data.status == "2") {
                     $("#cancelBtn").removeClass("hidden");
                     $("#callWrapper").html(`<a href="tel://${data.coach.mobile}" class="am-button am-button-primary am-button-call">联系教练</a>`);
                 } else {

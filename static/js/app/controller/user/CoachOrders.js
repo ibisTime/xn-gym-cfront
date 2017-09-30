@@ -141,13 +141,13 @@ define([
                         </div>
                     </a>
                     ${
-                        item.status == "0" || item.status == "1" || item.status == "5"
+                        item.status == "0" || item.status == "1" || item.status == "2" || item.status == "5"
                             ? `<div class="order-item-footer">
                                     ${
                                         item.status == "0"
                                             ? `<a class="am-button am-button-small" href="../pay/pay.html?code=${item.code}&type=coach">立即支付</a>
                                                 <button class="am-button am-button-small cancel-order" data-status="${item.status}" data-code="${item.code}">取消订单</button>`
-                                            : item.status == "1"
+                                            : item.status == "1" || item.status == "2"
                                                 ? `<button class="am-button am-button-small cancel-order" data-status="${item.status}" data-code="${item.code}">取消订单</button>`
                                                 : `<a class="am-button am-button-small rating-order" href="./assessment.html?code=${item.code}">去评价</a>`
                                     }
