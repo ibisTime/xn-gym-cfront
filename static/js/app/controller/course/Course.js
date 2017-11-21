@@ -266,15 +266,19 @@ define([
             if(!choseIndex) {    // 达人
                 if (_span.hasClass('active')) {
                     talentDatetime = _span.attr("data-time");
+                    config.classDatetime = $(".week-days .active").attr("data-time");
                 } else {
                     talentDatetime = '';
+                    config.classDatetime = '';
                 }
                 getPageTalent();
             } else {    // 私教
                 if (_span.hasClass('active')) {
                     coachDatetime = _span.attr("data-time");
+                    config.classDatetime = $(".week-days .active").attr("data-time");
                 } else {
                     coachDatetime = '';
+                    config.classDatetime = '';
                 }
                 getPageCoach();
             }

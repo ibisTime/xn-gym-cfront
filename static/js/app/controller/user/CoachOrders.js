@@ -109,8 +109,8 @@ define([
     }
     function buildHtml(item) {
         var time;
-        if (item.skStartDatetime && item.skEndDatetime) {
-            time = base.formatDate(item.skStartDatetime, 'yyyy-MM-dd hh:mm') + '~' + base.formatDate(item.skEndDatetime, 'hh:mm');
+        if (item.skDatetime && item.xkDatetime) {
+            time = base.formatDate(item.skDatetime, 'yyyy-MM-dd hh:mm') + '~' + base.formatDate(item.xkDatetime, 'hh:mm');
         } else {
             time = base.formatDate(item.appointDatetime, "yyyy-MM-dd") + " " + item.skDatetime.substr(0, 5) + "~" + item.xkDatetime.substr(0, 5);
         }

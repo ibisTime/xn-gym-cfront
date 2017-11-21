@@ -55,13 +55,22 @@ define([
                 ...config
             }, refresh);
         },
+        /**
+         * 根据课程时间查询达人(带有筛选)
+         * @param config: {start, limit, skCycle, ...}
+         */
+        getDateFilterTalent(config, refresh) {
+            return Ajax.get("622110", {
+                ...config
+            }, refresh);
+        },
         // 详情查询私教
         getCoach(code, refresh) {
             return Ajax.get("622096", {code}, refresh);
         },
         // 详情查询私教（带有私课和评论）
         getCoachAndComment(code, refresh) {
-            return Ajax.get("622094", {code}, refresh);
+            return Ajax.get("622094", {code, status: 0}, refresh);
         },
         /**
          * 分页查询评论

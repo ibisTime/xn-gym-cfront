@@ -41,8 +41,8 @@ define([
                 status = data.status;
                 address = data.address;
                 $("#address").text(address);
-                if (data.skStartDatetime && data.skEndDatetime) {
-                    $("#datetime").text(base.formatDate(data.skStartDatetime, 'yyyy-MM-dd hh:mm') + '~' + base.formatDate(data.skEndDatetime, 'hh:mm'));
+                if (data.skDatetime && data.xkDatetime) {
+                    $("#datetime").text(base.formatDate(data.skDatetime, 'yyyy-MM-dd hh:mm') + '~' + base.formatDate(data.xkDatetime, 'hh:mm'));
                 } else {
                     $("#datetime").text(base.formatDate(data.appointDatetime, "yyyy-MM-dd") + " " + data.skDatetime.substr(0, 5) + "~" + data.xkDatetime.substr(0, 5));
                 }

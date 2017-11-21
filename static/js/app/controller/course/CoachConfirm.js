@@ -84,9 +84,13 @@ define([
                 }
                 var flag = false;
                 perCourseList.forEach((course) => {
-                    var skCycle = weekList[course.skCycle],
-                        skEndDatetime = course.skEndDatetime.substr(0, 5),
-                        skStartDatetime = course.skStartDatetime.substr(0, 5);
+                    // var skCycle = weekList[course.skCycle],
+                        // skEndDatetime = course.skEndDatetime.substr(0, 5),
+                        // skStartDatetime = course.skStartDatetime.substr(0, 5);
+                    var skCycle = base.formatDate(course.skEndDatetime, "yyyy-MM-dd"),
+                    skStartDatetime = base.formatDate(course.skStartDatetime, "hh:mm"),
+                    skEndDatetime = base.formatDate(course.skEndDatetime, "hh:mm");
+                    
                     if (course.isAppoint=='1') {
                         html += `<option disabled value="${course.code}" data-price="${course.price}">${skCycle} ${skStartDatetime}~${skEndDatetime}(已被预定)</option>`;
                     } else {
